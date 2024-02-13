@@ -197,6 +197,9 @@ const TabFilters: FC<filterCardProps> = ({
   const handleApplyMorefilter = () => {
     getPropertyFunc();
   };
+  const handleApplyMorefilterMobile = () => {
+    getPropertyFunc();
+  };
   const renderXClear = (typez: String) => {
     return (
       <span
@@ -236,7 +239,16 @@ const TabFilters: FC<filterCardProps> = ({
       </span>
     );
   };
-
+const handleClearMoreFilterMobile = () =>{
+  setRangePrices({ min: 0, max: 0 });
+  setTypefilter([]);
+  setBeds(0);
+  setBedrooms(0);
+  setBathrooms(0);
+  setAmenitiesValues([]);
+  setHouseRulesValues([]);
+  
+}
   const renderTabsTypeOfPlace = (
     data: {
       name: string;
@@ -509,7 +521,8 @@ const TabFilters: FC<filterCardProps> = ({
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> 
+                 {/* copy */}
                   <div className="p-5 bg-neutral-50 dark:bg-neutral-900 dark:border-t dark:border-neutral-800 flex items-center justify-between">
                     <ButtonThird
                       // onClick={close}
@@ -729,6 +742,10 @@ const TabFilters: FC<filterCardProps> = ({
     setAmenitiesValues: any,
     setHouseRulesValues: any
   ) => {
+    const { min, max } = rangePrices;
+    const handleSliderChange = (value: [number, number]) => {
+      setRangePrices({ min: value[0], max: value[1] });
+    };
     return (
       <div>
         <div
@@ -801,65 +818,65 @@ const TabFilters: FC<filterCardProps> = ({
                       <div className="py-7">
                         <h3 className="text-xl font-medium">Range Prices</h3>
                         <div className="mt-6 relative ">
-                          <div className="relative flex flex-col space-y-8">
-                            <div className="space-y-5">
-                              <Slider
-                                range
-                                className="text-red-400"
-                                min={0}
-                                max={0}
-                                defaultValue={[0, 0]}
-                                allowCross={false}
-                                onChange={(e) => setRangePrices(e as number[])}
-                              />
-                            </div>
+                          <div className="space-y-5">
+                            <Slider
+                              range
+                              className="text-red-400"
+                              min={0}
+                              max={25000}
+                              defaultValue={[min, max]}
+                              allowCross={false}
+                              onChange={(value: any) =>
+                                handleSliderChange(value)
+                              }
+                            />
+                          </div>
 
-                            <div className="flex justify-between space-x-5">
-                              <div>
-                                <label
-                                  htmlFor="minPrice"
-                                  className="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
-                                >
-                                  Min price
-                                </label>
-                                <div className="mt-1 relative rounded-md">
-                                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <span className="text-neutral-500 sm:text-sm">
-                                      $
-                                    </span>
-                                  </div>
-                                  <input
-                                    type="text"
-                                    name="minPrice"
-                                    disabled
-                                    id="minPrice"
-                                    className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-3 sm:text-sm border-neutral-200 rounded-full text-neutral-900"
-                                    value={rangePrices[0]}
-                                  />
+                          <div className="flex justify-between space-x-5">
+                            <div>
+                              <label
+                                htmlFor="minPrice"
+                                className="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
+                              >
+                                Min price
+                              </label>
+                              <div className="mt-1 relative rounded-md">
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                  <span className="text-neutral-500 sm:text-sm">
+                                    $
+                                  </span>
                                 </div>
+                                <input
+                                  type="text"
+                                  name="minPrice"
+                                  disabled
+                                  id="minPrice"
+                                  className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-3 sm:text-sm border-neutral-200 rounded-full text-neutral-900"
+                                  value={min}
+                                />
                               </div>
-                              <div>
-                                <label
-                                  htmlFor="maxPrice"
-                                  className="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
-                                >
-                                  Max price
-                                </label>
-                                <div className="mt-1 relative rounded-md">
-                                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <span className="text-neutral-500 sm:text-sm">
-                                      $
-                                    </span>
-                                  </div>
-                                  <input
-                                    type="text"
-                                    disabled
-                                    name="maxPrice"
-                                    id="maxPrice"
-                                    className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-3 sm:text-sm border-neutral-200 rounded-full text-neutral-900"
-                                    value={rangePrices[1]}
-                                  />
+                            </div>
+                            <div>
+                              <label
+                                htmlFor="maxPrice"
+                                className="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
+                              >
+                                Max price
+                              </label>
+                              <div className="mt-1 relative rounded-md">
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                  <span className="text-neutral-500 sm:text-sm">
+                                    $
+                                  </span>
                                 </div>
+                                <input
+                                  type="text"
+                                  disabled
+                                  name="maxPrice"
+                                  id="maxPrice"
+                                  className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-3 sm:text-sm border-neutral-200 rounded-full text-neutral-900"
+                                  value={max}
+                                />
                               </div>
                             </div>
                           </div>
@@ -870,9 +887,24 @@ const TabFilters: FC<filterCardProps> = ({
                       <div className="py-7">
                         <h3 className="text-xl font-medium">Rooms and beds</h3>
                         <div className="mt-6 relative flex flex-col space-y-5">
-                          <NcInputNumber label="Beds" max={10} />
-                          <NcInputNumber label="Bedrooms" max={10} />
-                          <NcInputNumber label="Bathrooms" max={10} />
+                          <NcInputNumber
+                            label="Beds"
+                            max={10}
+                            roomOFbeds={beds}
+                            setRoomOFbeds={setBeds}
+                          />
+                          <NcInputNumber
+                            label="Bedrooms"
+                            max={10}
+                            roomOFbeds={bedrooms}
+                            setRoomOFbeds={setBedrooms}
+                          />
+                          <NcInputNumber
+                            label="Bathrooms"
+                            max={10}
+                            roomOFbeds={bathrooms}
+                            setRoomOFbeds={setBathrooms}
+                          />
                         </div>
                       </div>
 
@@ -886,11 +918,6 @@ const TabFilters: FC<filterCardProps> = ({
                             setAmenitiesValues
                           )}
                         </div>
-                      </div>
-                      {/* ---- */}
-                      <div className="py-7">
-                        <h3 className="text-xl font-medium">Property type</h3>
-                        <div className="mt-6 relative "></div>
                       </div>
                       {/* ---- */}
                       <div className="py-7">
@@ -908,15 +935,19 @@ const TabFilters: FC<filterCardProps> = ({
 
                   <div className="p-4 sm:p-6 flex-shrink-0 bg-neutral-50 dark:bg-neutral-900 dark:border-t dark:border-neutral-800 flex items-center justify-between">
                     <ButtonThird
-                      onClick={closeModalMoreFilterMobile}
+                      onClick={() => {
+                        closeModalMoreFilterMobile();
+                        handleClearMoreFilterMobile();
+                        getPropertyFunc();
+                      }}
                       sizeClass="px-4 py-2 sm:px-5"
                     >
                       Clear
                     </ButtonThird>
                     <ButtonPrimary
                       onClick={() => {
-                        closeModalMoreFilter();
-                        handleApplyMorefilter();
+                        closeModalMoreFilterMobile();
+                        handleApplyMorefilterMobile();
                       }}
                       sizeClass="px-4 py-2 sm:px-5"
                     >
