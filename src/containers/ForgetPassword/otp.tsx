@@ -33,19 +33,15 @@ const SetOtp: FC<SetOtpProps> = ({ className = "" }) => {
   const VerifyOtp = async (values: any) => {
     setisLoading(true);
     try {
-      // console.log(otp);
       const queryParams = new URLSearchParams(window.location.search);
       const emailParam = queryParams.get("email");
       const response = await axios.post(`${API_URL}/users/verifyotp`, {
         otp: values.otp,
         email: emailParam,
       });
-      // console.log(response);
-      // console.log("try block otp");
       const text = response.data.message;
 
       if (response.data.error === false) {
-        // console.log("false error block");
         localStorage.setItem("token", response.data.token);
 
         toast.success(text);
@@ -70,7 +66,6 @@ const SetOtp: FC<SetOtpProps> = ({ className = "" }) => {
       const response = await axios.post(`${API_URL}/users/verify`, {
         email: emailParam,
       });
-      // console.log(response);
 
       const text = response.data.message;
 
@@ -136,7 +131,9 @@ const SetOtp: FC<SetOtpProps> = ({ className = "" }) => {
                 </span>
               ) : null}
             </label>
-            <ButtonPrimary disabled={isLoading} type="submit">Verify OTP</ButtonPrimary>
+            <ButtonPrimary disabled={isLoading} type="submit">
+              Verify OTP
+            </ButtonPrimary>
             <div className="grid grid-cols-1 gap-4">
               <button
                 type="button"

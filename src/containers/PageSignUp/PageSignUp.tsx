@@ -45,8 +45,6 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
     setisLoading(true);
     try {
       const response = await axios.post(`${API_URL}/users/signup`, values);
-      // console.log(response.data.error);
-      // console.log(response.data.token);
 
       const text = response.data.message;
 
@@ -58,15 +56,13 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
           navigate("/login");
         }, 1000);
       }
-       if (response.data.error === true && !!response.data.result) {
-         toast.error(response.data.result.msg);
-       }
+      if (response.data.error === true && !!response.data.result) {
+        toast.error(response.data.result.msg);
+      }
 
       if (response.data.error === true) {
         toast.error(text);
       }
-
-      // console.log(response.data.errors);
     } catch (error) {
       console.error("Error during login:", error);
     }
@@ -211,7 +207,7 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
               </span>
               <Input
                 name="dateOfBirth"
-                type="date" // You might want to use a date picker component here
+                type="date"
                 className="mt-1 text-neutral-600"
                 value={validation.values.dateOfBirth}
                 onChange={validation.handleChange}
@@ -242,7 +238,9 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
                 </span>
               ) : null}
             </label>
-            <ButtonPrimary disabled={isLoading} type="submit">Continue</ButtonPrimary>
+            <ButtonPrimary disabled={isLoading} type="submit">
+              Continue
+            </ButtonPrimary>
           </form>
 
           {/* ==== */}

@@ -3,9 +3,8 @@ import SocialsList1 from "shared/SocialsList1/SocialsList1";
 import { CustomLink } from "data/types";
 import React from "react";
 
-
 interface FooterProps {
-  hideLogo?: boolean; // Make hideLogo optional
+  hideLogo?: boolean;
 }
 export interface WidgetFooterMenu {
   id: string;
@@ -30,17 +29,6 @@ const widgetMenus: WidgetFooterMenu[] = [
       { href: "#", label: "Help" },
     ],
   },
-  // {
-  //   id: "1",
-  //   title: "Explore",
-  //   menus: [
-  //     { href: "#", label: "Design features" },
-  //     { href: "#", label: "Prototyping" },
-  //     { href: "#", label: "Design systems" },
-  //     { href: "#", label: "Pricing" },
-  //     { href: "#", label: "Security" },
-  //   ],
-  // },
 ];
 
 const Footer: React.FC<FooterProps> = ({ hideLogo }) => {
@@ -49,7 +37,7 @@ const Footer: React.FC<FooterProps> = ({ hideLogo }) => {
       <div key={index} className="text-sm">
         <ul className="mt-5 space-y-4">
           {menu.menus.map((item, index) => (
-            <li key={index} >
+            <li key={index}>
               <a
                 key={index}
                 className="text-neutral-6000 dark:text-neutral-300 hover:text-black dark:hover:text-white"
@@ -73,10 +61,6 @@ const Footer: React.FC<FooterProps> = ({ hideLogo }) => {
           </div>
         </div>
         {widgetMenus.map(renderWidgetMenuItem)}
-        {/* <a href="#">Terms & Conditions</a>
-        <a href="#">Terms & Conditions</a>
-        <a href="#">Terms & Conditions</a>
-        <a href="#">Terms & Conditions</a> */}
       </div>
     </div>
   );

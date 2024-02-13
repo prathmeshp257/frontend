@@ -39,24 +39,15 @@ const loginSocials = [
 ];
 
 const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
-  // custom login function
   const navigate = useNavigate();
   const [isLoading, setisLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [error, setError] = useState("");
-
-  // const autoCompleteEmail = () => {
-  //   const autoCompleteValue = "testuser@gmail.com";
-  //   setEmail(autoCompleteValue);
-  // };
 
   const handleLogin = async (values: any) => {
     setisLoading(true);
     try {
       const response = await axios.post(`${API_URL}/users/login`, values);
-      // console.log(response);
-      // console.log(response.data.token);
 
       const text = response.data.message;
 
@@ -72,11 +63,10 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
       if (response.data.error === true) {
         toast.error(text);
       }
-      
     } catch (error) {
       console.error("Error during login:", error);
     }
-  
+
     setisLoading(false);
   };
 
@@ -130,9 +120,8 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
             <span className="relative z-10 inline-block px-4 font-medium text-sm bg-white dark:text-neutral-400 dark:bg-neutral-900">
               OR
             </span>
-            
           </div>
-          
+
           {/* FORM */}
           <form
             className="grid grid-cols-1 gap-6"

@@ -28,7 +28,6 @@ const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
   const [info, setInfo] = useState<any[]>([]);
   const [typevalues, setTypevalues] = useState<string[]>([]);
   const [rangePrices, setRangePrices] = useState({ min: 0, max: 0 });
-  // const [roomsofbeds, setRoomsofBeds] = useState({ beds: 0, bedrooms: 0, bathrooms: 0});
   const [beds, setBeds] = useState(0);
   const [bedrooms, setBedrooms] = useState(0);
   const [bathrooms, setBathrooms] = useState(0);
@@ -46,16 +45,21 @@ const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
         bathrooms:
           filter_type === "rooms" ? 0 : bathrooms > 0 ? bathrooms : undefined,
         amenities:
-          filter_type === "more_filters"? [] : amenitiesValues.length > 0 ? amenitiesValues: undefined,
+          filter_type === "more_filters"
+            ? []
+            : amenitiesValues.length > 0
+            ? amenitiesValues
+            : undefined,
         houseRulesValues:
-          filter_type === "more_filters"? []: houseRulesValues.length > 0 ? houseRulesValues: undefined,
+          filter_type === "more_filters"
+            ? []
+            : houseRulesValues.length > 0
+            ? houseRulesValues
+            : undefined,
       });
       if (response.data.error === false) {
-        // const info = response.data.propertydata;
-        console.log(response, "resssssssssss");
         setInfo(response.data.propertydata);
       }
-      // Set loading to false when data is successfully loaded
     } catch (err) {
       console.error("error while fetching properties data", err);
     }

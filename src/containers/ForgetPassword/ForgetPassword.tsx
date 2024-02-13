@@ -30,7 +30,6 @@ const ForgetLogin: FC<ForgetLoginProps> = ({ className = "" }) => {
       const response = await axios.post(`${API_URL}/users/verify`, {
         email: values.email,
       });
-      // console.log(response);
 
       const text = response.data.message;
 

@@ -174,12 +174,10 @@ const TabFilters: FC<filterCardProps> = ({
   const handleClearPricefilter = () => {
     setRangePrices({ min: 0, max: 0 });
 
-     getPropertyFunc("price");
-
+    getPropertyFunc("price");
   };
   const handleApplyPricefilter = () => {
     getPropertyFunc();
-
   };
   const handleClearRoomsfilter = () => {
     setBeds(0);
@@ -198,7 +196,6 @@ const TabFilters: FC<filterCardProps> = ({
   };
   const handleApplyMorefilter = () => {
     getPropertyFunc();
-
   };
   const renderXClear = (typez: String) => {
     return (
@@ -208,7 +205,7 @@ const TabFilters: FC<filterCardProps> = ({
           switch (typez) {
             case "more_filters":
               handleClearMorefilter();
-              
+
               break;
             case "room_filters":
               handleClearRoomsfilter();
@@ -414,10 +411,7 @@ const TabFilters: FC<filterCardProps> = ({
 
   const renderTabsPriceRage = (rangePrices: any, setRangePrices: any) => {
     const { min, max } = rangePrices;
-    // console.log(rangePrices, "sssssssssssss1531515s");
     const handleSliderChange = (value: [number, number]) => {
-      // Update min and max values in the state
-      //  console.log(value,'ssssssssssssss')
       setRangePrices({ min: value[0], max: value[1] });
     };
     return (

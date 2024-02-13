@@ -25,13 +25,8 @@ const StayDetailPageContainer: FC<{}> = () => {
   const [propertyData, setPropertyData] = useState<any>({});
   const queryParams = new URLSearchParams(window.location.search);
   const propIdParam = queryParams.get("propID");
-  // if (propIdParam) {
-  //  console.log(propIdParam, "propIdParam");
-  // }
-  //
-  //  const token = localStorage.getItem("token");
+
   const pathname = window.location.pathname;
-  //  const id = pathname.split("/").pop();
 
   const getOnePropertyDetails = async () => {
     const token = localStorage.getItem("token");
@@ -50,7 +45,6 @@ const StayDetailPageContainer: FC<{}> = () => {
   useEffect(() => {
     getOnePropertyDetails();
   }, []);
-  console.log(propertyData, "pppppppppp");
   const {
     _id,
     type,
@@ -89,100 +83,67 @@ const StayDetailPageContainer: FC<{}> = () => {
     cover_image,
     galleryImgs,
   } = propertyData;
-//photos
+  //photos
   const PHOTOS: string[] = [];
   if (cover_image) {
     PHOTOS.push(cover_image);
   }
-  if(galleryImgs){
+  if (galleryImgs) {
     PHOTOS.push(...galleryImgs);
   }
-  console.log(PHOTOS);
-//amenities
-  // { name: "Wifi", icon: "la-key" },
-  // { name: "Internet", icon: "la-luggage-cart" },
-  // { name: "TV", icon: "la-shower" },
-  // { name: "Air conditioning", icon: "la-smoking" },
-  // { name: "Fan", icon: "la-snowflake" },
-  // { name: "Private entrance", icon: "la-spa" },
-  // { name: "Heater", icon: "la-suitcase" },
-  // { name: "Washing machine", icon: "la-suitcase-rolling" },
-  // { name: "Detergent", icon: "la-swimmer" },
-  // { name: "Clothes dryer", icon: "la-swimming-pool" },
-  // { name: "Baby cot", icon: "la-tv" },
-  // { name: "Desk", icon: "la-umbrella-beach" },
-  // { name: "Fridge", icon: "la-utensils" },
-  // { name: "Dryer", icon: "la-wheelchair" },
-  // { name: "Wardrobe", icon: "la-wifi" },
-  // { name: "Cloth hook", icon: "la-baby-carriage" },
-  // { name: "Extra cushion", icon: "la-bath" },
-  // { name: "Gas stove", icon: "la-bed" },
-  // { name: "Toilet paper", icon: "la-briefcase" },
-  // { name: "Free toiletries", icon: "la-car" },
-  // { name: "Makeup table", icon: "la-cocktail" },
-  // { name: "Hot pot", icon: "la-coffee" },
-  // { name: "Bathroom heaters", icon: "la-concierge-bell" },
-  // { name: "Kettle", icon: "la-dice" },
-  // { name: "Dishwasher", icon: "la-dumbbell" },
-  // { name: "BBQ grill", icon: "la-hot-tub" },
-  // { name: "Toaster", icon: "la-infinity" },
-  // { name: "Towel", icon: "la-key" },
-  // { name: "Dining table", icon: "la-luggage-cart" },
-  // { name: "Fire siren", icon: "la-shower" },
-  // { name: "Fire extinguisher", icon: "la-smoking" },
-  // { name: "Anti-theft key", icon: "la-snowflake" },
-  // { name: "Safe vault", icon: "la-spa" },
-const Amenities_demos = [
-  { name: "Washing machine", icon: "la-utensils" },
-  { name: "Makeup table", icon: "la-hot-tub" },
-  { name: "Detergent", icon: "la-spa" },
-  { name: "Cloth hook", icon: "la-tshirt" },
-  { name: "Fridge", icon: "la-ice-cream" },
-  { name: "Free toiletries", icon: "la-bath" },
-  { name: "Wifi", icon: "la-wifi" },
-  { name: "Internet", icon: "la-globe" },
-  { name: "TV", icon: "la-tv" },
-  { name: "Air conditioning", icon: "la-thermometer-half" },
-  { name: "Fan", icon: "la-fan" },
-  { name: "Private entrance", icon: "la-door-closed" },
-  { name: "Heater", icon: "la-fire" },
-  { name: "Clothes dryer", icon: "la-tshirt" },
-  { name: "Baby cot", icon: "la-baby" },
-  { name: "Desk", icon: "la-desktop" },
-  { name: "Dryer", icon: "la-wind" },
-  { name: "Wardrobe", icon: "la-tshirt" },
-  { name: "Extra cushion", icon: "la-couch" },
-  { name: "Gas stove", icon: "la-fire-alt" },
-  { name: "Toilet paper", icon: "la-toilet-paper" },
-  { name: "Hot pot", icon: "la-coffee" },
-  { name: "Bathroom heaters", icon: "la-shower" },
-  { name: "Kettle", icon: "la-coffee" },
-  { name: "Dishwasher", icon: "la-dumpster" },
-  { name: "BBQ grill", icon: "la-fire" },
-  { name: "Toaster", icon: "la-bread-slice" },
-  { name: "Towel", icon: "la-bath" },
-  { name: "Dining table", icon: "la-chair" },
-  { name: "Fire siren", icon: "la-bell" },
-  { name: "Fire extinguisher", icon: "la-fire-extinguisher" },
-  { name: "Anti-theft key", icon: "la-key" },
-  { name: "Safe vault", icon: "la-lock" },
-];
 
+  const Amenities_demos = [
+    { name: "Washing machine", icon: "la-utensils" },
+    { name: "Makeup table", icon: "la-hot-tub" },
+    { name: "Detergent", icon: "la-spa" },
+    { name: "Cloth hook", icon: "la-tshirt" },
+    { name: "Fridge", icon: "la-ice-cream" },
+    { name: "Free toiletries", icon: "la-bath" },
+    { name: "Wifi", icon: "la-wifi" },
+    { name: "Internet", icon: "la-globe" },
+    { name: "TV", icon: "la-tv" },
+    { name: "Air conditioning", icon: "la-thermometer-half" },
+    { name: "Fan", icon: "la-fan" },
+    { name: "Private entrance", icon: "la-door-closed" },
+    { name: "Heater", icon: "la-fire" },
+    { name: "Clothes dryer", icon: "la-tshirt" },
+    { name: "Baby cot", icon: "la-baby" },
+    { name: "Desk", icon: "la-desktop" },
+    { name: "Dryer", icon: "la-wind" },
+    { name: "Wardrobe", icon: "la-tshirt" },
+    { name: "Extra cushion", icon: "la-couch" },
+    { name: "Gas stove", icon: "la-fire-alt" },
+    { name: "Toilet paper", icon: "la-toilet-paper" },
+    { name: "Hot pot", icon: "la-coffee" },
+    { name: "Bathroom heaters", icon: "la-shower" },
+    { name: "Kettle", icon: "la-coffee" },
+    { name: "Dishwasher", icon: "la-dumpster" },
+    { name: "BBQ grill", icon: "la-fire" },
+    { name: "Toaster", icon: "la-bread-slice" },
+    { name: "Towel", icon: "la-bath" },
+    { name: "Dining table", icon: "la-chair" },
+    { name: "Fire siren", icon: "la-bell" },
+    { name: "Fire extinguisher", icon: "la-fire-extinguisher" },
+    { name: "Anti-theft key", icon: "la-key" },
+    { name: "Safe vault", icon: "la-lock" },
+  ];
 
-interface Amenity {
-  name: string;
-  icon: string;
-}
-const newAmmenities: Amenity[] = [];
-{amenities &&
-  Amenities_demos.forEach((amenity) => {
-    if (amenities.includes(amenity.name)) {
-      newAmmenities.push({
-        name: amenity.name,
-        icon: amenity.icon,
+  interface Amenity {
+    name: string;
+    icon: string;
+  }
+  const newAmmenities: Amenity[] = [];
+  {
+    amenities &&
+      Amenities_demos.forEach((amenity) => {
+        if (amenities.includes(amenity.name)) {
+          newAmmenities.push({
+            name: amenity.name,
+            icon: amenity.icon,
+          });
+        }
       });
-    }
-  })}
+  }
 
   let [isOpenModalAmenities, setIsOpenModalAmenities] = useState(false);
 
@@ -200,10 +161,10 @@ const newAmmenities: Amenity[] = [];
   const handleOpenModalImageGallery = () => {
     router(`${thisPathname}/?modal=PHOTO_TOUR_SCROLLABLE`);
   };
-const address1 = `${city} ${state}, ${country} ${postal_code}`;
-const address = room_number
-  ? `${room_number}, ${street} ${city} ${state}, ${country} ${postal_code}`
-  : `${street} ${city} ${state}, ${country} ${postal_code}`;
+  const address1 = `${city} ${state}, ${country} ${postal_code}`;
+  const address = room_number
+    ? `${room_number}, ${street} ${city} ${state}, ${country} ${postal_code}`
+    : `${street} ${city} ${state}, ${country} ${postal_code}`;
   const renderSection1 = () => {
     return (
       <div className="listingSection__wrap !space-y-6">
@@ -281,24 +242,10 @@ const address = room_number
     return (
       <div className="listingSection__wrap">
         <h2 className="text-2xl font-semibold">Stay information</h2>
-        {/* <div className="text-neutral-6000 dark:text-neutral-300"> */}
-          <span className="text-neutral-6000 dark:text-neutral-300">
-            {place_descriptions}
-          </span>
-          {/* <br />
-          <br />
-          <span>
-            There is a private bathroom with bidet in all units, along with a
-            hairdryer and free toiletries.
-          </span>
-          <br /> <br />
-          <span>
-            The Symphony 9 Tam Coc offers a terrace. Both a bicycle rental
-            service and a car rental service are available at the accommodation,
-            while cycling can be enjoyed nearby.
-          </span> */}
-        </div>
-      // </div>
+        <span className="text-neutral-6000 dark:text-neutral-300">
+          {place_descriptions}
+        </span>
+      </div>
     );
   };
 
@@ -361,7 +308,6 @@ const address = room_number
               <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-40" />
             </Transition.Child>
 
-            {/* This element is to trick the browser into centering the modal contents. */}
             <span
               className="inline-block h-screen align-middle"
               aria-hidden="true"
@@ -420,9 +366,6 @@ const address = room_number
         {/* HEADING */}
         <div>
           <h2 className="text-2xl font-semibold">Room Rates </h2>
-          {/* <span className="block mt-2 text-neutral-500 dark:text-neutral-400">
-            Prices may increase on weekends or holidays
-          </span> */}
         </div>
         {/* CONTENT */}
         <div className="flow-root">
@@ -611,8 +554,8 @@ const address = room_number
   const renderSection7 = () => {
     const latitude = 19.3507866;
     const longitude = 72.8072246;
-//     Latitude: 19.4049° N
-// Longitude: 72.8614° E
+    //     Latitude: 19.4049° N
+    // Longitude: 72.8614° E
     return (
       <div className="listingSection__wrap">
         {/* HEADING */}
@@ -701,28 +644,6 @@ const address = room_number
       <div className="listingSectionSidebar__wrap shadow-xl">
         {/* PRICE */}
         {renderSection4()}
-        {/* FORM */}
-        {/* <form className="flex flex-col border border-neutral-200 dark:border-neutral-700 rounded-3xl ">
-          <StayDatesRangeInput className="flex-1 z-[11]" />
-          <div className="w-full border-b border-neutral-200 dark:border-neutral-700"></div>
-          <GuestsInput className="flex-1" />
-        </form> */}
-        {/* SUM */}
-        {/* <div className="flex flex-col space-y-4">
-          <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-            <span>$119 x 3 night</span>
-            <span>$357</span>
-          </div>
-          <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-            <span>Service charge</span>
-            <span>$0</span>
-          </div>
-          <div className="border-b border-neutral-200 dark:border-neutral-700"></div>
-          <div className="flex justify-between font-semibold">
-            <span>Total</span>
-            <span>$199</span>
-          </div>
-        </div> */}
         {/* SUBMIT */}
         <ButtonPrimary href={"/checkout"}>Show Phone no.</ButtonPrimary>
       </div>
@@ -807,7 +728,5 @@ const address = room_number
 };
 
 export default function ListingStayDetailPage() {
-  return (
-      <StayDetailPageContainer />
-  );
+  return <StayDetailPageContainer />;
 }

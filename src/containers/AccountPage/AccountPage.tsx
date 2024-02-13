@@ -24,7 +24,6 @@ export interface AccountPageProps {
 }
 
 const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
-
   const [name, setName] = useState("" as any);
   const [email, setEmail] = useState("" as any);
   const [dateOfBirth, setDateOfBirth] = useState("" as any);
@@ -36,38 +35,6 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
 
   const authContext = useContext(AuthContext);
   const dataAdmin = authContext.userData;
-
-  // const handleFileChange = async (
-  //   event: React.ChangeEvent<HTMLInputElement>
-  // ) => {
-  //   const file = event.target.files?.[0];
-
-  //   if (file) {
-  //     const base = await convertImageToBase64(file);
-  //     console.log(base);
-  //     setImage(base);
-  //   }
-  // };
-
-  // function convertImageToBase64(file: File): Promise<string> {
-  //   return new Promise((resolve, reject) => {
-  //     const reader = new FileReader();
-
-  //     reader.onload = () => {
-  //       if (reader.result) {
-  //         resolve(reader.result.toString());
-  //       } else {
-  //         reject(new Error("Failed to read the file."));
-  //       }
-  //     };
-
-  //     reader.onerror = (error) => {dataAdmin
-  //       reject(error);
-  //     };
-
-  //     reader.readAsDataURL(file);
-  //   });
-  // }
 
   const handleUpdate = async (values: any) => {
     setisLoading(true);
@@ -87,13 +54,10 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
           },
         }
       );
-      // console.log(response);
-      // console.log(response.data.token);
 
       const text = response.data.message;
 
       if (response.data.error === false) {
-        // window.location.reload();
         authContext.getAdminData();
         toast.success(text);
       }
@@ -107,7 +71,6 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
   };
 
   const validation: any = useFormik({
-    // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
 
     initialValues: {
@@ -134,11 +97,6 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
   // modal and crop code
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [shouldCrop, setShouldCrop] = useState(false);
-
-  // const handleCropButtonClick = () => {
-  //   setShouldCrop(true);
-  // };
-  // const [image, setImage] = useState<string | null>(null);
 
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
@@ -175,7 +133,6 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
     const cropper = cropperRef.current?.cropper;
     if (cropper) {
       const croppedBase64 = cropper.getCroppedCanvas().toDataURL();
-      // console.log(croppedBase64);
       setImage(croppedBase64);
       closeModal();
     }
@@ -321,7 +278,6 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
             </div>
 
             <div className="max-w-sm w-full md:w-1/2">
-              {/* Add other input fields here */}
               <Label>Phone number</Label>
               <Input
                 name="phoneNumber"
@@ -337,11 +293,13 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
                 </span>
               ) : null}
             </div>
-
-            {/* Add more rows as needed */}
           </div>
           <div className="pt-2">
-            <ButtonPrimary disabled={isLoading} type="submit" onClick={authContext.getAdminData}>
+            <ButtonPrimary
+              disabled={isLoading}
+              type="submit"
+              onClick={authContext.getAdminData}
+            >
               Update info
             </ButtonPrimary>
           </div>

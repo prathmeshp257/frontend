@@ -45,7 +45,7 @@ const NAV: NavItem[] = [
 const FooterNav = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   //
-   const excludedRoutes = ["/login", "/signup"];
+  const excludedRoutes = ["/login", "/signup"];
   const hasToken = !!localStorage.getItem("token");
 
   useEffect(() => {
@@ -137,7 +137,6 @@ const FooterNav = () => {
                 Login
               </ButtonPrimary>
             )}
-        {/* {} */}
       </div>
     </div>
   );

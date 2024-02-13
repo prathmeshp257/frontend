@@ -55,7 +55,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const onLogout = () => {
     setUserData(initialState.userData);
     localStorage.clear();
-    sessionStorage.clear(); 
+    sessionStorage.clear();
     window.location.href = "/login";
   };
   const getAdminData = async () => {
@@ -67,10 +67,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           token: token,
         },
       });
-      console.log(response);
       if (response.data.error === false) {
         const info = response.data.userdata;
-        console.log(info);
         setUserData({
           _id: info._id,
           name: info.name,
@@ -89,7 +87,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const pathnameArray = ["login", "signup"];
   useEffect(() => {
     const hasToken = !!localStorage.getItem("token");
-    console.log(hasToken, "okeeeennn");
     const currentPathname = window?.location?.pathname.substring(1);
 
     if (
@@ -99,25 +96,10 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     ) {
       onLogout();
     }
-     if (hasToken) {
-       getAdminData();
-     }
+    if (hasToken) {
+      getAdminData();
+    }
   }, []);
-  // useEffect(() => {
-  //   const hasToken = !!localStorage.getItem("token");
-  //   console.log(hasToken, "okeeeennn");
-  //   const currentPathname = window?.location?.pathname.substring(1);
-
-  //   // console.log(currentPathname);
-  //   //true && false
-  //   //true && true
-  //   if (!pathnameArray.includes(currentPathname) && !hasToken) {
-  //     onLogout();
-  //   }
-  //   if (!pathnameArray.includes(currentPathname) && hasToken) {
-  //     getAdminData();
-  //   }
-  // }, []);
 
   const reloadUserData = () => {};
 

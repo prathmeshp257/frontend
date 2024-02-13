@@ -51,15 +51,7 @@ const SectionGridFilterCard: FC<SectionGridFilterCardProps> = ({
 }) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const ItemsPerPage = 12;
-  // const containerRef = useRef<HTMLDivElement>(null);
-  // const scrollToTop = () => {
-  //   if (containerRef.current) {
-  //     containerRef.current.scrollIntoView({
-  //       behavior: "smooth",
-  //       block: "start",
-  //     });
-  //   }
-  // };
+
   const scrollToView = () => {
     const PropertyTop = document.getElementById("PropertyTop");
     PropertyTop?.scrollIntoView({
@@ -79,7 +71,6 @@ const SectionGridFilterCard: FC<SectionGridFilterCardProps> = ({
   const endIndex = Math.min(startIndex + ItemsPerPage, allPropertyData.length);
 
   const currentData = allPropertyData.slice(startIndex, endIndex);
-  console.log(currentData, "cruuuu")
   const nextPage = () => {
     setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
     scrollToView();
@@ -117,7 +108,6 @@ const SectionGridFilterCard: FC<SectionGridFilterCardProps> = ({
         )}
       </div>
       <div className="grid grid-cols-1 gap-6 md:gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        
         {currentData.map((property) => (
           <StayCard
             key={property._id}

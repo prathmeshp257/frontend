@@ -23,7 +23,6 @@ const Avatar: FC<AvatarProps> = ({
 }) => {
   const authContext = useContext(AuthContext);
   const dataAdmin = authContext.userData;
-  // console.log(dataAdmin, "hhhhh");
 
   const url = dataAdmin.image;
   const name = userName ? userName : "best";

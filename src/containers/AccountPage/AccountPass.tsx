@@ -44,7 +44,6 @@ const AccountPass = () => {
   };
 
   const validation: any = useFormik({
-    // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
 
     initialValues: {
@@ -112,7 +111,9 @@ const AccountPass = () => {
               ) : null}
             </div>
             <div className="pt-2 max-w-sm">
-              <ButtonPrimary disabled={isLoading} type="submit">Update password</ButtonPrimary>
+              <ButtonPrimary disabled={isLoading} type="submit">
+                Update password
+              </ButtonPrimary>
             </div>
           </div>
         </form>
