@@ -2,6 +2,8 @@ import React, { useState, useEffect, createContext, ReactNode } from "react";
 import axios from "axios";
 import { API_URL } from "../api/config";
 import { TailSpin } from "react-loader-spinner";
+import { toast } from "react-toastify";
+
 interface UserData {
   _id: string;
   name: string;
@@ -81,26 +83,32 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setLoading(false);
     } catch (err) {
       console.error("error while fetching userInfo", err);
+      toast.error(
+        <>
+          Last session expired!
+          <br />
+          Please login again
+        </>
+      );
+      onLogout();
       setLoading(false);
     }
   };
   const pathnameArray = ["login", "signup"];
   useEffect(() => {
     const hasToken = !!localStorage.getItem("token");
-    const currentPathname = window?.location?.pathname.substring(1);
-
-    if (
-      !pathnameArray.includes(currentPathname) &&
-      currentPathname !== "" &&
-      !hasToken
-    ) {
-      onLogout();
-    }
+    // const currentPathname = window?.location?.pathname.substring(1);
+    // if (
+    //   !pathnameArray.includes(currentPathname) &&
+    //   currentPathname !== "" &&
+    //   !hasToken
+    // ) {
+    //   onLogout();
+    // }
     if (hasToken) {
       getAdminData();
     }
   }, []);
-
   const reloadUserData = () => {};
 
   const value: AuthContextProps = {

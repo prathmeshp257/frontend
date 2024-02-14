@@ -2,7 +2,7 @@ import {
   HeartIcon,
   MagnifyingGlassIcon,
   UserCircleIcon,
-  ArrowsPointingOutIcon,
+  ArrowsPointingOutIcon,ArrowTopRightOnSquareIcon,
   HomeIcon,
 } from "@heroicons/react/24/outline";
 import React, { useEffect, useRef } from "react";
@@ -32,8 +32,9 @@ const NAV: NavItem[] = [
     icon: UserCircleIcon,
   },
   {
-    name: "Menu",
-    icon: UserCircleIcon,
+    name: "Logout",
+    link: "/",
+    icon: ArrowTopRightOnSquareIcon,
   },
   // {
   //   name: "Wishlists",
@@ -44,7 +45,6 @@ const NAV: NavItem[] = [
 
 const FooterNav = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  //
   const excludedRoutes = ["/login", "/signup"];
   const hasToken = !!localStorage.getItem("token");
 
@@ -143,3 +143,5 @@ const FooterNav = () => {
 };
 
 export default FooterNav;
+
+

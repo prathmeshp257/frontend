@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useContext } from "react";
 import { useState, useEffect } from "react";
 import facebookSvg from "images/Facebook.svg";
 import twitterSvg from "images/Twitter.svg";
@@ -15,6 +15,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ForgetLogin from "./ForgetPassword";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { AuthContext, AuthProvider } from "context/userContext";
 
 export interface SetOtpProps {
   className?: string;
@@ -24,6 +25,8 @@ const SetOtp: FC<SetOtpProps> = ({ className = "" }) => {
   const navigate = useNavigate();
   const [otp, setOtp] = useState("");
   const [isLoading, setisLoading] = useState(false);
+  const authContext = useContext(AuthContext);
+
 
   const queryParams = new URLSearchParams(window.location.search);
   const emailParam = queryParams.get("email");
@@ -47,7 +50,8 @@ const SetOtp: FC<SetOtpProps> = ({ className = "" }) => {
         toast.success(text);
         setTimeout(() => {
           navigate("/");
-          window.location.reload();
+                    authContext.getAdminData();
+
         }, 1000);
       }
       if (response.data.error === true) {

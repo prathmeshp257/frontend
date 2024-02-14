@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useContext } from "react";
 import { useState, useEffect } from "react";
 import facebookSvg from "images/Facebook.svg";
 import twitterSvg from "images/Twitter.svg";
@@ -17,6 +17,8 @@ import { isEmpty } from "lodash";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { AuthContext, AuthProvider } from "context/userContext";
+
 export interface PageLoginProps {
   className?: string;
 }
@@ -43,8 +45,10 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
   const [isLoading, setisLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const authContext = useContext(AuthContext);
 
   const handleLogin = async (values: any) => {
+
     setisLoading(true);
     try {
       const response = await axios.post(`${API_URL}/users/login`, values);
@@ -57,7 +61,7 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
         toast.success(text);
         setTimeout(() => {
           navigate("/");
-          window.location.reload();
+          authContext.getAdminData();
         }, 1000);
       }
       if (response.data.error === true) {

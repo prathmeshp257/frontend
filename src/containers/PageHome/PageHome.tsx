@@ -75,7 +75,7 @@ const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
       data-nc-id="ListingStayPage"
     >
       <Helmet>
-        <title>Chisfis || Booking React Template</title>
+        <title>easystays || Booking React Template</title>
       </Helmet>
       <BgGlassmorphism />
 
