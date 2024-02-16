@@ -6,14 +6,12 @@ import { Helmet } from "react-helmet";
 import Input from "shared/Input/Input";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 import { Link } from "react-router-dom";
-
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../../api/config";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { error } from "console";
 
 export interface PageSignUpProps {
   className?: string;
@@ -64,6 +62,7 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
         toast.error(text);
       }
     } catch (error) {
+      toast.error("Error during login");
       console.error("Error during login:", error);
     }
     setisLoading(false);

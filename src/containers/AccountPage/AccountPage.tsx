@@ -1,20 +1,16 @@
 import Label from "components/Label/Label";
-import React, { useRef, FC, useState, useEffect, useContext } from "react";
+import React, { useRef, FC, useState, useContext } from "react";
 import axios from "axios";
 import { API_URL } from "../../api/config";
-import { useNavigate } from "react-router-dom";
 import Avatar from "shared/Avatar/Avatar";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 import Input from "shared/Input/Input";
-import Select from "shared/Select/Select";
-import Textarea from "shared/Textarea/Textarea";
 import CommonLayout from "./CommonLayout";
 import { Helmet } from "react-helmet";
-import { response } from "express";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { AuthContext, AuthProvider } from "context/userContext";
+import { AuthContext } from "context/userContext";
 import { Cropper, ReactCropperElement } from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import Modal from "react-modal";
@@ -65,6 +61,7 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
         toast.error(text);
       }
     } catch (error) {
+      toast.error("Error during login");
       console.error("Error during login:", error);
     }
     setisLoading(false);

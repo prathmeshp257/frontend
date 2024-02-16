@@ -1,9 +1,6 @@
-import BackgroundSection from "components/BackgroundSection/BackgroundSection";
 import BgGlassmorphism from "components/BgGlassmorphism/BgGlassmorphism";
-import SectionGridAuthorBox from "components/SectionGridAuthorBox/SectionGridAuthorBox";
 import SectionHeroArchivePage from "components/SectionHeroArchivePage/SectionHeroArchivePage";
-import SectionSliderNewCategories from "components/SectionSliderNewCategories/SectionSliderNewCategories";
-import SectionSubscribe2 from "components/SectionSubscribe2/SectionSubscribe2";
+
 import SectionGridFilterCard from "./SectionGridFilterCard";
 import { Helmet } from "react-helmet";
 import HeroSearchForm, {
@@ -13,11 +10,11 @@ import React, {
   useState,
   FC,
   useEffect,
-  createContext,
-  ReactNode,
 } from "react";
 import axios from "axios";
 import { API_URL } from "../../api/config";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export interface ListingStayPageProps {
   className?: string;
@@ -61,7 +58,8 @@ const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
         setInfo(response.data.propertydata);
       }
     } catch (err) {
-      console.error("error while fetching properties data", err);
+      toast.error("Error while fetching properties data");
+      console.error("Error while fetching properties data", err);
     }
   };
 

@@ -1,12 +1,8 @@
 import React, { FC } from "react";
 import { useState, useEffect } from "react";
-import facebookSvg from "images/Facebook.svg";
-import twitterSvg from "images/Twitter.svg";
-import googleSvg from "images/Google.svg";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../../api/config";
-
 import { Helmet } from "react-helmet";
 import Input from "shared/Input/Input";
 import { Link } from "react-router-dom";
@@ -41,6 +37,7 @@ const ForgetLogin: FC<ForgetLoginProps> = ({ className = "" }) => {
         toast.error(text);
       }
     } catch (error) {
+      toast.error("Error during login");
       console.error("Error during login:", error);
     }
     setisLoading(false);
@@ -96,7 +93,9 @@ const ForgetLogin: FC<ForgetLoginProps> = ({ className = "" }) => {
                 </span>
               ) : null}
             </label>
-            <ButtonPrimary disabled={isLoading} type="submit">Send OTP</ButtonPrimary>
+            <ButtonPrimary disabled={isLoading} type="submit">
+              Send OTP
+            </ButtonPrimary>
 
             <Link
               to="/login"

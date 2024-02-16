@@ -1,23 +1,20 @@
 import React, { FC, useContext } from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import facebookSvg from "images/Facebook.svg";
 import twitterSvg from "images/Twitter.svg";
 import googleSvg from "images/Google.svg";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../../api/config";
-
 import { Helmet } from "react-helmet";
 import Input from "shared/Input/Input";
 import { Link } from "react-router-dom";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 import "react-toastify/dist/ReactToastify.css";
-import Logo from "../../shared/Logo/Logo";
-import { isEmpty } from "lodash";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { AuthContext, AuthProvider } from "context/userContext";
+import { AuthContext } from "context/userContext";
 
 export interface PageLoginProps {
   className?: string;
@@ -48,7 +45,6 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
   const authContext = useContext(AuthContext);
 
   const handleLogin = async (values: any) => {
-
     setisLoading(true);
     try {
       const response = await axios.post(`${API_URL}/users/login`, values);
@@ -68,6 +64,7 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
         toast.error(text);
       }
     } catch (error) {
+      toast.error("Error during login");
       console.error("Error during login:", error);
     }
 

@@ -5,10 +5,7 @@ import StartRating from "components/StartRating/StartRating";
 import Avatar from "shared/Avatar/Avatar";
 import Badge from "shared/Badge/Badge";
 import LikeSaveBtns from "components/LikeSaveBtns";
-import SectionDateRange from "../SectionDateRange";
-import StayDatesRangeInput from "./StayDatesRangeInput";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Amenities_demos } from "./constant";
 import { Dialog, Transition } from "@headlessui/react";
 import { ArrowRightIcon, Squares2X2Icon } from "@heroicons/react/24/outline";
 import ButtonSecondary from "shared/Button/ButtonSecondary";
@@ -16,8 +13,8 @@ import ButtonClose from "shared/ButtonClose/ButtonClose";
 import ButtonCircle from "shared/Button/ButtonCircle";
 import Input from "shared/Input/Input";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
-import DetailPagetLayout from "../Layout";
-import GuestsInput from "./GuestsInput";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { API_URL } from "../../../api/config";
 import axios from "axios";
 
@@ -38,6 +35,7 @@ const StayDetailPageContainer: FC<{}> = () => {
         setPropertyData(response.data.propertyDetails);
       }
     } catch (err) {
+      toast.error("Error while fetching properties data");
       console.error("error while fetching properties data", err);
     }
   };

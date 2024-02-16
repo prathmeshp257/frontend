@@ -1,5 +1,5 @@
 import Label from "components/Label/Label";
-import React, { FC, useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import { API_URL } from "../../api/config";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
@@ -8,7 +8,7 @@ import CommonLayout from "./CommonLayout";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { AuthContext, AuthProvider } from "context/userContext";
+import { AuthContext} from "context/userContext";
 
 const AccountPass = () => {
   const [userInfo, setuserInfo] = useState({} as any);
@@ -38,6 +38,7 @@ const AccountPass = () => {
         toast.error(text);
       }
     } catch (error) {
+      toast.error("Error during login");
       console.error("Error during login:", error);
     }
     setisLoading(false);

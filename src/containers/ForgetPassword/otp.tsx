@@ -1,8 +1,5 @@
 import React, { FC, useContext } from "react";
-import { useState, useEffect } from "react";
-import facebookSvg from "images/Facebook.svg";
-import twitterSvg from "images/Twitter.svg";
-import googleSvg from "images/Google.svg";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../../api/config";
@@ -12,10 +9,9 @@ import { Link } from "react-router-dom";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ForgetLogin from "./ForgetPassword";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { AuthContext, AuthProvider } from "context/userContext";
+import { AuthContext } from "context/userContext";
 
 export interface SetOtpProps {
   className?: string;
@@ -26,7 +22,6 @@ const SetOtp: FC<SetOtpProps> = ({ className = "" }) => {
   const [otp, setOtp] = useState("");
   const [isLoading, setisLoading] = useState(false);
   const authContext = useContext(AuthContext);
-
 
   const queryParams = new URLSearchParams(window.location.search);
   const emailParam = queryParams.get("email");
@@ -50,14 +45,14 @@ const SetOtp: FC<SetOtpProps> = ({ className = "" }) => {
         toast.success(text);
         setTimeout(() => {
           navigate("/");
-                    authContext.getAdminData();
-
+          authContext.getAdminData();
         }, 1000);
       }
       if (response.data.error === true) {
         toast.error(text);
       }
     } catch (error) {
+      toast.error("Error during login");
       console.error("Error during login:", error);
     }
     setisLoading(false);
@@ -81,6 +76,7 @@ const SetOtp: FC<SetOtpProps> = ({ className = "" }) => {
         toast.error(text);
       }
     } catch (error) {
+      toast.error("Error during login");
       console.error("Error during login:", error);
     }
   };

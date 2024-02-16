@@ -2,20 +2,23 @@ import {
   HeartIcon,
   MagnifyingGlassIcon,
   UserCircleIcon,
-  ArrowsPointingOutIcon,ArrowTopRightOnSquareIcon,
+  ArrowsPointingOutIcon,
+  ArrowTopRightOnSquareIcon,
   HomeIcon,
 } from "@heroicons/react/24/outline";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useContext, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { PathName } from "routers/types";
 import MenuBar from "shared/MenuBar/MenuBar";
 import isInViewport from "utils/isInViewport";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
+import { AuthContext } from "../context/userContext";
 
 let WIN_PREV_POSITION = window.pageYOffset;
 
 interface NavItem {
   name: string;
+  active_id: string;
   link?: PathName;
   icon: any;
 }
@@ -23,16 +26,19 @@ interface NavItem {
 const NAV: NavItem[] = [
   {
     name: "Explore",
+    active_id: "/home",
     link: "/",
     icon: MagnifyingGlassIcon,
   },
   {
     name: "Profile",
+    active_id: "/account",
     link: "/account",
     icon: UserCircleIcon,
   },
   {
     name: "Logout",
+    active_id: "logout",
     link: "/",
     icon: ArrowTopRightOnSquareIcon,
   },
@@ -47,6 +53,11 @@ const FooterNav = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const excludedRoutes = ["/login", "/signup"];
   const hasToken = !!localStorage.getItem("token");
+  const authContext = useContext(AuthContext);
+  const handleLogoutClick = () => {
+    authContext.onLogout();
+  };
+  const [active, setActive] = useState<string>("/home");
 
   useEffect(() => {
     window.addEventListener("scroll", handleEvent);
@@ -82,7 +93,12 @@ const FooterNav = () => {
 
     WIN_PREV_POSITION = currentScrollPos;
   };
-
+  const handleClick = (activeId: string) => {
+    setActive(activeId);
+    if (activeId === "logout") {
+      handleLogoutClick();
+    }
+  };
   return (
     <div
       ref={containerRef}
@@ -93,18 +109,20 @@ const FooterNav = () => {
         {/* MENU */}
         {hasToken
           ? NAV.map((item, index) => {
-              const active = window.location.pathname === item.link;
-              if (item.link && !excludedRoutes.includes(item.link)) {
+              // const active = window.location.pathname === item.name;
+              const isActive = active === item.active_id;
+              if (item.link && !excludedRoutes.includes(item.name)) {
                 return (
                   <Link
                     key={index}
-                    to={item.link}
+                    to={item.link || ""}
+                    onClick={() => handleClick(item.active_id)}
                     className={`flex flex-col items-center justify-between text-neutral-500 dark:text-neutral-300/90 ${
-                      active ? "text-neutral-900 dark:text-neutral-100" : ""
+                      isActive ? "text-red-500" : ""
                     }`}
                   >
                     <item.icon
-                      className={`w-6 h-6 ${active ? "text-red-600" : ""}`}
+                      className={`w-6 h-6 ${isActive ? "text-red-500" : ""}`}
                     />
                     <span className="text-[11px] leading-none mt-1">
                       {item.name}
@@ -143,5 +161,3 @@ const FooterNav = () => {
 };
 
 export default FooterNav;
-
-
