@@ -114,7 +114,7 @@ const SectionGridFilterCard: FC<SectionGridFilterCardProps> = ({
             currentProperty={property}
             data={property}
             className="shadow-2xl"
-            size={""}
+            size={"default"}
           />
         ))}
       </div>

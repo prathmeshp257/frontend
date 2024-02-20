@@ -21,10 +21,10 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
   return (
     <div className={`nc-MainNav1 nc-MainNav2 relative z-10 ${className}`}>
       <div className="px-4 lg:container py-4 lg:py-5 relative flex justify-between items-center">
-        <div className="hidden md:flex justify-start flex-1 items-center space-x-3 sm:space-x-8 lg:space-x-10">
-          <Logo />
-          <div className="hidden lg:block h-10 border-l border-neutral-300 dark:border-neutral-500"></div>
-          <div className="hidden lg:block">
+        <Logo />
+        <div className="hidden md:flex justify-center flex-1 items-center space-x-3 sm:space-x-8 lg:space-x-10">
+          {/* <div className="hidden lg:block h-10 border-l border-neutral-300 dark:border-neutral-500"></div> */}
+          <div style={{ width: "50%" }} className="hidden lg:block">
             <DropdownTravelers />
           </div>
         </div>

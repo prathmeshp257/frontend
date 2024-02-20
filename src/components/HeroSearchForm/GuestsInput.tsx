@@ -83,7 +83,6 @@ const GuestsInput: FC<GuestsInputProps> = ({
               )}
             </Popover.Button>
 
-            {/* BUTTON SUBMIT OF FORM */}
             {hasButtonSubmit && (
               <div className="pr-2 xl:pr-4">
                 <ButtonSubmit href={buttonSubmitHref} />

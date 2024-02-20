@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import GallerySlider from "components/GallerySlider/GallerySlider";
 import { StayDataCard, StayDataType } from "data/types";
 import StartRating from "components/StartRating/StartRating";
@@ -60,9 +60,38 @@ const StayCard: FC<StayCardProps> = ({
     cover_image,
     galleryImgs,
   } = data;
-    const address = room_number
-      ? `${room_number}, ${street} ${city} ${state}, ${country} ${postal_code}`
-      : `${street} ${city} ${state}, ${country} ${postal_code}`;
+  const address = room_number
+    ? `${room_number}, ${street} ${city} ${state}, ${country} ${postal_code}`
+    : `${street} ${city} ${state}, ${country} ${postal_code}`;
+  const reviewStart = 4.8;
+  const reviewCount = 28;
+  const like= true;
+const getPriceForToday = () => {
+  const daysOfWeek = [
+    sunday,
+    monday,
+    tuesday,
+    wednesday,
+    thursday,
+    friday,
+    saturday,
+  ];
+  const today = new Date().getDay();
+  const price = today ? daysOfWeek[today] : "$$$";
+
+  // Format the price to Indian rupee format
+  if (price) {
+    const formattedPrice = Number(price).toLocaleString("en-IN", {
+      style: "currency",
+      currency: "INR",
+      minimumFractionDigits: 0,
+    });
+    return formattedPrice;
+  } else {
+    return "$$$";
+  }
+};
+
   const renderSliderGallery = () => {
     const combinedArray = [cover_image || "", ...(galleryImgs || [])];
 
@@ -74,7 +103,7 @@ const StayCard: FC<StayCardProps> = ({
           galleryImgs={combinedArray}
           href={`/detail?propID=${_id}`}
         />
-        <BtnLikeIcon isLiked={pet} className="absolute right-3 top-3 z-[1]" />
+        <BtnLikeIcon isLiked={like} className="absolute right-3 top-3 z-[1]" />
       </div>
     );
   };
@@ -100,7 +129,7 @@ const StayCard: FC<StayCardProps> = ({
             {size === "default" && (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
+                className="h-5 w-5 flex-shrink-0"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -119,13 +148,13 @@ const StayCard: FC<StayCardProps> = ({
                 />
               </svg>
             )}
-            <span className="">{address}</span>
+            <span className="line-clamp-1">{address}</span>
           </div>
         </div>
         <div className="w-14 border-b border-neutral-100 dark:border-neutral-800"></div>
         <div className="flex justify-between items-center">
           <span className="text-base font-semibold">
-            ₹{monday}
+            {getPriceForToday()}
             {` `}
             {size === "default" && (
               <span className="text-sm text-neutral-500 dark:text-neutral-400 font-normal">
@@ -133,9 +162,9 @@ const StayCard: FC<StayCardProps> = ({
               </span>
             )}
           </span>
-          {/* {!!reviewStart && (
+          {!!reviewStart && (
             <StartRating reviewCount={reviewCount} point={reviewStart} />
-          )} */}
+          )}
         </div>
       </div>
     );
@@ -145,7 +174,6 @@ const StayCard: FC<StayCardProps> = ({
     <div
       className={`nc-StayCard group relative bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800 rounded-2xl overflow-hidden will-change-transform hover:shadow-xl transition-shadow ${className}`}
       data-nc-id="StayCard"
-     
     >
       {renderSliderGallery()}
       <Link to={cover_image}>{renderContent()}</Link>
