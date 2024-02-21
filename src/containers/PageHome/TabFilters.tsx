@@ -484,7 +484,7 @@ const handleClearMoreFilterMobile = () =>{
                         <div className="mt-1 relative rounded-md">
                           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <span className="text-neutral-500 sm:text-sm">
-                              $
+                              ₹
                             </span>
                           </div>
                           <input
@@ -507,7 +507,7 @@ const handleClearMoreFilterMobile = () =>{
                         <div className="mt-1 relative rounded-md">
                           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <span className="text-neutral-500 sm:text-sm">
-                              $
+                              ₹
                             </span>
                           </div>
                           <input
@@ -521,8 +521,8 @@ const handleClearMoreFilterMobile = () =>{
                         </div>
                       </div>
                     </div>
-                  </div> 
-                 {/* copy */}
+                  </div>
+                  {/* copy */}
                   <div className="p-5 bg-neutral-50 dark:bg-neutral-900 dark:border-t dark:border-neutral-800 flex items-center justify-between">
                     <ButtonThird
                       // onClick={close}
@@ -843,7 +843,7 @@ const handleClearMoreFilterMobile = () =>{
                               <div className="mt-1 relative rounded-md">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                   <span className="text-neutral-500 sm:text-sm">
-                                    $
+                                    ₹
                                   </span>
                                 </div>
                                 <input
@@ -866,7 +866,7 @@ const handleClearMoreFilterMobile = () =>{
                               <div className="mt-1 relative rounded-md">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                   <span className="text-neutral-500 sm:text-sm">
-                                    $
+                                    ₹
                                   </span>
                                 </div>
                                 <input

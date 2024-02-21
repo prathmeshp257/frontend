@@ -83,6 +83,27 @@ const StayDetailPageContainer: FC<{}> = () => {
     galleryImgs,
   } = propertyData;
   //photos
+  const arrayOfPrice = [
+    monday,
+    tuesday,
+    wednesday,
+    thursday,
+    friday,
+    saturday,
+    sunday,
+  ];
+  const getDayOfWeek = (index: number): string => {
+    const daysOfWeek = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ];
+    return daysOfWeek[index];
+  };
   const PHOTOS: string[] = [];
   if (cover_image) {
     PHOTOS.push(cover_image);
@@ -192,11 +213,17 @@ const StayDetailPageContainer: FC<{}> = () => {
 
         {/* 4 */}
         <div className="flex items-center">
-          <Avatar hasChecked sizeClass="h-10 w-10" radius="rounded-full" />
+          <Avatar
+            hasChecked
+            sizeClass="h-10 w-10"
+            radius="rounded-full"
+            userName={propertyData?.ownerID?.name || ""}
+            imgUrl={propertyData?.ownerID?.image || ""}
+          />
           <span className="ml-2.5 text-neutral-500 dark:text-neutral-400">
             Hosted by{" "}
             <span className="text-neutral-900 dark:text-neutral-200 font-medium">
-              Kevin Francis
+              {propertyData?.ownerID?.name || "Not found"}
             </span>
           </span>
         </div>
@@ -275,7 +302,7 @@ const StayDetailPageContainer: FC<{}> = () => {
         {newAmmenities.length > 5 ? (
           <div>
             <ButtonSecondary onClick={openModalAmenities}>
-              View all {newAmmenities.length} amenities
+              Show all {newAmmenities.length} amenities
             </ButtonSecondary>
           </div>
         ) : (
@@ -369,34 +396,24 @@ const StayDetailPageContainer: FC<{}> = () => {
         {/* CONTENT */}
         <div className="flow-root">
           <div className="text-sm sm:text-base text-neutral-6000 dark:text-neutral-300 -mb-4">
-            <div className="p-4 bg-neutral-100 dark:bg-neutral-800 flex justify-between items-center space-x-4 rounded-lg">
-              <span>Monday</span>
-              <span>₹{monday}</span>
-            </div>
-            <div className="p-4  flex justify-between items-center space-x-4 rounded-lg">
-              <span>Tuesday</span>
-              <span>₹{tuesday}</span>
-            </div>
-            <div className="p-4 bg-neutral-100 dark:bg-neutral-800 flex justify-between items-center space-x-4 rounded-lg">
-              <span>Wednesday</span>
-              <span>₹{wednesday}</span>
-            </div>
-            <div className="p-4 bg-neutral-100 dark:bg-neutral-800 flex justify-between items-center space-x-4 rounded-lg">
-              <span>Thursday</span>
-              <span>₹{thursday}</span>
-            </div>
-            <div className="p-4 bg-neutral-100 dark:bg-neutral-800 flex justify-between items-center space-x-4 rounded-lg">
-              <span>Friday</span>
-              <span>₹{friday}</span>
-            </div>
-            <div className="p-4 bg-neutral-100 dark:bg-neutral-800 flex justify-between items-center space-x-4 rounded-lg">
-              <span>Saturday</span>
-              <span>₹{saturday}</span>
-            </div>
-            <div className="p-4 bg-neutral-100 dark:bg-neutral-800 flex justify-between items-center space-x-4 rounded-lg">
-              <span>Sunday</span>
-              <span>₹{sunday}</span>
-            </div>
+            {arrayOfPrice.map((price, index) => (
+              <div
+                key={index}
+                className={`p-4 ${
+                  index % 2 === 0 ? "bg-neutral-100 dark:bg-neutral-800" : ""
+                } flex justify-between items-center space-x-4 rounded-lg`}
+              >
+                <span>{getDayOfWeek(index)}</span>
+                <span>
+                  {Number(price).toLocaleString("en-IN", {
+                    style: "currency",
+                    currency: "INR",
+                    minimumFractionDigits: 0,
+                  })}
+                </span>
+              </div>
+            ))}
+
             <div className="p-4 bg-neutral-100 dark:bg-neutral-800 flex justify-between items-center space-x-4 rounded-lg">
               <span>Minimum number of nights</span>
               <span>{night_min} night</span>
@@ -425,10 +442,12 @@ const StayDetailPageContainer: FC<{}> = () => {
             hasCheckedClass="w-4 h-4 -top-0.5 right-0.5"
             sizeClass="h-14 w-14"
             radius="rounded-full"
+            userName={propertyData?.ownerID?.name || ""}
+            imgUrl={propertyData?.ownerID?.image || ""}
           />
           <div>
             <a className="block text-xl font-medium" href="##">
-              Kevin Francis
+              {propertyData?.ownerID?.name || "Not found"}
             </a>
             <div className="mt-1.5 flex items-center text-sm text-neutral-500 dark:text-neutral-400">
               <StartRating />
