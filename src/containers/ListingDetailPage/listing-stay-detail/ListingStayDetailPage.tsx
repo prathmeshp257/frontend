@@ -18,9 +18,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { API_URL } from "../../../api/config";
 import axios from "axios";
 import DetailPagetLayout from "../Layout";
+import moment from "moment";
 
 const StayDetailPageContainer: FC<{}> = () => {
   const [propertyData, setPropertyData] = useState<any>({});
+  const [ownerJoinDate, setOwnerJoinDate] = useState<String>("");
   const queryParams = new URLSearchParams(window.location.search);
   const propIdParam = queryParams.get("propID");
 
@@ -104,6 +106,7 @@ const StayDetailPageContainer: FC<{}> = () => {
     ];
     return daysOfWeek[index];
   };
+  const today = new Date().getDay();
   const PHOTOS: string[] = [];
   if (cover_image) {
     PHOTOS.push(cover_image);
@@ -181,7 +184,7 @@ const StayDetailPageContainer: FC<{}> = () => {
   const handleOpenModalImageGallery = () => {
     router(`${thisPathname}/?modal=PHOTO_TOUR_SCROLLABLE`);
   };
-  const address1 = `${city} ${state}, ${country} ${postal_code}`;
+  const address1 = `${street}, ${city} ${state}, ${country} ${postal_code}`;
   const address = room_number
     ? `${room_number}, ${street} ${city} ${state}, ${country} ${postal_code}`
     : `${street} ${city} ${state}, ${country} ${postal_code}`;
@@ -400,7 +403,9 @@ const StayDetailPageContainer: FC<{}> = () => {
               <div
                 key={index}
                 className={`p-4 ${
-                  index % 2 === 0 ? "bg-neutral-100 dark:bg-neutral-800" : ""
+                  index === today - 1
+                    ? "bg-neutral-100 dark:bg-neutral-800"
+                    : ""
                 } flex justify-between items-center space-x-4 rounded-lg`}
               >
                 <span>{getDayOfWeek(index)}</span>
@@ -414,13 +419,13 @@ const StayDetailPageContainer: FC<{}> = () => {
               </div>
             ))}
 
-            <div className="p-4 bg-neutral-100 dark:bg-neutral-800 flex justify-between items-center space-x-4 rounded-lg">
+            <div className="p-4 flex justify-between items-center space-x-4 rounded-lg">
               <span>Minimum number of nights</span>
-              <span>{night_min} night</span>
+              <span>{night_min}</span>
             </div>
             <div className="p-4 flex justify-between items-center space-x-4 rounded-lg">
               <span>Max number of nights</span>
-              <span>{night_max} nights</span>
+              <span>{night_max}</span>
             </div>
           </div>
         </div>
@@ -481,7 +486,10 @@ const StayDetailPageContainer: FC<{}> = () => {
                 d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
               />
             </svg>
-            <span>Joined in March 2016</span>
+            <span>
+              Joined in{" "}
+              {moment(propertyData?.ownerID?.updatedAt).format("MMMM YYYY")}
+            </span>
           </div>
           <div className="flex items-center space-x-3">
             <svg

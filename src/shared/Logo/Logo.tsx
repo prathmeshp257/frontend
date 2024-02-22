@@ -19,7 +19,7 @@ const Logo: React.FC<LogoProps> = ({
   return (
     <Link
       to="/"
-      className={`ttnc-logo inline-block text-primary-6000 focus:outline-none focus:ring-0 ${className}`}
+      className={`hidden lg:block ttnc-logo inline-block text-primary-6000 focus:outline-none focus:ring-0 ${className}`}
     >
       <LogoSvgLight />
       <LogoSvg />

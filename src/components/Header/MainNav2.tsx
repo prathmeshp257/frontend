@@ -22,30 +22,30 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
     <div className={`nc-MainNav1 nc-MainNav2 relative z-10 ${className}`}>
       <div className="px-4 lg:container py-4 lg:py-4 relative flex justify-between items-center">
         <Logo />
-        <div className="hidden md:flex justify-center flex-1 items-center space-x-3 sm:space-x-8 lg:space-x-10">
-          <div className="hidden lg:block">
-            <DropdownTravelers />
+        <div className="hidden md:flex justify-between flex-1 items-center space-x-3 sm:space-x-8 lg:space-x-10 px-4">
+          <div className="hidden lg:flex justify-center items-center flex-1 ml-44 gap-4">
+            {/* <DropdownTravelers /> */}
+            <Link to={"/"}>
+              <div
+                className={` inline-flex items-center text-opacity-90 group py-2 rounded-md text-sm sm:text-base font-medium hover:text-opacity-10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-25`}
+                role="button"
+              >
+                <span>Home</span>
+              </div>
+            </Link>
+          </div>
+          <div className="flex items-start hover:pointer cursor-pointer">
+            <h4 className="text-sm ml-4">EZstays Your Home</h4>
           </div>
         </div>
 
         <div className="lg:hidden flex-[3] max-w-lg !mx-auto md:px-3">
           <HeroSearchForm2MobileFactory />
         </div>
-        <h4 className="text-sm mr-4">EZstays Your Home</h4>
+
         <div className="hidden md:flex flex-shrink-0 items-center justify-end flex-1 lg:flex-none text-neutral-700 dark:text-neutral-100">
           <div className="hidden items-center lg:flex space-x-1">
-            {hasToken ? (
-              <AvatarDropdown />
-            ) : (
-              // <ButtonPrimary
-              //   sizeClass="px-2 py-1 sm:px-2 sm:py-1"
-              //   fontSize="text-xs sm:text-sm font-medium"
-              //   href="/login"
-              // >
-              //   Login
-              // </ButtonPrimary>
-              <AirbnbYourHome />
-            )}
+            {hasToken ? <AvatarDropdown /> : <AirbnbYourHome />}
           </div>
         </div>
       </div>

@@ -1,4 +1,8 @@
-import { MapPinIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import {
+  ClockIcon,
+  MapPinIcon,
+  MagnifyingGlassIcon,
+} from "@heroicons/react/24/outline";
 import React, { useState, useEffect, useRef, FC } from "react";
 
 interface Props {
@@ -16,6 +20,7 @@ const LocationInput: FC<Props> = ({
   headingText = "Where to?",
 }) => {
   const [value, setValue] = useState("");
+  const [renderRecentSearch, setRenderRecentSearch] = useState(false);
   const containerRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -60,6 +65,36 @@ const LocationInput: FC<Props> = ({
       </>
     );
   };
+  const renderRecentSearches = () => {
+    return (
+      <>
+        <h3 className="block mt-2 sm:mt-0 px-4 sm:px-8 font-semibold text-base text-neutral-800 dark:text-neutral-100">
+          Recent searches
+        </h3>
+        <div className="mt-2">
+          {[
+            "Hamptons, Suffolk County, NY",
+            "Las Vegas, NV, United States",
+            // "Ueno, Taito, Tokyo",
+            // "Ikebukuro, Toshima, Tokyo",
+          ].map((item) => (
+            <span
+              onClick={() => handleSelectLocation(item)}
+              key={item}
+              className="flex px-4 sm:px-6 items-center space-x-3 py-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 cursor-pointer"
+            >
+              <span className="block text-neutral-400">
+                <ClockIcon className="h-4 w-4 sm:h-6 sm:w-6" />
+              </span>
+              <span className=" block text-neutral-700 dark:text-neutral-200">
+                {item}
+              </span>
+            </span>
+          ))}
+        </div>
+      </>
+    );
+  };
 
   return (
     <div className={`${className}`} ref={containerRef}>
@@ -72,6 +107,7 @@ const LocationInput: FC<Props> = ({
             className={`block w-full bg-transparent border px-4 py-3 pr-12 border-neutral-900 dark:border-neutral-200 rounded-xl focus:ring-0 focus:outline-none text-base leading-none placeholder-neutral-500 dark:placeholder-neutral-300 truncate font-bold placeholder:truncate`}
             placeholder={"Search destinations"}
             value={value}
+            onFocus={() => setRenderRecentSearch(true)}
             onChange={(e) => setValue(e.currentTarget.value)}
             ref={inputRef}
           />
@@ -79,29 +115,7 @@ const LocationInput: FC<Props> = ({
             <MagnifyingGlassIcon className="w-5 h-5 text-neutral-700 dark:text-neutral-400" />
           </span>
         </div>
-        <div className="mt-7">
-          {value
-            ? renderSearchValues({
-                heading: "Locations",
-                items: [
-                  "Afghanistan",
-                  "Albania",
-                  "Algeria",
-                  "American Samao",
-                  "Andorra",
-                ],
-              })
-            : renderSearchValues({
-                heading: "Popular destinations",
-                items: [
-                  "Australia",
-                  "Canada",
-                  "Germany",
-                  "United Kingdom",
-                  "United Arab Emirates",
-                ],
-              })}
-        </div>
+        {renderRecentSearch ? renderRecentSearches(): ""}
       </div>
     </div>
   );

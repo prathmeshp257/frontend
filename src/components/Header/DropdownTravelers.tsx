@@ -9,7 +9,7 @@ import { PathName } from "routers/types";
 export default function DropdownTravelers() {
   return (
     <div>
-      <Popover className="relative">
+      <Popover className="relative border">
         {({ open, close }) => (
           <>
             <Popover.Button

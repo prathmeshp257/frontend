@@ -53,6 +53,7 @@ const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
             : houseRulesValues.length > 0
             ? houseRulesValues
             : undefined,
+        locationSearch: "hotel",
       });
       if (response.data.error === false) {
         setInfo(response.data.propertydata);

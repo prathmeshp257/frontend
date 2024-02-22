@@ -48,7 +48,25 @@ const NAV: NavItem[] = [
   //   icon: HeartIcon,
   // },
 ];
-
+const NAV2: NavItem[] = [
+  {
+    name: "Explore",
+    active_id: "/home",
+    link: "/",
+    icon: MagnifyingGlassIcon,
+  },
+  {
+    name: "Login",
+    active_id: "/login",
+    link: "/login",
+    icon: UserCircleIcon,
+  },
+  // {
+  //   name: "Wishlists",
+  //   link: "/account-savelists",
+  //   icon: HeartIcon,
+  // },
+];
 const FooterNav = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const excludedRoutes = ["/login", "/signup"];
@@ -145,16 +163,53 @@ const FooterNav = () => {
                 );
               }
             })
-          : !excludedRoutes.includes(window.location.pathname) && (
-              <ButtonPrimary
-                sizeClass="px-2 py-2 sm:px-2 sm:py-2"
-                fontSize="text-xs sm:text-sm font-medium"
-                href="/login"
-                className="w-full"
-              >
-                Login
-              </ButtonPrimary>
-            )}
+          : // !excludedRoutes.includes(window.location.pathname) && //
+            // (
+            //     <ButtonPrimary
+            //       sizeClass="px-2 py-2 sm:px-2 sm:py-2"
+            //       fontSize="text-xs sm:text-sm font-medium"
+            //       href="/login"
+            //       className="w-full"
+            //     >
+            //       Login
+            //     </ButtonPrimary>
+            //   )
+            NAV2.map((item, index) => {
+              const isActive = active === item.active_id;
+              if (item.link && !excludedRoutes.includes(item.name)) {
+                return (
+                  <Link
+                    key={index}
+                    to={item.link || ""}
+                    onClick={() => handleClick(item.active_id)}
+                    className={`flex flex-col items-center justify-between text-neutral-500 dark:text-neutral-300/90 ${
+                      isActive ? "text-red-500" : ""
+                    }`}
+                  >
+                    <item.icon
+                      className={`w-6 h-6 ${isActive ? "text-red-500" : ""}`}
+                    />
+                    <span className="text-[11px] leading-none mt-1">
+                      {item.name}
+                    </span>
+                  </Link>
+                );
+              } else {
+                return (
+                  <div
+                    key={index}
+                    className={`flex flex-col items-center justify-between text-neutral-500 dark:text-neutral-300/90 ${
+                      active ? "text-neutral-900 dark:text-neutral-100" : ""
+                    }`}
+                  >
+                    <item.icon iconClassName="w-6 h-6" className={``} />
+                    <span className="text-[11px] leading-none mt-1">
+                      {item.name}
+                    </span>
+                  </div>
+                );
+              }
+            })}
       </div>
     </div>
   );

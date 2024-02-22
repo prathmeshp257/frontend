@@ -77,7 +77,7 @@ const getPriceForToday = () => {
     saturday,
   ];
   const today = new Date().getDay();
-  const price = today ? daysOfWeek[today] : "$$$";
+  const price = today ? daysOfWeek[today] : "₹..";
 
   // Format the price to Indian rupee format
   if (price) {
@@ -88,7 +88,7 @@ const getPriceForToday = () => {
     });
     return formattedPrice;
   } else {
-    return "$$$";
+    return "₹..";
   }
 };
 
