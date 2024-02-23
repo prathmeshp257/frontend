@@ -40,6 +40,7 @@ const HeroSearchForm: FC<HeroSearchFormProps> = ({
           className="flex-[1.5]"
           searchLocationValue={searchLocationValue}
           setSearchLocationValue={setSearchLocationValue}
+          getPropertyFunc={getPropertyFunc}
         />
         <div className="self-center border-r border-slate-200 dark:border-slate-700 h-8"></div>
         <GuestsInput

@@ -34,8 +34,10 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
               </div>
             </Link>
           </div>
-          <div className="flex items-start hover:pointer cursor-pointer">
-            <h4 className="text-sm ml-4">EZstays Your Home</h4>
+          <div className="flex items-start cursor-pointer">
+            <h4 className="text-sm ml-4 hover:bg-neutral-100 dark:bg-neutral-800 rounded-full p-4">
+              EZstays Your Home
+            </h4>
           </div>
         </div>
 

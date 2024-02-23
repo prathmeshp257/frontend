@@ -64,6 +64,7 @@ const GuestsInput: FC<GuestsInputProps> = ({
             }`}
           >
             <Popover.Button
+              type="button"
               className={`relative z-10 flex-1 flex text-left items-center ${fieldClassName} space-x-3 focus:outline-none`}
               onClickCapture={() => document.querySelector("html")?.click()}
             >

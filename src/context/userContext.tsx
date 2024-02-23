@@ -94,7 +94,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setLoading(false);
     }
   };
-  const pathnameArray = ["login", "signup"];
+  const pathnameArray = ["login", "signup", "detail"];
   useEffect(() => {
     const hasToken = !!localStorage.getItem("token");
     const currentPathname = window?.location?.pathname.substring(1);
@@ -106,7 +106,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     //   onLogout();
     // }
     const isValidPathname =
-      !pathnameArray.includes(currentPathname) && currentPathname !== "";
+      !pathnameArray.includes(currentPathname) &&
+      currentPathname !== "" 
+      // && currentPathname !== "detail";
 
     if (isValidPathname && !hasToken) {
       onLogout();

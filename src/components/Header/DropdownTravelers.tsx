@@ -14,7 +14,7 @@ export default function DropdownTravelers() {
           <>
             <Popover.Button
               className={`${open ? "" : "text-opacity-90"}
-                group py-2 rounded-md text-sm sm:text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
+               inline-flex items-center text-opacity-90 group py-2 text-sm sm:text-base font-medium hover:text-opacity-10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-25 text-sm ml-4 hover:bg-neutral-100 dark:bg-neutral-800 rounded-full p-4`}
             >
               <Link to={"/"}>
                 <div className={` inline-flex items-center `} role="button">

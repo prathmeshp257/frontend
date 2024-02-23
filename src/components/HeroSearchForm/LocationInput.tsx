@@ -5,6 +5,7 @@ import React, { useState, useRef, useEffect, FC } from "react";
 import ClearDataButton from "./ClearDataButton";
 
 export interface LocationInputProps {
+  getPropertyFunc?: any;
   searchLocationValue?: any;
   setSearchLocationValue?: any;
   placeHolder?: string;
@@ -15,6 +16,7 @@ export interface LocationInputProps {
 }
 
 const LocationInput: FC<LocationInputProps> = ({
+  getPropertyFunc,
   searchLocationValue,
   setSearchLocationValue,
   autoFocus = false,
@@ -28,10 +30,21 @@ const LocationInput: FC<LocationInputProps> = ({
 
   const [value, setValue] = useState("");
   const [showPopover, setShowPopover] = useState(autoFocus);
-
+  const searchLocationFunction = () => {
+    if ((searchLocationValue && "") || undefined) {
+      getPropertyFunc();
+    }
+  };
   useEffect(() => {
     setShowPopover(autoFocus);
   }, [autoFocus]);
+
+  const handleChangeData = (e: any) => {
+    console.log("handle", e);
+    if (e.key === "Enter") {
+      setSearchLocationValue(e.currentTarget.value);
+    }
+  };
 
   useEffect(() => {
     if (eventClickOutsideDiv) {
@@ -138,8 +151,12 @@ const LocationInput: FC<LocationInputProps> = ({
             placeholder={placeHolder}
             value={searchLocationValue}
             autoFocus={showPopover}
+            type="text"
             onChange={(e) => {
               setSearchLocationValue(e.currentTarget.value);
+            }}
+            onKeyDown={(e) => {
+              handleChangeData(e);
             }}
             ref={inputRef}
           />

@@ -638,11 +638,43 @@ const StayDetailPageContainer: FC<{}> = () => {
             {arrayofRules.map((item, index) => (
               <div
                 key={index}
-                className="flex space-x-10 justify-between p-3 bg-neutral-100 dark:bg-neutral-800 rounded-lg"
+                className="flex space-x-10 justify-between p-3 rounded-lg"
               >
-                {/* <span className="font-semibold">{item.name}</span> */}
-                <span>{item.name}</span>
-                <span>{convertToAllowedString(item.rule)}</span>
+                {/* <span>{convertToAllowedString(item.rule)}</span> */}
+                <span className="flex gap-2">
+                  {item.rule ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6 text-green-500"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6 text-red-500"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  )}
+                  {item.name}
+                </span>
               </div>
             ))}
           </div>
@@ -650,18 +682,18 @@ const StayDetailPageContainer: FC<{}> = () => {
         <div className="w-14 border-b border-neutral-200 dark:border-neutral-700" />
         {/* CONTENT */}
         <div>
-          <h4 className="text-lg font-semibold">Additional Rules</h4>
           <div className="prose sm:prose">
             {additional_rules && additional_rules.length > 0 ? (
-              <ul className="mt-3 text-neutral-500 dark:text-neutral-400 space-y-2">
-                {additional_rules.map((rule: string, index: number) => (
-                  <li key={index}>{rule}</li>
-                ))}
-              </ul>
+              <>
+                <h4 className="text-lg font-semibold">Additional Rules</h4>
+                <ul className="mt-3 space-y-2">
+                  {additional_rules.map((rule: string, index: number) => (
+                    <li key={index}>{rule}</li>
+                  ))}
+                </ul>
+              </>
             ) : (
-              <span className="flex space-x-10 justify-between p-3 bg-neutral-100 dark:bg-neutral-800 rounded-lg">
-                No Additional Rules
-              </span>
+              ""
             )}
           </div>
         </div>
@@ -687,7 +719,7 @@ const StayDetailPageContainer: FC<{}> = () => {
         <div className="relative grid grid-cols-3 sm:grid-cols-4 gap-1 sm:gap-2">
           <div
             className="col-span-2 row-span-3 sm:row-span-2 relative rounded-md sm:rounded-xl overflow-hidden cursor-pointer "
-            onClick={handleOpenModalImageGallery}
+            // onClick={handleOpenModalImageGallery}
           >
             <img
               className="absolute inset-0 object-cover rounded-md sm:rounded-xl w-full h-full"
@@ -716,7 +748,7 @@ const StayDetailPageContainer: FC<{}> = () => {
               {/* OVERLAY */}
               <div
                 className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-100 transition-opacity cursor-pointer"
-                onClick={handleOpenModalImageGallery}
+                // onClick={handleOpenModalImageGallery}
               />
             </div>
           ))}
