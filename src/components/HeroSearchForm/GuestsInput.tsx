@@ -6,8 +6,12 @@ import ButtonSubmit from "./ButtonSubmit";
 import { UserPlusIcon } from "@heroicons/react/24/outline";
 import { GuestsObject } from "./type";
 import NcInputNumber from "components/NcInputNumber/NcInputNumber";
+import { Link } from "react-router-dom";
 
 export interface GuestsInputProps {
+  getPropertyFunc?: any;
+  guests?: any;
+  setGuests?: any;
   fieldClassName?: string;
   className?: string;
   buttonSubmitHref?: string;
@@ -15,14 +19,17 @@ export interface GuestsInputProps {
 }
 
 const GuestsInput: FC<GuestsInputProps> = ({
+  getPropertyFunc,
+  guests,
+  setGuests,
   fieldClassName = "[ nc-hero-field-padding ]",
   className = "[ nc-flex-1 ]",
   buttonSubmitHref = "/listing-stay-map",
   hasButtonSubmit = true,
 }) => {
-  const [guestAdultsInputValue, setGuestAdultsInputValue] = useState(2);
-  const [guestChildrenInputValue, setGuestChildrenInputValue] = useState(1);
-  const [guestInfantsInputValue, setGuestInfantsInputValue] = useState(1);
+  const [guestAdultsInputValue, setGuestAdultsInputValue] = useState(0);
+  const [guestChildrenInputValue, setGuestChildrenInputValue] = useState(0);
+  const [guestInfantsInputValue, setGuestInfantsInputValue] = useState(0);
 
   const handleChangeData = (value: number, type: keyof GuestsObject) => {
     let newValue = {
@@ -85,7 +92,27 @@ const GuestsInput: FC<GuestsInputProps> = ({
 
             {hasButtonSubmit && (
               <div className="pr-2 xl:pr-4">
-                <ButtonSubmit href={buttonSubmitHref} />
+                <button
+                  type="button"
+                  className="h-14 md:h-16 w-full md:w-16 rounded-full bg-primary-6000 hover:bg-primary-700 flex items-center justify-center text-neutral-50 focus:outline-none"
+                  onClick={getPropertyFunc}
+                >
+                  <span className="mr-3 md:hidden">Search</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                  </svg>
+                </button>
               </div>
             )}
           </div>
@@ -105,27 +132,39 @@ const GuestsInput: FC<GuestsInputProps> = ({
             <Popover.Panel className="absolute right-0 z-10 w-full sm:min-w-[340px] max-w-sm bg-white dark:bg-neutral-800 top-full mt-3 py-5 sm:py-6 px-4 sm:px-8 rounded-3xl shadow-xl">
               <NcInputNumber
                 className="w-full"
-                defaultValue={guestAdultsInputValue}
-                onChange={(value) => handleChangeData(value, "guestAdults")}
+                defaultValue={0}
+                // onChange={(value) => handleChangeData(value, "guestAdults")}
                 max={10}
-                min={1}
+                // min={1}
+                roomOFbeds={guestAdultsInputValue}
+                setRoomOFbeds={setGuestAdultsInputValue}
                 label="Adults"
                 desc="Ages 13 or above"
               />
+              {/* <NcInputNumber
+                label="Beds"
+                max={10}
+                roomOFbeds={beds}
+                setRoomOFbeds={setBeds}
+              /> */}
               <NcInputNumber
                 className="w-full mt-6"
-                defaultValue={guestChildrenInputValue}
-                onChange={(value) => handleChangeData(value, "guestChildren")}
+                defaultValue={0}
+                // onChange={(value) => handleChangeData(value, "guestChildren")}
                 max={4}
+                roomOFbeds={guestChildrenInputValue}
+                setRoomOFbeds={setGuestChildrenInputValue}
                 label="Children"
                 desc="Ages 2–12"
               />
 
               <NcInputNumber
                 className="w-full mt-6"
-                defaultValue={guestInfantsInputValue}
-                onChange={(value) => handleChangeData(value, "guestInfants")}
+                defaultValue={0}
+                // onChange={(value) => handleChangeData(value, "guestInfants")}
                 max={4}
+                roomOFbeds={guestInfantsInputValue}
+                setRoomOFbeds={setGuestInfantsInputValue}
                 label="Infants"
                 desc="Ages 0–2"
               />

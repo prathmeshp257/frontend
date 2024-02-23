@@ -6,11 +6,7 @@ import { Helmet } from "react-helmet";
 import HeroSearchForm, {
   SearchTab,
 } from "components/HeroSearchForm/HeroSearchForm";
-import React, {
-  useState,
-  FC,
-  useEffect,
-} from "react";
+import React, { useState, FC, useEffect } from "react";
 import axios from "axios";
 import { API_URL } from "../../api/config";
 import { toast } from "react-toastify";
@@ -30,6 +26,10 @@ const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
   const [bathrooms, setBathrooms] = useState(0);
   const [amenitiesValues, setAmenitiesValues] = useState<string[]>([]);
   const [houseRulesValues, setHouseRulesValues] = useState<string[]>([]);
+  //search bar feature
+  const [searchLocationValue, setSearchLocationValue] = useState<string>("");
+  const [guests, setGuests] = useState(0);
+
   const getPropertyData = async (filter_type: String) => {
     try {
       const response = await axios.post(`${API_URL}/property/get-property`, {
@@ -53,7 +53,7 @@ const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
             : houseRulesValues.length > 0
             ? houseRulesValues
             : undefined,
-        locationSearch: "hotel",
+        locationSearch: searchLocationValue,
       });
       if (response.data.error === false) {
         setInfo(response.data.propertydata);
@@ -86,6 +86,11 @@ const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
           </div>
         </div> */}
         <SectionHeroArchivePage
+          getPropertyFunc={getPropertyData}
+          searchLocationValue={searchLocationValue}
+          setSearchLocationValue={setSearchLocationValue}
+          guests={guests}
+          setGuests={setGuests}
           currentPage="Stays"
           currentTab="Stays"
           className="pt-4 pb-12 lg:pb-14 lg:pt-8 "

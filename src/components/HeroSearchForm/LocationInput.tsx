@@ -5,6 +5,8 @@ import React, { useState, useRef, useEffect, FC } from "react";
 import ClearDataButton from "./ClearDataButton";
 
 export interface LocationInputProps {
+  searchLocationValue?: any;
+  setSearchLocationValue?: any;
   placeHolder?: string;
   desc?: string;
   className?: string;
@@ -13,6 +15,8 @@ export interface LocationInputProps {
 }
 
 const LocationInput: FC<LocationInputProps> = ({
+  searchLocationValue,
+  setSearchLocationValue,
   autoFocus = false,
   placeHolder = "Location",
   desc = "Where are you going?",
@@ -132,10 +136,10 @@ const LocationInput: FC<LocationInputProps> = ({
           <input
             className={`block w-full bg-transparent border-none focus:ring-0 p-0 focus:outline-none focus:placeholder-neutral-300 xl:text-lg font-semibold placeholder-neutral-800 dark:placeholder-neutral-200 truncate`}
             placeholder={placeHolder}
-            value={value}
+            value={searchLocationValue}
             autoFocus={showPopover}
             onChange={(e) => {
-              setValue(e.currentTarget.value);
+              setSearchLocationValue(e.currentTarget.value);
             }}
             ref={inputRef}
           />
@@ -145,7 +149,7 @@ const LocationInput: FC<LocationInputProps> = ({
           {value && showPopover && (
             <ClearDataButton
               onClick={() => {
-                setValue("");
+                setSearchLocationValue("");
               }}
             />
           )}
