@@ -176,7 +176,7 @@ const getPriceForToday = () => {
       data-nc-id="StayCard"
     >
       {renderSliderGallery()}
-      <Link to={cover_image}>{renderContent()}</Link>
+      <Link to={`/detail?propID=${_id}`}>{renderContent()}</Link>
     </div>
   );
 };
