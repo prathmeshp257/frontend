@@ -27,7 +27,7 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
             {/* <DropdownTravelers /> */}
             <Link to={"/"}>
               <div
-                className={` inline-flex items-center text-opacity-90 group py-2 rounded-md text-sm sm:text-base font-medium hover:text-opacity-10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-25`}
+                className={` inline-flex items-center text-opacity-90 group py-2 px-4 text-sm sm:text-base font-medium hover:bg-neutral-100 dark:bg-neutral-800 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-25`}
                 role="button"
               >
                 <span>Home</span>
@@ -35,7 +35,7 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
             </Link>
           </div>
           <div className="flex items-start cursor-pointer">
-            <h4 className="text-sm ml-4 hover:bg-neutral-100 dark:bg-neutral-800 rounded-full p-4">
+            <h4 className="text-sm ml-4 hover:bg-neutral-100 dark:bg-neutral-800 rounded-full py-2 px-4">
               EZstays Your Home
             </h4>
           </div>
