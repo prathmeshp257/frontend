@@ -14,25 +14,45 @@ const GuestsInput: FC<GuestsInputProps> = ({ className = "flex-1" }) => {
   const [guestChildrenInputValue, setGuestChildrenInputValue] = useState(1);
   const [guestInfantsInputValue, setGuestInfantsInputValue] = useState(1);
 
-  const handleChangeData = (value: number, type: keyof GuestsObject) => {
-    let newValue = {
-      guestAdults: guestAdultsInputValue,
-      guestChildren: guestChildrenInputValue,
-      guestInfants: guestInfantsInputValue,
+  // const handleChangeData = (value: number, type: keyof GuestsObject) => {
+  //   let newValue = {
+  //     guestAdults: guestAdultsInputValue,
+  //     guestChildren: guestChildrenInputValue,
+  //     guestInfants: guestInfantsInputValue,
+  //   };
+  //   if (type === "guestAdults") {
+  //     setGuestAdultsInputValue(value);
+  //     newValue.guestAdults = value;
+  //   }
+  //   if (type === "guestChildren") {
+  //     setGuestChildrenInputValue(value);
+  //     newValue.guestChildren = value;
+  //   }
+  //   if (type === "guestInfants") {
+  //     setGuestInfantsInputValue(value);
+  //     newValue.guestInfants = value;
+  //   }
+  // };
+
+    const handleChangeData = (value: number) => {
+      let newww = value;
+      // guestChildren: guestChildrenInputValue,
+
+      // if (type === "guestAdults") {
+      //   setGuestAdultsInputValue(value);
+      //   newValue.guestAdults = value;
+      // }
+      // if (type === "guestChildren") {
+      //   setGuestChildrenInputValue(value);
+      //   newValue.guestChildren = value;
+      // }
+      // if (type === "guestInfants") {
+      //   setGuestInfantsInputValue(value);
+      //   newValue.guestInfants = value;
+      // }
+       var totalGuests: number = 0;
+      var totalGuests= totalGuests + newww;
     };
-    if (type === "guestAdults") {
-      setGuestAdultsInputValue(value);
-      newValue.guestAdults = value;
-    }
-    if (type === "guestChildren") {
-      setGuestChildrenInputValue(value);
-      newValue.guestChildren = value;
-    }
-    if (type === "guestInfants") {
-      setGuestInfantsInputValue(value);
-      newValue.guestInfants = value;
-    }
-  };
 
   const totalGuests =
     guestChildrenInputValue + guestAdultsInputValue + guestInfantsInputValue;
@@ -86,7 +106,7 @@ const GuestsInput: FC<GuestsInputProps> = ({ className = "flex-1" }) => {
               <NcInputNumber
                 className="w-full"
                 defaultValue={guestAdultsInputValue}
-                onChange={(value) => handleChangeData(value, "guestAdults")}
+                onChange={(value) => handleChangeData(value)}
                 max={10}
                 min={1}
                 label="Adults"
@@ -95,7 +115,7 @@ const GuestsInput: FC<GuestsInputProps> = ({ className = "flex-1" }) => {
               <NcInputNumber
                 className="w-full mt-6"
                 defaultValue={guestChildrenInputValue}
-                onChange={(value) => handleChangeData(value, "guestChildren")}
+                onChange={(value) => handleChangeData(value)}
                 max={4}
                 label="Children"
                 desc="Ages 2–12"
@@ -104,7 +124,7 @@ const GuestsInput: FC<GuestsInputProps> = ({ className = "flex-1" }) => {
               <NcInputNumber
                 className="w-full mt-6"
                 defaultValue={guestInfantsInputValue}
-                onChange={(value) => handleChangeData(value, "guestInfants")}
+                // onChange={(value) => handleChangeData(value, "guestInfants")}
                 max={4}
                 label="Infants"
                 desc="Ages 0–2"

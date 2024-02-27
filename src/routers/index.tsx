@@ -15,10 +15,16 @@ import SetOtp from "containers/ForgetPassword/otp";
 import AccountPage from "containers/AccountPage/AccountPage";
 import AccountPass from "containers/AccountPage/AccountPass";
 import AccountBilling from "containers/AccountPage/AccountBilling";
+// favourites
+import AccountSavelists from "containers/AccountPage/AccountSavelists";
+
 
 export const pages: Page[] = [
   { path: "/detail", component: ListingStayDetailPage },
   { path: "/account", component: AccountPage },
+
+  { path: "/account-savelists", component: AccountSavelists },
+
   { path: "/account-password", component: AccountPass },
   { path: "/account-billing", component: AccountBilling },
 

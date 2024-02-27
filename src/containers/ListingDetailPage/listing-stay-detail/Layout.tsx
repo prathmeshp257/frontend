@@ -15,7 +15,7 @@ const DetailPagetLayout = ({ children }: { children: ReactNode }) => {
   const handleCloseModalImageGallery = () => {
     let params = new URLSearchParams(document.location.search);
     params.delete("modal");
-    navigate(`${thisPathname}/?${params.toString()}`);
+    // navigate(`${thisPathname}/?${params.toString()}`);
   };
 
   return (

@@ -84,7 +84,7 @@ const ListingImageGallery: FC<Props> = ({
               setLastViewedPhoto(photoId);
               let params = new URLSearchParams(document.location.search);
               params.delete("photoId");
-              navigate(`${thisPathname}/?${params.toString()}`);
+              // navigate(`${thisPathname}/?${params.toString()}`);
             }}
           />
         )}
@@ -95,7 +95,7 @@ const ListingImageGallery: FC<Props> = ({
               key={id}
               onClick={() => {
                 const newPathname = getNewParam({ value: id });
-                navigate(`${thisPathname}/?${newPathname}`);
+                // navigate(`${thisPathname}/?${newPathname}`);
               }}
               ref={id === Number(lastViewedPhoto) ? lastViewedPhotoRef : null}
               className="after:content group relative mb-5 block w-full cursor-zoom-in after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:shadow-highlight focus:outline-none"

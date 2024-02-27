@@ -32,7 +32,7 @@ const Avatar: FC<AvatarProps> = ({
 
   return (
     <div
-      className={`wil-avatar relative flex-shrink-0 inline-flex items-center justify-center text-neutral-100 uppercase font-semibold shadow-inner ${radius} ${sizeClass} ${containerClassName}`}
+      className={`wil-avatar relative flex-shrink-0 inline-flex items-center justify-center text-neutral-100 uppercase font-semibold shadow-inner ml-2 ${radius} ${sizeClass} ${containerClassName}`}
       style={{ backgroundColor: imgUrl ? undefined : _setBgColor(name) }}
     >
       {imgUrl && (

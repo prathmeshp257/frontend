@@ -182,7 +182,7 @@ const StayDetailPageContainer: FC<{}> = () => {
   }
 
   const handleOpenModalImageGallery = () => {
-    router(`${thisPathname}/?modal=PHOTO_TOUR_SCROLLABLE`);
+    // router(`${thisPathname}/?modal=PHOTO_TOUR_SCROLLABLE`);
   };
   const address1 = `${street}, ${city} ${state}, ${country} ${postal_code}`;
   const address = room_number

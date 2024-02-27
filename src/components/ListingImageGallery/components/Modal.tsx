@@ -37,7 +37,7 @@ export default function Modal({
       setDirection(-1);
     }
     setCurIndex(newVal);
-    navigate(`${thisPathname}/?${getNewParam({ value: newVal })}`);
+    // navigate(`${thisPathname}/?${getNewParam({ value: newVal })}`);
   }
 
   useKeypress("ArrowRight", () => {

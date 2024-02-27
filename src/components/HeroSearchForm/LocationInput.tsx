@@ -31,7 +31,7 @@ const LocationInput: FC<LocationInputProps> = ({
   const [value, setValue] = useState("");
   const [showPopover, setShowPopover] = useState(autoFocus);
   const searchLocationFunction = () => {
-    if ((searchLocationValue && "") || undefined) {
+    if (searchLocationValue && "") {
       getPropertyFunc();
     }
   };
@@ -42,7 +42,12 @@ const LocationInput: FC<LocationInputProps> = ({
   const handleChangeData = (e: any) => {
     console.log("handle", e);
     if (e.key === "Enter") {
+      e.preventDefault();
       setSearchLocationValue(e.currentTarget.value);
+      console.log("setSearchLocationValue", searchLocationValue);
+      getPropertyFunc();
+    } else if (e.currentTarget.value.trim() === "") {
+      getPropertyFunc();
     }
   };
 
@@ -178,12 +183,12 @@ const LocationInput: FC<LocationInputProps> = ({
           className={`h-8 absolute self-center top-1/2 -translate-y-1/2 z-0 bg-white dark:bg-neutral-800 ${divHideVerticalLineClass}`}
         ></div>
       )}
-
+      {/* 
       {showPopover && (
         <div className="absolute left-0 z-40 w-full min-w-[300px] sm:min-w-[500px] bg-white dark:bg-neutral-800 top-full mt-3 py-3 sm:py-6 rounded-3xl shadow-xl max-h-96 overflow-y-auto">
           {value ? renderSearchValue() : renderRecentSearches()}
         </div>
-      )}
+      )} */}
     </div>
   );
 };

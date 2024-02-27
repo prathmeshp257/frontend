@@ -6,11 +6,12 @@ import { Helmet } from "react-helmet";
 import HeroSearchForm, {
   SearchTab,
 } from "components/HeroSearchForm/HeroSearchForm";
-import React, { useState, FC, useEffect } from "react";
+import React, { useState, FC, useEffect, useContext } from "react";
 import axios from "axios";
 import { API_URL } from "../../api/config";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { AuthContext } from "context/userContext";
 
 export interface ListingStayPageProps {
   className?: string;
@@ -29,9 +30,17 @@ const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
   //search bar feature
   const [searchLocationValue, setSearchLocationValue] = useState<string>("");
   const [guests, setGuests] = useState(0);
-
+  //like feature
+  const [favourite, setFavourite] = useState(false);
+  const authContext = useContext(AuthContext);
+  const functFavourite = authContext.getFavouriteProps;
+  const hasToken = !!localStorage.getItem("token");
   const getPropertyData = async (filter_type: String) => {
     try {
+      // console.log(guests, "hahaha");
+      if (hasToken){
+        await functFavourite();
+      } 
       const response = await axios.post(`${API_URL}/property/get-property`, {
         type: filter_type === "type" ? [] : typevalues,
         min: filter_type === "price" ? 0 : rangePrices.min,
@@ -54,6 +63,7 @@ const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
             ? houseRulesValues
             : undefined,
         locationSearch: searchLocationValue,
+        guestsSearch: guests,
       });
       if (response.data.error === false) {
         setInfo(response.data.propertydata);
@@ -64,6 +74,7 @@ const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
     }
   };
 
+  // const dataFavourite = authContext.favPropData;
   useEffect(() => {
     getPropertyData("");
   }, []);
@@ -116,6 +127,9 @@ const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
           setHouseRulesValues={setHouseRulesValues}
           className="pb-24 lg:pb-28"
           propertiesData={info.length > 0 ? info : []}
+          //feat like
+          favourite={favourite}
+          setFavourite={setFavourite}
         />
       </div>
     </div>

@@ -14,9 +14,11 @@ interface UserData {
 }
 
 interface AuthContextProps {
+  favPropData: any;
   userData: UserData;
   onLogout: () => void;
   getAdminData: () => Promise<void>;
+  getFavouriteProps: () => Promise<void>;
   reloadUserData: () => void;
   loading: boolean;
 }
@@ -32,8 +34,10 @@ const initialState: AuthContextProps = {
   },
   onLogout: () => {},
   getAdminData: async () => {},
+  getFavouriteProps: async () => {},
   reloadUserData: () => {},
   loading: false,
+  favPropData: [],
 };
 
 const AuthContext = createContext<AuthContextProps>(initialState);
@@ -51,7 +55,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     phoneNumber: "",
     image: "",
   } as any);
-
+  const [favPropData, setFavPropData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
   const onLogout = () => {
@@ -94,6 +98,30 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setLoading(false);
     }
   };
+  const getFavouriteProps = async () => {
+    const token = localStorage.getItem("token");
+    // setLoading(true);
+    try {
+      const response = await axios.get(`${API_URL}/users/get-fav`, {
+        headers: {
+          token: token,
+        },
+      });
+      if (response.data.error === false) {
+        setFavPropData(response.data.favourites);
+      }
+    } catch (err) {
+      console.error("error while fetching userInfo", err);
+      toast.error(
+        <>
+          Please login
+          <br />
+           To save properties
+        </>
+      );
+      // setLoading(false);
+    }
+  };
   const pathnameArray = ["login", "signup", "detail"];
   useEffect(() => {
     const hasToken = !!localStorage.getItem("token");
@@ -106,15 +134,15 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     //   onLogout();
     // }
     const isValidPathname =
-      !pathnameArray.includes(currentPathname) &&
-      currentPathname !== "" 
-      // && currentPathname !== "detail";
+      !pathnameArray.includes(currentPathname) && currentPathname !== "";
+    // && currentPathname !== "detail";
 
     if (isValidPathname && !hasToken) {
       onLogout();
     }
     if (hasToken) {
       getAdminData();
+      // getFavouriteProps();
     }
   }, []);
   const reloadUserData = () => {};
@@ -123,8 +151,10 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     userData,
     onLogout,
     getAdminData,
+    getFavouriteProps,
     reloadUserData,
     loading,
+    favPropData,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

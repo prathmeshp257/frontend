@@ -1,18 +1,34 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 
 export interface BtnLikeIconProps {
   className?: string;
   colorClass?: string;
   isLiked?: boolean;
+  addtoSavedList?: any;
+  idd?: any;
+  dataFavourite?: any;
+  delFromSavedList: any;
 }
 
 const BtnLikeIcon: FC<BtnLikeIconProps> = ({
   className = "",
   colorClass = "text-white bg-black bg-opacity-30 hover:bg-opacity-50",
   isLiked = false,
+  addtoSavedList,
+  idd,
+  dataFavourite,
+  delFromSavedList,
 }) => {
-  const [likedState, setLikedState] = useState(isLiked);
+  const [likedState, setLikedState] = useState(false);
+  const hasToken = !!localStorage.getItem("token");
 
+  function checkId(dataFavourite: any, idd: any) {
+    return dataFavourite.some((obj: any) => obj._id === idd);
+  }
+  useEffect(() => {
+    const result = checkId(dataFavourite, idd);
+    setLikedState(result);
+  }, []);
   return (
     <div
       className={`nc-BtnLikeIcon w-8 h-8 flex items-center justify-center rounded-full cursor-pointer ${
@@ -20,12 +36,24 @@ const BtnLikeIcon: FC<BtnLikeIconProps> = ({
       }  ${colorClass} ${className}`}
       data-nc-id="BtnLikeIcon"
       title="Save"
-      onClick={() => setLikedState(!likedState)}
+      onClick={() => {
+        setLikedState((prevLikedState) => {
+          const newLikedState = !prevLikedState;
+          console.log(newLikedState, "liked state changed");
+          if (newLikedState) {
+            addtoSavedList(idd);
+          } else {
+            delFromSavedList(idd);
+          }
+          return newLikedState;
+        });
+      }}
+      // onChange={}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="h-5 w-5"
-        fill={likedState ? "currentColor" : "none"}
+        fill={likedState && hasToken ? "currentColor" : "none"}
         viewBox="0 0 24 24"
         stroke="currentColor"
       >

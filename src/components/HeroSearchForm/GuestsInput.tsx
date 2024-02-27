@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import { FC } from "react";
 import ClearDataButton from "./ClearDataButton";
@@ -30,30 +30,10 @@ const GuestsInput: FC<GuestsInputProps> = ({
   const [guestAdultsInputValue, setGuestAdultsInputValue] = useState(0);
   const [guestChildrenInputValue, setGuestChildrenInputValue] = useState(0);
   const [guestInfantsInputValue, setGuestInfantsInputValue] = useState(0);
-
-  const handleChangeData = (value: number, type: keyof GuestsObject) => {
-    let newValue = {
-      guestAdults: guestAdultsInputValue,
-      guestChildren: guestChildrenInputValue,
-      guestInfants: guestInfantsInputValue,
-    };
-    if (type === "guestAdults") {
-      setGuestAdultsInputValue(value);
-      newValue.guestAdults = value;
-    }
-    if (type === "guestChildren") {
-      setGuestChildrenInputValue(value);
-      newValue.guestChildren = value;
-    }
-    if (type === "guestInfants") {
-      setGuestInfantsInputValue(value);
-      newValue.guestInfants = value;
-    }
-  };
-
-  const totalGuests =
-    guestChildrenInputValue + guestAdultsInputValue + guestInfantsInputValue;
-
+   const totalGuests = guestChildrenInputValue + guestAdultsInputValue;
+useEffect(() => {
+  setGuests(totalGuests);
+}, [totalGuests]);
   return (
     <Popover className={`flex relative ${className}`}>
       {({ open }) => (
@@ -76,7 +56,7 @@ const GuestsInput: FC<GuestsInputProps> = ({
                   {totalGuests || ""} Guests
                 </span>
                 <span className="block mt-1 text-sm text-neutral-400 leading-none font-light">
-                  {totalGuests ? "Guests" : "Add guests"}
+                  {totalGuests ? "Guests" : "Add totalGuests"}
                 </span>
               </div>
 
@@ -134,7 +114,8 @@ const GuestsInput: FC<GuestsInputProps> = ({
               <NcInputNumber
                 className="w-full"
                 defaultValue={0}
-                // onChange={(value) => handleChangeData(value, "guestAdults")}
+                // onChange={(value) => handleChangeGuestValue(value)}
+                // onChange={() => handleChangeGuestValue(totalGuests)}
                 max={10}
                 // min={1}
                 roomOFbeds={guestAdultsInputValue}
@@ -151,7 +132,7 @@ const GuestsInput: FC<GuestsInputProps> = ({
               <NcInputNumber
                 className="w-full mt-6"
                 defaultValue={0}
-                // onChange={(value) => handleChangeData(value, "guestChildren")}
+                // onChange={() => handleChangeGuestValue(totalGuests)}
                 max={4}
                 roomOFbeds={guestChildrenInputValue}
                 setRoomOFbeds={setGuestChildrenInputValue}

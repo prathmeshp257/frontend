@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useContext, useState } from "react";
 import GallerySlider from "components/GallerySlider/GallerySlider";
 import { StayDataCard, StayDataType } from "data/types";
 import StartRating from "components/StartRating/StartRating";
@@ -6,6 +6,10 @@ import { Link } from "react-router-dom";
 import BtnLikeIcon from "components/BtnLikeIcon/BtnLikeIcon";
 import SaleOffBadge from "components/SaleOffBadge/SaleOffBadge";
 import Badge from "shared/Badge/Badge";
+import { toast } from "react-toastify";
+import { API_URL } from "api/config";
+import axios from "axios";
+import { AuthContext } from "context/userContext";
 
 export interface StayCardProps {
   key: String;
@@ -13,6 +17,8 @@ export interface StayCardProps {
   data: any;
   size: String;
   className: String;
+  // favourite?: boolean;
+  // setFavourite?: any;
 }
 
 const StayCard: FC<StayCardProps> = ({
@@ -21,6 +27,8 @@ const StayCard: FC<StayCardProps> = ({
   data,
   size,
   className,
+  // favourite,
+  // setFavourite,
 }) => {
   const {
     _id,
@@ -65,33 +73,102 @@ const StayCard: FC<StayCardProps> = ({
     : `${street} ${city} ${state}, ${country} ${postal_code}`;
   const reviewStart = 4.8;
   const reviewCount = 28;
-  const like= true;
-const getPriceForToday = () => {
-  const daysOfWeek = [
-    sunday,
-    monday,
-    tuesday,
-    wednesday,
-    thursday,
-    friday,
-    saturday,
-  ];
-  const today = new Date().getDay();
-  const price = today ? daysOfWeek[today] : "₹..";
+  // const like =  favourite;
+  const getPriceForToday = () => {
+    const daysOfWeek = [
+      sunday,
+      monday,
+      tuesday,
+      wednesday,
+      thursday,
+      friday,
+      saturday,
+    ];
+    const today = new Date().getDay();
+    const price = today ? daysOfWeek[today] : "₹..";
 
-  // Format the price to Indian rupee format
-  if (price) {
-    const formattedPrice = Number(price).toLocaleString("en-IN", {
-      style: "currency",
-      currency: "INR",
-      minimumFractionDigits: 0,
-    });
-    return formattedPrice;
-  } else {
-    return "₹..";
-  }
-};
+    // Format the price to Indian rupee format
+    if (price) {
+      const formattedPrice = Number(price).toLocaleString("en-IN", {
+        style: "currency",
+        currency: "INR",
+        minimumFractionDigits: 0,
+      });
+      return formattedPrice;
+    } else {
+      return "₹..";
+    }
+  };
 
+   const authContext = useContext(AuthContext);
+   const dataFavourite = authContext.favPropData;
+  const addtoSavedList = async (idd: any) => {
+    const token = localStorage.getItem("token");
+    // setLoading(true);
+    try {
+      const response = await axios.post(
+        `${API_URL}/users/add-fav`,
+        {
+          propId: idd,
+        },
+        {
+          headers: {
+            token: token,
+          },
+        }
+      );
+      if (response.data.error === false) {
+        console.log(response, "add fav");
+        toast.success(<>Property Saved!</>);
+        // setFavPropData(response.data.favourites);
+      }
+      // console.log(favPropData, "settttttttttt");
+    } catch (err) {
+      console.error("error while fetching userInfo", err);
+      toast.error(
+        <>
+          Please login
+          <br />
+          To save properties
+        </>
+      );
+      // setLoading(false);
+    }
+    console.log(dataFavourite, "dataFavourite");
+  };
+  const delFromSavedList = async (idd: any) => {
+        const token = localStorage.getItem("token");
+        // setLoading(true);
+        try {
+          const response = await axios.post(
+            `${API_URL}/users/del-fav`,
+            {
+              propId: idd,
+            },
+            {
+              headers: {
+                token: token,
+              },
+            }
+          );
+          if (response.data.error === false) {
+            console.log(response, "del fav");
+            toast.error(<>Property removed!</>);
+            // setFavPropData(response.data.favourites);
+          }
+          // console.log(favPropData, "settttttttttt");
+        } catch (err) {
+          console.error("error while fetching userInfo", err);
+          // toast.error(
+          //   <>
+          //     You must be logged in,
+          //     <br />
+          //     to save property
+          //   </>
+          // );
+          // setLoading(false);
+        }
+  };
   const renderSliderGallery = () => {
     const combinedArray = [cover_image || "", ...(galleryImgs || [])];
 
@@ -103,7 +180,14 @@ const getPriceForToday = () => {
           galleryImgs={combinedArray}
           href={`/detail?propID=${_id}`}
         />
-        <BtnLikeIcon isLiked={like} className="absolute right-3 top-3 z-[1]" />
+        <BtnLikeIcon
+          // isLiked={like}
+          addtoSavedList={addtoSavedList}
+          idd={_id}
+          dataFavourite={dataFavourite}
+          delFromSavedList={delFromSavedList}
+          className="absolute right-3 top-3 z-[1]"
+        />
       </div>
     );
   };

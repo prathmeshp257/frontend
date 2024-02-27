@@ -27,6 +27,8 @@ interface SectionGridFilterCardProps {
   setAmenitiesValues?: any;
   houseRulesValues?: string[];
   setHouseRulesValues?: any;
+  favourite?: boolean;
+  setFavourite?: any;
 }
 
 const SectionGridFilterCard: FC<SectionGridFilterCardProps> = ({
@@ -48,6 +50,8 @@ const SectionGridFilterCard: FC<SectionGridFilterCardProps> = ({
   setAmenitiesValues,
   houseRulesValues,
   setHouseRulesValues,
+  favourite,
+  setFavourite,
 }) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const ItemsPerPage = 12;
@@ -115,6 +119,8 @@ const SectionGridFilterCard: FC<SectionGridFilterCardProps> = ({
             data={property}
             className="shadow-2xl"
             size={"default"}
+            // favourite={favourite}
+            // setFavourite={setFavourite}
           />
         ))}
       </div>
