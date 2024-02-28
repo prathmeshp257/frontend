@@ -194,7 +194,7 @@ const StayDetailPageContainer: FC<{}> = () => {
         {/* 1 */}
         <div className="flex justify-between items-center">
           <Badge name={type} />
-          <LikeSaveBtns />
+          <LikeSaveBtns propID={propIdParam}/>
         </div>
 
         {/* 2 */}
@@ -641,11 +641,11 @@ const StayDetailPageContainer: FC<{}> = () => {
                 className="flex space-x-10 justify-between p-3 rounded-lg"
               >
                 {/* <span>{convertToAllowedString(item.rule)}</span> */}
-                <span className="flex gap-2">
+                <span className="flex gap-4">
                   {item.rule ? (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 text-green-500"
+                      className="h-6 w-6 text-green-500 inline-block p-1 border-2 border-green-500 rounded-full"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -658,9 +658,10 @@ const StayDetailPageContainer: FC<{}> = () => {
                       />
                     </svg>
                   ) : (
+                    // </div>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 text-red-500"
+                      className="h-6 w-6 text-red-500 inline-block p-1 border-2 border-red-500 rounded-full"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -679,12 +680,12 @@ const StayDetailPageContainer: FC<{}> = () => {
             ))}
           </div>
         </div>
-        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700" />
         {/* CONTENT */}
         <div>
           <div className="prose sm:prose">
             {additional_rules && additional_rules.length > 0 ? (
               <>
+                <div className="w-14 border-b border-neutral-200 dark:border-neutral-700" />
                 <h4 className="text-lg font-semibold">Additional Rules</h4>
                 <ul className="mt-3 space-y-2">
                   {additional_rules.map((rule: string, index: number) => (

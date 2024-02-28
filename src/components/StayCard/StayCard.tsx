@@ -102,73 +102,10 @@ const StayCard: FC<StayCardProps> = ({
 
    const authContext = useContext(AuthContext);
    const dataFavourite = authContext.favPropData;
-  const addtoSavedList = async (idd: any) => {
-    const token = localStorage.getItem("token");
-    // setLoading(true);
-    try {
-      const response = await axios.post(
-        `${API_URL}/users/add-fav`,
-        {
-          propId: idd,
-        },
-        {
-          headers: {
-            token: token,
-          },
-        }
-      );
-      if (response.data.error === false) {
-        console.log(response, "add fav");
-        toast.success(<>Property Saved!</>);
-        // setFavPropData(response.data.favourites);
-      }
-      // console.log(favPropData, "settttttttttt");
-    } catch (err) {
-      console.error("error while fetching userInfo", err);
-      toast.error(
-        <>
-          Please login
-          <br />
-          To save properties
-        </>
-      );
-      // setLoading(false);
-    }
-    console.log(dataFavourite, "dataFavourite");
-  };
-  const delFromSavedList = async (idd: any) => {
-        const token = localStorage.getItem("token");
-        // setLoading(true);
-        try {
-          const response = await axios.post(
-            `${API_URL}/users/del-fav`,
-            {
-              propId: idd,
-            },
-            {
-              headers: {
-                token: token,
-              },
-            }
-          );
-          if (response.data.error === false) {
-            console.log(response, "del fav");
-            toast.error(<>Property removed!</>);
-            // setFavPropData(response.data.favourites);
-          }
-          // console.log(favPropData, "settttttttttt");
-        } catch (err) {
-          console.error("error while fetching userInfo", err);
-          // toast.error(
-          //   <>
-          //     You must be logged in,
-          //     <br />
-          //     to save property
-          //   </>
-          // );
-          // setLoading(false);
-        }
-  };
+   const getFavPropFunc = authContext.getFavouriteProps;
+   const addtoSavedList = authContext.addtoSavedList;
+   const delFromSavedList = authContext.delFromSavedList;
+
   const renderSliderGallery = () => {
     const combinedArray = [cover_image || "", ...(galleryImgs || [])];
 

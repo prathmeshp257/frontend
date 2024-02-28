@@ -19,7 +19,7 @@ const AccountSavelists = () => {
   const functFavourite = authContext.getFavouriteProps;
   const dataFavourite = authContext.favPropData;
   useEffect(()=>{
-functFavourite();
+// functFavourite();
 console.log(dataFavourite, "favvvvvvvvvvvvvvvvvv");
   },[])
 
@@ -62,8 +62,6 @@ console.log(dataFavourite, "favvvvvvvvvvvvvvvvvv");
                         data={property}
                         className="shadow-2xl"
                         size={"default"}
-                        // favourite={favourite}
-                        // setFavourite={setFavourite}
                       />
                     ))}
                   {/* map favourites here.. */}

@@ -20,7 +20,9 @@ const Avatar: FC<AvatarProps> = ({
   userName,
   hasChecked,
   hasCheckedClass = "w-4 h-4 -top-0.5 -right-0.5",
-}) => {
+}) => 
+
+{
   // const hasToken = !!localStorage.getItem("token");
   const name = userName ? userName : "Default name";
   const _setBgColor = (name: string) => {
@@ -29,10 +31,10 @@ const Avatar: FC<AvatarProps> = ({
     );
     return avatarColors[backgroundIndex];
   };
-
+const q = "border flex gap-4 px-2 py-1";
   return (
     <div
-      className={`wil-avatar relative flex-shrink-0 inline-flex items-center justify-center text-neutral-100 uppercase font-semibold shadow-inner ml-2 ${radius} ${sizeClass} ${containerClassName}`}
+      className={`wil-avatar relative flex-shrink-0 inline-flex items-center justify-center text-neutral-100 uppercase font-semibold shadow-inner ${radius} ${sizeClass} ${containerClassName}`}
       style={{ backgroundColor: imgUrl ? undefined : _setBgColor(name) }}
     >
       {imgUrl && (

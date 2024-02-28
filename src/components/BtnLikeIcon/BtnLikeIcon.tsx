@@ -1,4 +1,6 @@
-import React, { FC, useEffect, useState } from "react";
+import { AuthContext } from "context/userContext";
+import React, { FC, useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export interface BtnLikeIconProps {
   className?: string;
@@ -21,8 +23,11 @@ const BtnLikeIcon: FC<BtnLikeIconProps> = ({
 }) => {
   const [likedState, setLikedState] = useState(false);
   const hasToken = !!localStorage.getItem("token");
-
+  const authContext = useContext(AuthContext);
+  const functFavourite = authContext.getFavouriteProps;
+  
   function checkId(dataFavourite: any, idd: any) {
+    // console.log(dataFavourite,"ggggggggggggg")
     return dataFavourite.some((obj: any) => obj._id === idd);
   }
   useEffect(() => {
@@ -39,16 +44,20 @@ const BtnLikeIcon: FC<BtnLikeIconProps> = ({
       onClick={() => {
         setLikedState((prevLikedState) => {
           const newLikedState = !prevLikedState;
-          console.log(newLikedState, "liked state changed");
-          if (newLikedState) {
-            addtoSavedList(idd);
+          if (hasToken) {
+            if (newLikedState) {
+              addtoSavedList(idd);
+              // functFavourite();
+            } else {
+              delFromSavedList(idd);
+              functFavourite();
+            }
           } else {
-            delFromSavedList(idd);
+            toast.error(<>You must be logged in to add property..</>);
           }
           return newLikedState;
         });
       }}
-      // onChange={}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

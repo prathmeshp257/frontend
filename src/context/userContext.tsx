@@ -14,11 +14,14 @@ interface UserData {
 }
 
 interface AuthContextProps {
+  setFavPropData: any;
   favPropData: any;
   userData: UserData;
   onLogout: () => void;
   getAdminData: () => Promise<void>;
   getFavouriteProps: () => Promise<void>;
+  addtoSavedList: (idd: any) => Promise<void>;
+  delFromSavedList: (idd: any) => Promise<void>;
   reloadUserData: () => void;
   loading: boolean;
 }
@@ -38,6 +41,9 @@ const initialState: AuthContextProps = {
   reloadUserData: () => {},
   loading: false,
   favPropData: [],
+  setFavPropData: async () => {},
+  addtoSavedList: async (idd: any) => {},
+  delFromSavedList: async (idd: any) => {},
 };
 
 const AuthContext = createContext<AuthContextProps>(initialState);
@@ -116,9 +122,60 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         <>
           Please login
           <br />
-           To save properties
+          To save get properties nnnnnnnnnn
         </>
       );
+      // setLoading(false);
+    }
+  };
+  const addtoSavedList = async (idd: any) => {
+    const token = localStorage.getItem("token");
+    // setLoading(true);
+    try {
+      const response = await axios.post(
+        `${API_URL}/users/add-fav`,
+        {
+          propId: idd,
+        },
+        {
+          headers: {
+            token: token,
+          },
+        }
+      );
+      if (response.data.error === false) {
+        console.log(response, "add fav");
+        toast.success(<>Property Saved!</>);
+        getFavouriteProps();
+      }
+    } catch (err) {
+      console.error("error while fetching userInfo", err);
+      toast.error(`${err}`);
+      // setLoading(false);
+    }
+    // console.log(dataFavourite, "dataFavourite");
+  };
+  const delFromSavedList = async (idd: any) => {
+    const token = localStorage.getItem("token");
+    // setLoading(true);
+    try {
+      const response = await axios.post(
+        `${API_URL}/users/del-fav`,
+        {
+          propId: idd,
+        },
+        {
+          headers: {
+            token: token,
+          },
+        }
+      );
+      if (response.data.error === false) {
+        toast.error(<>Property removed!</>);
+      }
+    } catch (err) {
+      console.error("error removing property from favourite", err);
+      toast.error(`${err}`);
       // setLoading(false);
     }
   };
@@ -155,6 +212,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     reloadUserData,
     loading,
     favPropData,
+    setFavPropData,
+    addtoSavedList,
+    delFromSavedList,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
