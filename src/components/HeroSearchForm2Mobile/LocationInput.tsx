@@ -3,7 +3,8 @@ import {
   MapPinIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
-import React, { useState, useEffect, useRef, FC } from "react";
+import { AuthContext } from "context/userContext";
+import React, { useState, useEffect, useRef, FC, useContext } from "react";
 
 interface Props {
   onClick?: () => void;
@@ -19,23 +20,29 @@ const LocationInput: FC<Props> = ({
   defaultValue = "United States",
   headingText = "Where to?",
 }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const [value, setValue] = useState("");
-  const [renderRecentSearch, setRenderRecentSearch] = useState(false);
-  const containerRef = useRef(null);
-  const inputRef = useRef(null);
 
-  useEffect(() => {
-    setValue(defaultValue);
-  }, [defaultValue]);
+  const authContext = useContext(AuthContext);
+  const searchLocationValue = authContext.searchLocationValue;
+  const setSearchLocationValue = authContext.setSearchLocationValue;
+  const getPropertyFunc = authContext.getPropertyData;
 
-  const handleSelectLocation = (item: string) => {
-    // DO NOT REMOVE SETTIMEOUT FUNC
-    setTimeout(() => {
-      setValue(item);
-      onChange && onChange(item);
-    }, 0);
+  const handleChangeData = (e: any) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      setSearchLocationValue(e.currentTarget.value);
+      getPropertyFunc();
+    } else if (e.currentTarget.value.trim() === "") {
+      getPropertyFunc();
+    }
   };
 
+  const handleSelectLocation = (item: string) => {
+    setValue(item);
+  };
   const renderSearchValues = ({
     heading,
     items,
@@ -75,8 +82,8 @@ const LocationInput: FC<Props> = ({
           {[
             "Hamptons, Suffolk County, NY",
             "Las Vegas, NV, United States",
-            // "Ueno, Taito, Tokyo",
-            // "Ikebukuro, Toshima, Tokyo",
+            "Ueno, Taito, Tokyo",
+            "Ikebukuro, Toshima, Tokyo",
           ].map((item) => (
             <span
               onClick={() => handleSelectLocation(item)}
@@ -106,16 +113,20 @@ const LocationInput: FC<Props> = ({
           <input
             className={`block w-full bg-transparent border px-4 py-3 pr-12 border-neutral-900 dark:border-neutral-200 rounded-xl focus:ring-0 focus:outline-none text-base leading-none placeholder-neutral-500 dark:placeholder-neutral-300 truncate font-bold placeholder:truncate`}
             placeholder={"Search destinations"}
-            value={value}
-            onFocus={() => setRenderRecentSearch(true)}
-            onChange={(e) => setValue(e.currentTarget.value)}
+            value={searchLocationValue}
+            onChange={(e) => {
+              setSearchLocationValue(e.currentTarget.value);
+            }}
+            onKeyDown={(e) => {
+              handleChangeData(e);
+            }}
             ref={inputRef}
           />
           <span className="absolute right-2.5 top-1/2 -translate-y-1/2">
             <MagnifyingGlassIcon className="w-5 h-5 text-neutral-700 dark:text-neutral-400" />
           </span>
         </div>
-        {renderRecentSearch ? renderRecentSearches(): ""}
+        {/* {renderRecentSearch ? renderRecentSearches(): ""} */}
       </div>
     </div>
   );

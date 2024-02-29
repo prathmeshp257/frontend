@@ -27,7 +27,6 @@ const BtnLikeIcon: FC<BtnLikeIconProps> = ({
   const functFavourite = authContext.getFavouriteProps;
   
   function checkId(dataFavourite: any, idd: any) {
-    // console.log(dataFavourite,"ggggggggggggg")
     return dataFavourite.some((obj: any) => obj._id === idd);
   }
   useEffect(() => {
@@ -47,7 +46,6 @@ const BtnLikeIcon: FC<BtnLikeIconProps> = ({
           if (hasToken) {
             if (newLikedState) {
               addtoSavedList(idd);
-              // functFavourite();
             } else {
               delFromSavedList(idd);
               functFavourite();

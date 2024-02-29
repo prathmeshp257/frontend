@@ -14,6 +14,7 @@ interface UserData {
 }
 
 interface AuthContextProps {
+  getPropertyData: any;
   setFavPropData: any;
   favPropData: any;
   userData: UserData;
@@ -24,6 +25,12 @@ interface AuthContextProps {
   delFromSavedList: (idd: any) => Promise<void>;
   reloadUserData: () => void;
   loading: boolean;
+  searchLocationValue: string;
+  setSearchLocationValue: React.Dispatch<React.SetStateAction<string>>;
+  guests: number;
+  setGuests: React.Dispatch<React.SetStateAction<number>>;
+  info: any[]; // Include the info state
+  setInfo: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
 const initialState: AuthContextProps = {
@@ -35,15 +42,22 @@ const initialState: AuthContextProps = {
     phoneNumber: "",
     image: "",
   },
-  onLogout: () => {},
-  getAdminData: async () => {},
-  getFavouriteProps: async () => {},
-  reloadUserData: () => {},
+  onLogout: () => { },
+  getAdminData: async () => { },
+  getFavouriteProps: async () => { },
+  reloadUserData: () => { },
   loading: false,
   favPropData: [],
-  setFavPropData: async () => {},
-  addtoSavedList: async (idd: any) => {},
-  delFromSavedList: async (idd: any) => {},
+  setFavPropData: async () => { },
+  addtoSavedList: async (idd: any) => { },
+  delFromSavedList: async (idd: any) => { },
+  searchLocationValue: "",
+  setSearchLocationValue: () => { },
+  guests: 0,
+  setGuests: () => { },
+  info: [], // Initialize info state
+  setInfo: () => { },
+  getPropertyData: () => { },
 };
 
 const AuthContext = createContext<AuthContextProps>(initialState);
@@ -63,6 +77,10 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   } as any);
   const [favPropData, setFavPropData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  //search bar feature
+  const [info, setInfo] = useState<any[]>([]);
+  const [searchLocationValue, setSearchLocationValue] = useState<string>("");
+  const [guests, setGuests] = useState(0);
 
   const onLogout = () => {
     setUserData(initialState.userData);
@@ -106,7 +124,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
   const getFavouriteProps = async () => {
     const token = localStorage.getItem("token");
-    // setLoading(true);
     try {
       const response = await axios.get(`${API_URL}/users/get-fav`, {
         headers: {
@@ -117,20 +134,11 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setFavPropData(response.data.favourites);
       }
     } catch (err) {
-      console.error("error while fetching userInfo", err);
-      toast.error(
-        <>
-          Please login
-          <br />
-          To save get properties nnnnnnnnnn
-        </>
-      );
-      // setLoading(false);
+      console.error("Error fetching saved properties", err);
     }
   };
   const addtoSavedList = async (idd: any) => {
     const token = localStorage.getItem("token");
-    // setLoading(true);
     try {
       const response = await axios.post(
         `${API_URL}/users/add-fav`,
@@ -144,20 +152,16 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
       );
       if (response.data.error === false) {
-        console.log(response, "add fav");
         toast.success(<>Property Saved!</>);
         getFavouriteProps();
       }
     } catch (err) {
       console.error("error while fetching userInfo", err);
       toast.error(`${err}`);
-      // setLoading(false);
     }
-    // console.log(dataFavourite, "dataFavourite");
   };
   const delFromSavedList = async (idd: any) => {
     const token = localStorage.getItem("token");
-    // setLoading(true);
     try {
       const response = await axios.post(
         `${API_URL}/users/del-fav`,
@@ -176,30 +180,35 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } catch (err) {
       console.error("error removing property from favourite", err);
       toast.error(`${err}`);
-      // setLoading(false);
     }
   };
+
+    const getPropertyData = async (filter_type: String) => {
+      try {
+        const response = await axios.post(`${API_URL}/property/get-property`, {
+          locationSearch: searchLocationValue,
+          guestsSearch: guests,
+        });
+        if (response.data.error === false) {
+          setInfo(response.data.propertydata);
+        }
+      } catch (err) {
+        toast.error("Error while fetching properties data");
+        console.error("Error while fetching properties data", err);
+      }
+    };
   const pathnameArray = ["login", "signup", "detail"];
   useEffect(() => {
     const hasToken = !!localStorage.getItem("token");
     const currentPathname = window?.location?.pathname.substring(1);
-    // if (
-    //   !pathnameArray.includes(currentPathname) &&
-    //   currentPathname !== "" &&
-    //   !hasToken
-    // ) {
-    //   onLogout();
-    // }
     const isValidPathname =
       !pathnameArray.includes(currentPathname) && currentPathname !== "";
-    // && currentPathname !== "detail";
 
     if (isValidPathname && !hasToken) {
       onLogout();
     }
     if (hasToken) {
       getAdminData();
-      // getFavouriteProps();
     }
   }, []);
   const reloadUserData = () => {};
@@ -215,6 +224,13 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setFavPropData,
     addtoSavedList,
     delFromSavedList,
+    searchLocationValue,
+    setSearchLocationValue,
+    guests,
+    setGuests,
+    setInfo,
+    info,
+    getPropertyData,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

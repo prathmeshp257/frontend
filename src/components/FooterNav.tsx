@@ -76,9 +76,12 @@ const FooterNav = () => {
     authContext.onLogout();
   };
   const [active, setActive] = useState<string>("/home");
-
+  // const activeButtonDefault = () =>{
+  //   hasToken?setActive("/home"):setActive("/login");
+  // } 
   useEffect(() => {
     window.addEventListener("scroll", handleEvent);
+    // activeButtonDefault();
   }, []);
 
   const handleEvent = () => {
@@ -117,6 +120,7 @@ const FooterNav = () => {
       handleLogoutClick();
     }
   };
+
   return (
     <div
       ref={containerRef}
@@ -127,7 +131,6 @@ const FooterNav = () => {
         {/* MENU */}
         {hasToken
           ? NAV.map((item, index) => {
-              // const active = window.location.pathname === item.name;
               const isActive = active === item.active_id;
               if (item.link && !excludedRoutes.includes(item.name)) {
                 return (
@@ -163,17 +166,7 @@ const FooterNav = () => {
                 );
               }
             })
-          : // !excludedRoutes.includes(window.location.pathname) && //
-            // (
-            //     <ButtonPrimary
-            //       sizeClass="px-2 py-2 sm:px-2 sm:py-2"
-            //       fontSize="text-xs sm:text-sm font-medium"
-            //       href="/login"
-            //       className="w-full"
-            //     >
-            //       Login
-            //     </ButtonPrimary>
-            //   )
+          : 
             NAV2.map((item, index) => {
               const isActive = active === item.active_id;
               if (item.link && !excludedRoutes.includes(item.name)) {

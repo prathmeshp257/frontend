@@ -8,7 +8,6 @@ import Checkbox from "shared/Checkbox/Checkbox";
 import Slider from "rc-slider";
 import convertNumbThousand from "utils/convertNumbThousand";
 
-// DEMO DATA
 const typeOfPaces = [
   {
     defaultChecked: false,
@@ -138,7 +137,6 @@ const TabFilters: FC<filterCardProps> = ({
         return prevFilter;
       });
     } else {
-      // Remove the value from the array
       setTypefilter((prevFilter: string[]) =>
         prevFilter.filter((item: string) => item !== name)
       );
@@ -158,7 +156,6 @@ const TabFilters: FC<filterCardProps> = ({
         return newArray;
       });
     } else {
-      // Remove the value from the array
       setState((newArray: string[]) =>
         newArray.filter((item: string) => item !== name)
       );
@@ -525,7 +522,6 @@ const handleClearMoreFilterMobile = () =>{
                   {/* copy */}
                   <div className="p-5 bg-neutral-50 dark:bg-neutral-900 dark:border-t dark:border-neutral-800 flex items-center justify-between">
                     <ButtonThird
-                      // onClick={close}
                       onClick={() => {
                         handleClearPricefilter();
                         close();

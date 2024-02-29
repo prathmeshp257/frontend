@@ -15,7 +15,6 @@ import SetOtp from "containers/ForgetPassword/otp";
 import AccountPage from "containers/AccountPage/AccountPage";
 import AccountPass from "containers/AccountPage/AccountPass";
 import AccountBilling from "containers/AccountPage/AccountBilling";
-// favourites
 import AccountSavelists from "containers/AccountPage/AccountSavelists";
 
 

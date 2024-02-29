@@ -119,8 +119,6 @@ const SectionGridFilterCard: FC<SectionGridFilterCardProps> = ({
             data={property}
             className="shadow-2xl"
             size={"default"}
-            // favourite={favourite}
-            // setFavourite={setFavourite}
           />
         ))}
       </div>

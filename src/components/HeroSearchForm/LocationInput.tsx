@@ -1,5 +1,3 @@
-"use client";
-
 import { ClockIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import React, { useState, useRef, useEffect, FC } from "react";
 import ClearDataButton from "./ClearDataButton";
@@ -40,11 +38,9 @@ const LocationInput: FC<LocationInputProps> = ({
   }, [autoFocus]);
 
   const handleChangeData = (e: any) => {
-    console.log("handle", e);
     if (e.key === "Enter") {
       e.preventDefault();
       setSearchLocationValue(e.currentTarget.value);
-      console.log("setSearchLocationValue", searchLocationValue);
       getPropertyFunc();
     } else if (e.currentTarget.value.trim() === "") {
       getPropertyFunc();
@@ -76,67 +72,9 @@ const LocationInput: FC<LocationInputProps> = ({
     // CLICK OUT_SIDE
     setShowPopover(false);
   };
-
   const handleSelectLocation = (item: string) => {
     setValue(item);
     setShowPopover(false);
-  };
-
-  const renderRecentSearches = () => {
-    return (
-      <>
-        <h3 className="block mt-2 sm:mt-0 px-4 sm:px-8 font-semibold text-base sm:text-lg text-neutral-800 dark:text-neutral-100">
-          Recent searches
-        </h3>
-        <div className="mt-2">
-          {[
-            "Hamptons, Suffolk County, NY",
-            "Las Vegas, NV, United States",
-            "Ueno, Taito, Tokyo",
-            "Ikebukuro, Toshima, Tokyo",
-          ].map((item) => (
-            <span
-              onClick={() => handleSelectLocation(item)}
-              key={item}
-              className="flex px-4 sm:px-8 items-center space-x-3 sm:space-x-4 py-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 cursor-pointer"
-            >
-              <span className="block text-neutral-400">
-                <ClockIcon className="h-4 sm:h-6 w-4 sm:w-6" />
-              </span>
-              <span className=" block font-medium text-neutral-700 dark:text-neutral-200">
-                {item}
-              </span>
-            </span>
-          ))}
-        </div>
-      </>
-    );
-  };
-
-  const renderSearchValue = () => {
-    return (
-      <>
-        {[
-          "Ha Noi, Viet Nam",
-          "San Diego, CA",
-          "Humboldt Park, Chicago, IL",
-          "Bangor, Northern Ireland",
-        ].map((item) => (
-          <span
-            onClick={() => handleSelectLocation(item)}
-            key={item}
-            className="flex px-4 sm:px-8 items-center space-x-3 sm:space-x-4 py-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 cursor-pointer"
-          >
-            <span className="block text-neutral-400">
-              <ClockIcon className="h-4 w-4 sm:h-6 sm:w-6" />
-            </span>
-            <span className="block font-medium text-neutral-700 dark:text-neutral-200">
-              {item}
-            </span>
-          </span>
-        ))}
-      </>
-    );
   };
 
   return (
@@ -183,12 +121,6 @@ const LocationInput: FC<LocationInputProps> = ({
           className={`h-8 absolute self-center top-1/2 -translate-y-1/2 z-0 bg-white dark:bg-neutral-800 ${divHideVerticalLineClass}`}
         ></div>
       )}
-      {/* 
-      {showPopover && (
-        <div className="absolute left-0 z-40 w-full min-w-[300px] sm:min-w-[500px] bg-white dark:bg-neutral-800 top-full mt-3 py-3 sm:py-6 rounded-3xl shadow-xl max-h-96 overflow-y-auto">
-          {value ? renderSearchValue() : renderRecentSearches()}
-        </div>
-      )} */}
     </div>
   );
 };

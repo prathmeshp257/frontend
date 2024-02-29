@@ -66,6 +66,7 @@ useEffect(() => {
                     setGuestAdultsInputValue(0);
                     setGuestChildrenInputValue(0);
                     setGuestInfantsInputValue(0);
+                    getPropertyFunc();
                   }}
                 />
               )}
@@ -114,25 +115,15 @@ useEffect(() => {
               <NcInputNumber
                 className="w-full"
                 defaultValue={0}
-                // onChange={(value) => handleChangeGuestValue(value)}
-                // onChange={() => handleChangeGuestValue(totalGuests)}
                 max={10}
-                // min={1}
                 roomOFbeds={guestAdultsInputValue}
                 setRoomOFbeds={setGuestAdultsInputValue}
                 label="Adults"
                 desc="Ages 13 or above"
               />
-              {/* <NcInputNumber
-                label="Beds"
-                max={10}
-                roomOFbeds={beds}
-                setRoomOFbeds={setBeds}
-              /> */}
               <NcInputNumber
                 className="w-full mt-6"
                 defaultValue={0}
-                // onChange={() => handleChangeGuestValue(totalGuests)}
                 max={4}
                 roomOFbeds={guestChildrenInputValue}
                 setRoomOFbeds={setGuestChildrenInputValue}
@@ -143,7 +134,6 @@ useEffect(() => {
               <NcInputNumber
                 className="w-full mt-6"
                 defaultValue={0}
-                // onChange={(value) => handleChangeData(value, "guestInfants")}
                 max={4}
                 roomOFbeds={guestInfantsInputValue}
                 setRoomOFbeds={setGuestInfantsInputValue}

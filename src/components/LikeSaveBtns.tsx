@@ -15,17 +15,12 @@ const LikeSaveBtns: FC<savePropDetailPage> = ({ propID }) => {
   const delFromSavedList = authContext.delFromSavedList;
   const dataFavourite = authContext.favPropData;
   
-  // const toggleSaved = () => {
-  //   setIsSaved((prevState) => !prevState);
-  // };
     function checkIdforFav(dataFavourite: any, propID: any) {
-      // console.log(dataFavourite,"ggggggggggggg")
       return dataFavourite.some((obj: any) => obj._id === propID);
     }
   useEffect(() => {
     const result = checkIdforFav(dataFavourite, propID);
     setIsSaved(result);
-    console.log(propID, "prrrrrrrrrrr");
   }, []);
   return (
     <div className="flow-root">
@@ -38,7 +33,6 @@ const LikeSaveBtns: FC<savePropDetailPage> = ({ propID }) => {
               if (hasToken) {
                 if (newLikedState) {
                   addtoSavedList(propID);
-                  // functFavourite();
                 } else {
                   delFromSavedList(propID);
                   functFavourite();
@@ -53,8 +47,6 @@ const LikeSaveBtns: FC<savePropDetailPage> = ({ propID }) => {
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5"
-            // fill="#E75480"
-            // fill="none"
             fill={hasToken && isSaved ? "#E75480" : "none"}
             viewBox="0 0 24 24"
             stroke="#E75480"

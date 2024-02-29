@@ -73,7 +73,6 @@ const StayCard: FC<StayCardProps> = ({
     : `${street} ${city} ${state}, ${country} ${postal_code}`;
   const reviewStart = 4.8;
   const reviewCount = 28;
-  // const like =  favourite;
   const getPriceForToday = () => {
     const daysOfWeek = [
       sunday,
@@ -118,7 +117,6 @@ const StayCard: FC<StayCardProps> = ({
           href={`/detail?propID=${_id}`}
         />
         <BtnLikeIcon
-          // isLiked={like}
           addtoSavedList={addtoSavedList}
           idd={_id}
           dataFavourite={dataFavourite}
@@ -137,7 +135,6 @@ const StayCard: FC<StayCardProps> = ({
             {type} . {beds} beds
           </span>
           <div className="flex items-center space-x-2">
-            {/* {isAds && <Badge name="ADS" color="green" />} */}
             <h2
               className={` font-medium capitalize ${
                 size === "default" ? "text-lg" : "text-base"

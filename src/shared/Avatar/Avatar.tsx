@@ -23,7 +23,7 @@ const Avatar: FC<AvatarProps> = ({
 }) => 
 
 {
-  // const hasToken = !!localStorage.getItem("token");
+  const displayImg = imgUrl || "";
   const name = userName ? userName : "Default name";
   const _setBgColor = (name: string) => {
     const backgroundIndex = Math.floor(
@@ -35,16 +35,16 @@ const q = "border flex gap-4 px-2 py-1";
   return (
     <div
       className={`wil-avatar relative flex-shrink-0 inline-flex items-center justify-center text-neutral-100 uppercase font-semibold shadow-inner ${radius} ${sizeClass} ${containerClassName}`}
-      style={{ backgroundColor: imgUrl ? undefined : _setBgColor(name) }}
+      style={{ backgroundColor: displayImg ? "" : _setBgColor(name) }}
     >
-      {imgUrl && (
+      {displayImg && (
         <img
           className={`absolute inset-0 w-full h-full object-cover ${radius}`}
-          src={imgUrl}
+          src={displayImg}
           alt={name}
-        /> ||
-      <span className="wil-avatar__name">{name[0]}</span>
-      )}
+        />
+        )}
+        <span className="wil-avatar__name">{name[0]}</span>
 
       {hasChecked && (
         <span

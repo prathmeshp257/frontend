@@ -162,8 +162,8 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
             <div className="relative rounded-full overflow-hidden flex">
               <Avatar
                 sizeClass="w-32 h-32"
-                imgUrl={image || dataAdmin.image}
-                userName={name || dataAdmin.name}
+                imgUrl={image? image: dataAdmin?.image}
+                userName={ dataAdmin?.name}
               />
               <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center text-neutral-50 cursor-pointer">
                 <svg

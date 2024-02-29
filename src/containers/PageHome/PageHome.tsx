@@ -19,7 +19,6 @@ export interface ListingStayPageProps {
 
 const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
   const [loading, setLoading] = useState(false);
-  const [info, setInfo] = useState<any[]>([]);
   const [typevalues, setTypevalues] = useState<string[]>([]);
   const [rangePrices, setRangePrices] = useState({ min: 0, max: 0 });
   const [beds, setBeds] = useState(0);
@@ -28,12 +27,19 @@ const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
   const [amenitiesValues, setAmenitiesValues] = useState<string[]>([]);
   const [houseRulesValues, setHouseRulesValues] = useState<string[]>([]);
   //search bar feature
-  const [searchLocationValue, setSearchLocationValue] = useState<string>("");
-  const [guests, setGuests] = useState(0);
+  // const [searchLocationValue, setSearchLocationValue] = useState<string>("");
+  // const [guests, setGuests] = useState(0);
   //like feature
   const [favourite, setFavourite] = useState(false);
   const authContext = useContext(AuthContext);
   const functFavourite = authContext.getFavouriteProps;
+  const searchLocationValue = authContext.searchLocationValue;
+  const setSearchLocationValue = authContext.setSearchLocationValue;
+  const guests = authContext.guests;
+  const setGuests = authContext.setGuests;
+  const setInfo = authContext.setInfo;
+  const info = authContext.info;
+
   const hasToken = !!localStorage.getItem("token");
   const getPropertyData = async (filter_type: String) => {
     try {
@@ -91,11 +97,6 @@ const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
 
       <div className="container relative overflow-hidden">
         {/* HERO SECTION */}
-        {/* <div className="hidden lg:flow-root w-full">
-          <div className="z-10 lg:-mt-40 xl:-mt-56 w-full">
-            <HeroSearchForm />
-          </div>
-        </div> */}
         <SectionHeroArchivePage
           getPropertyFunc={getPropertyData}
           searchLocationValue={searchLocationValue}

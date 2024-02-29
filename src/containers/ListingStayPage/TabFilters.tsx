@@ -8,7 +8,6 @@ import Checkbox from "shared/Checkbox/Checkbox";
 import Slider from "rc-slider";
 import convertNumbThousand from "utils/convertNumbThousand";
 
-// DEMO DATA
 const typeOfPaces = [
   {
     name: "Entire place",

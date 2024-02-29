@@ -8,12 +8,7 @@ export interface HeaderProps {
 
 const Header: FC<HeaderProps> = ({ navType = "MainNav2", className = "" }) => {
   const renderNav = () => {
-    switch (navType) {
-      case "MainNav2":
         return <MainNav2 />;
-      default:
-        return <MainNav2 />;
-    }
   };
 
   return (

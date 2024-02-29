@@ -30,21 +30,10 @@ const SectionHeroArchivePage: FC<SectionHeroArchivePageProps> = ({
   rightImage = imagePng,
 }) => {
   return (
-    // <div
-    //   className={`nc-SectionHeroArchivePage flex flex-col relative ${className}`}
-    //   data-nc-id="SectionHeroArchivePage"
-    // >
-    //       <HeroSearchForm currentPage={currentPage} currentTab={currentTab} />
-    // </div>
     <div
       className={`nc-SectionHeroArchivePage flex flex-col relative ${className}`}
       data-nc-id="SectionHeroArchivePage"
     >
-      {/* <div className="hidden lg:flow-root w-full">
-          <div className="z-10 lg:-mt-40 xl:-mt-56 w-full">
-            <HeroSearchForm />
-          </div>
-        </div> */}
       <div className="hidden lg:flow-root w-full">
         <div className="z-10 lg:-mt-10 xl:-mt-12 w-full">
           <HeroSearchForm

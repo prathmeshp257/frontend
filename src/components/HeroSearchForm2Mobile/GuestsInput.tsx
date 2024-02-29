@@ -1,6 +1,7 @@
 import { GuestsObject } from "components/HeroSearchForm/type";
 import NcInputNumber from "components/NcInputNumber/NcInputNumber";
-import React, { useEffect, useState } from "react";
+import { AuthContext } from "context/userContext";
+import React, { useContext, useEffect, useState } from "react";
 import { FC } from "react";
 export interface GuestsInputProps {
   defaultValue?: GuestsObject;
@@ -13,6 +14,11 @@ const GuestsInput: FC<GuestsInputProps> = ({
   onChange,
   className = "",
 }) => {
+    const authContext = useContext(AuthContext);
+    const setGuests = authContext.setGuests;
+    const guests = authContext.guests;
+    const getPropertyFunc = authContext.getPropertyData;
+    
   const [guestAdultsInputValue, setGuestAdultsInputValue] = useState(
     defaultValue?.guestAdults || 0
   );

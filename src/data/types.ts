@@ -78,13 +78,13 @@ export interface StayDataCard {
   beds: number;
   bathrooms: number;
   kitchen: number;
-  amenities: string[]; // Adjust based on the actual type of amenities
+  amenities: string[]; 
   pet: boolean;
   party_organizing: boolean;
   cooking: boolean;
   smoking: boolean;
   drinking: boolean;
-  additional_rules: string[]; // Adjust based on the actual type of additional_rules
+  additional_rules: string[]; 
   place_descriptions: string;
   monday: number;
   tuesday: number;
@@ -96,7 +96,7 @@ export interface StayDataCard {
   night_min: number;
   night_max: number;
   cover_image: string;
-  galleryImgs: string[]; // Adjust based on the actual type of galleryImgs
+  galleryImgs: string[]; 
 };
 export interface StayDataType {
   _id: (Key | null | undefined) & String;
@@ -116,13 +116,13 @@ export interface StayDataType {
   beds: number;
   bathrooms: number;
   kitchen: number;
-  amenities: string[]; // Adjust based on the actual type of amenities
+  amenities: string[]; 
   pet: boolean;
   party_organizing: boolean;
   cooking: boolean;
   smoking: boolean;
   drinking: boolean;
-  additional_rules: string[]; // Adjust based on the actual type of additional_rules
+  additional_rules: string[]; 
   place_descriptions: string;
   monday: number;
   tuesday: number;

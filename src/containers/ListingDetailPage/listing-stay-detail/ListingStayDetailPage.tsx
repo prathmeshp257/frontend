@@ -1,4 +1,5 @@
 import React, { FC, Fragment, useEffect, useState } from "react";
+import { ClockIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import CommentListing from "components/CommentListing/CommentListing";
 import FiveStartIconForRate from "components/FiveStartIconForRate/FiveStartIconForRate";
 import StartRating from "components/StartRating/StartRating";
@@ -22,24 +23,24 @@ import moment from "moment";
 
 const StayDetailPageContainer: FC<{}> = () => {
   const [propertyData, setPropertyData] = useState<any>({});
-  const [ownerJoinDate, setOwnerJoinDate] = useState<String>("");
+  const [totalOwnerProperty, setTotalOwnerProperty] = useState<number>(0);
   const queryParams = new URLSearchParams(window.location.search);
   const propIdParam = queryParams.get("propID");
 
   const pathname = window.location.pathname;
 
   const getOnePropertyDetails = async () => {
-    const token = localStorage.getItem("token");
     try {
       const response = await axios.get(
         `${API_URL}/property/get-propertyCard-details?id=${propIdParam}`
       );
       if (response.data.error === false) {
         setPropertyData(response.data.propertyDetails);
+        setTotalOwnerProperty(response.data.countTotalProperties);
       }
     } catch (err) {
-      toast.error("Error while fetching properties data");
-      console.error("error while fetching properties data", err);
+      toast.error("Error while fetching property details");
+      console.error("Error fetching details", err);
     }
   };
   //
@@ -456,8 +457,6 @@ const StayDetailPageContainer: FC<{}> = () => {
             </a>
             <div className="mt-1.5 flex items-center text-sm text-neutral-500 dark:text-neutral-400">
               <StartRating />
-              <span className="mx-2">·</span>
-              <span> 12 places</span>
             </div>
           </div>
         </div>
@@ -488,28 +487,11 @@ const StayDetailPageContainer: FC<{}> = () => {
             </svg>
             <span>
               Joined in{" "}
-              {moment(propertyData?.ownerID?.updatedAt).format("MMMM YYYY")}
+              {moment(propertyData?.ownerID?.createdAt).format("MMMM YYYY")}
             </span>
           </div>
           <div className="flex items-center space-x-3">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
-              />
-            </svg>
-            <span>Response rate - 100%</span>
-          </div>
-          <div className="flex items-center space-x-3">
-            <svg
+            {/* <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6"
               fill="none"
@@ -522,17 +504,18 @@ const StayDetailPageContainer: FC<{}> = () => {
                 strokeWidth={1.5}
                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
               />
-            </svg>
+            </svg> */}
+            <MapPinIcon className="w-5 h-5 lg:w-6 lg:h-6" />
 
-            <span>Fast response - within a few hours</span>
+            <span>{totalOwnerProperty} places</span>
           </div>
         </div>
 
         {/* == */}
-        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>
+        {/* <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>
         <div>
           <ButtonSecondary href="/author">See host profile</ButtonSecondary>
-        </div>
+        </div> */}
       </div>
     );
   };
@@ -640,7 +623,6 @@ const StayDetailPageContainer: FC<{}> = () => {
                 key={index}
                 className="flex space-x-10 justify-between p-3 rounded-lg"
               >
-                {/* <span>{convertToAllowedString(item.rule)}</span> */}
                 <span className="flex gap-4">
                   {item.rule ? (
                     <svg
@@ -658,7 +640,6 @@ const StayDetailPageContainer: FC<{}> = () => {
                       />
                     </svg>
                   ) : (
-                    // </div>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-6 w-6 text-red-500 inline-block p-1 border-2 border-red-500 rounded-full"
@@ -720,7 +701,6 @@ const StayDetailPageContainer: FC<{}> = () => {
         <div className="relative grid grid-cols-3 sm:grid-cols-4 gap-1 sm:gap-2">
           <div
             className="col-span-2 row-span-3 sm:row-span-2 relative rounded-md sm:rounded-xl overflow-hidden cursor-pointer "
-            // onClick={handleOpenModalImageGallery}
           >
             <img
               className="absolute inset-0 object-cover rounded-md sm:rounded-xl w-full h-full"
@@ -749,7 +729,6 @@ const StayDetailPageContainer: FC<{}> = () => {
               {/* OVERLAY */}
               <div
                 className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-100 transition-opacity cursor-pointer"
-                // onClick={handleOpenModalImageGallery}
               />
             </div>
           ))}
