@@ -14,31 +14,34 @@ const GuestsInput: FC<GuestsInputProps> = ({
   onChange,
   className = "",
 }) => {
-    const authContext = useContext(AuthContext);
-    const setGuests = authContext.setGuests;
-    const guests = authContext.guests;
-    const getPropertyFunc = authContext.getPropertyData;
-    
-  const [guestAdultsInputValue, setGuestAdultsInputValue] = useState(
-    defaultValue?.guestAdults || 0
-  );
-  const [guestChildrenInputValue, setGuestChildrenInputValue] = useState(
-    defaultValue?.guestChildren || 0
-  );
-  const [guestInfantsInputValue, setGuestInfantsInputValue] = useState(
-    defaultValue?.guestInfants || 0
-  );
+  const authContext = useContext(AuthContext);
+  const setGuests = authContext.setGuests;
+  const guests = authContext.guests;
+  const getPropertyFunc = authContext.getPropertyData;
+  const guestAdultsInputValue = authContext.guestAdultsInputValue;
+  const setGuestAdultsInputValue = authContext.setGuestAdultsInputValue;
+  const guestChildrenInputValue = authContext.guestChildrenInputValue;
+  const setGuestChildrenInputValue = authContext.setGuestChildrenInputValue;
+  const guestInfantsInputValue = authContext.guestInfantsInputValue;
+  const setGuestInfantsInputValue = authContext.setGuestInfantsInputValue;
+  
 
-  useEffect(() => {
-    setGuestAdultsInputValue(defaultValue?.guestAdults || 0);
-  }, [defaultValue?.guestAdults]);
-  useEffect(() => {
-    setGuestChildrenInputValue(defaultValue?.guestChildren || 0);
-  }, [defaultValue?.guestChildren]);
-  useEffect(() => {
-    setGuestInfantsInputValue(defaultValue?.guestInfants || 0);
-  }, [defaultValue?.guestInfants]);
+  const totalGuests = guestChildrenInputValue + guestAdultsInputValue;
+  // useEffect(() => {
+  //   setGuestAdultsInputValue(defaultValue?.guestAdults || 0);
+  // }, [defaultValue?.guestAdults]);
+  // useEffect(() => {
+  //   setGuestChildrenInputValue(defaultValue?.guestChildren || 0);
+  // }, [defaultValue?.guestChildren]);
+  // useEffect(() => {
+  //   setGuestInfantsInputValue(defaultValue?.guestInfants || 0);
+  // }, [defaultValue?.guestInfants]);
 
+useEffect(() => {
+  setGuests(totalGuests);
+  console.log(guestAdultsInputValue, "1st");
+  console.log(guestChildrenInputValue, "2nd");
+}, [totalGuests]);
   const handleChangeData = (value: number, type: keyof GuestsObject) => {
     let newValue = {
       guestAdults: guestAdultsInputValue,
@@ -59,7 +62,6 @@ const GuestsInput: FC<GuestsInputProps> = ({
     }
     onChange && onChange(newValue);
   };
-
   return (
     <div className={`flex flex-col relative p-5 ${className}`}>
       <span className="mb-5 block font-semibold text-xl sm:text-2xl">
@@ -68,15 +70,19 @@ const GuestsInput: FC<GuestsInputProps> = ({
       <NcInputNumber
         className="w-full"
         defaultValue={guestAdultsInputValue}
-        onChange={(value) => handleChangeData(value, "guestAdults")}
+        // onChange={(value) => handleChangeData(value, "guestAdults")}
+        roomOFbeds={guestAdultsInputValue}
+        setRoomOFbeds={setGuestAdultsInputValue}
         max={20}
         label="Adults"
         desc="Ages 13 or above"
       />
       <NcInputNumber
         className="w-full mt-6"
-        defaultValue={guestChildrenInputValue}
-        onChange={(value) => handleChangeData(value, "guestChildren")}
+        defaultValue={0}
+        // onChange={(value) => handleChangeData(value, "guestChildren")}
+        roomOFbeds={guestChildrenInputValue}
+        setRoomOFbeds={setGuestChildrenInputValue}
         max={20}
         label="Children"
         desc="Ages 2–12"
@@ -84,8 +90,10 @@ const GuestsInput: FC<GuestsInputProps> = ({
 
       <NcInputNumber
         className="w-full mt-6"
-        defaultValue={guestInfantsInputValue}
-        onChange={(value) => handleChangeData(value, "guestInfants")}
+        defaultValue={0}
+        // onChange={(value) => handleChangeData(value, "guestInfants")}
+        roomOFbeds={guestInfantsInputValue}
+        setRoomOFbeds={setGuestInfantsInputValue}
         max={20}
         label="Infants"
         desc="Ages 0–2"

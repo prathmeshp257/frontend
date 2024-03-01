@@ -31,6 +31,15 @@ interface AuthContextProps {
   setGuests: React.Dispatch<React.SetStateAction<number>>;
   info: any[]; // Include the info state
   setInfo: React.Dispatch<React.SetStateAction<any[]>>;
+  //
+  guestAdultsInputValue: number; // Add guestAdultsInputValue state
+  setGuestAdultsInputValue: React.Dispatch<React.SetStateAction<number>>;
+  guestChildrenInputValue: number; // Add guestChildrenInputValue state
+  setGuestChildrenInputValue: React.Dispatch<React.SetStateAction<number>>;
+  guestInfantsInputValue: number; // Add guestInfantsInputValue state
+  setGuestInfantsInputValue: React.Dispatch<React.SetStateAction<number>>;
+  showModal: boolean;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const initialState: AuthContextProps = {
@@ -42,22 +51,31 @@ const initialState: AuthContextProps = {
     phoneNumber: "",
     image: "",
   },
-  onLogout: () => { },
-  getAdminData: async () => { },
-  getFavouriteProps: async () => { },
-  reloadUserData: () => { },
+  onLogout: () => {},
+  getAdminData: async () => {},
+  getFavouriteProps: async () => {},
+  reloadUserData: () => {},
   loading: false,
   favPropData: [],
-  setFavPropData: async () => { },
-  addtoSavedList: async (idd: any) => { },
-  delFromSavedList: async (idd: any) => { },
+  setFavPropData: async () => {},
+  addtoSavedList: async (idd: any) => {},
+  delFromSavedList: async (idd: any) => {},
   searchLocationValue: "",
-  setSearchLocationValue: () => { },
+  setSearchLocationValue: () => {},
   guests: 0,
-  setGuests: () => { },
+  setGuests: () => {},
   info: [], // Initialize info state
-  setInfo: () => { },
-  getPropertyData: () => { },
+  setInfo: () => {},
+  getPropertyData: () => {},
+  //
+  guestAdultsInputValue: 0, // Initialize guestAdultsInputValue
+  setGuestAdultsInputValue: () => {},
+  guestChildrenInputValue: 0, // Initialize guestChildrenInputValue
+  setGuestChildrenInputValue: () => {},
+  guestInfantsInputValue: 0, // Initialize guestInfantsInputValue
+  setGuestInfantsInputValue: () => {},
+  showModal: false,
+  setShowModal: () => {},
 };
 
 const AuthContext = createContext<AuthContextProps>(initialState);
@@ -81,6 +99,14 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [info, setInfo] = useState<any[]>([]);
   const [searchLocationValue, setSearchLocationValue] = useState<string>("");
   const [guests, setGuests] = useState(0);
+
+  const [guestAdultsInputValue, setGuestAdultsInputValue] = useState(0);
+  const [guestChildrenInputValue, setGuestChildrenInputValue] = useState(0);
+  const [guestInfantsInputValue, setGuestInfantsInputValue] = useState(0);
+  const totalGuests = guestAdultsInputValue + guestChildrenInputValue;
+  const [showModal, setShowModal] = useState(false);
+  // console.log(guests, "guessssssss");
+  // console.log(totalGuests, "totaaaaaal");
 
   const onLogout = () => {
     setUserData(initialState.userData);
@@ -182,27 +208,28 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       toast.error(`${err}`);
     }
   };
-
-    const getPropertyData = async (filter_type: String) => {
-      try {
-        const response = await axios.post(`${API_URL}/property/get-property`, {
-          locationSearch: searchLocationValue,
-          guestsSearch: guests,
-        });
-        if (response.data.error === false) {
-          setInfo(response.data.propertydata);
-        }
-      } catch (err) {
-        toast.error("Error while fetching properties data");
-        console.error("Error while fetching properties data", err);
+  const getPropertyData = async (filter_type: String) => {
+    console.log("ssssssssssssssssssssss", filter_type);
+    console.log("ssssssssssssssssssss");
+    try {
+      const response = await axios.post(`${API_URL}/property/get-property`, {
+        locationSearch: filter_type === "clear" ? "" : searchLocationValue,
+        guestsSearch: filter_type === "clear" ? 0 : totalGuests,
+      });
+      if (response.data.error === false) {
+        setInfo(response.data.propertydata);
       }
-    };
-  const pathnameArray = ["login", "signup", "detail"];
+    } catch (err) {
+      toast.error("Error while fetching properties data");
+      console.error("Error while fetching properties data", err);
+    }
+  };
+  const pathnameArray = ["/login", "/signup", "/detail"];
   useEffect(() => {
     const hasToken = !!localStorage.getItem("token");
-    const currentPathname = window?.location?.pathname.substring(1);
+    const currentPathname = window?.location?.pathname;
     const isValidPathname =
-      !pathnameArray.includes(currentPathname) && currentPathname !== "";
+      !pathnameArray.includes(currentPathname) && currentPathname !== "/";
 
     if (isValidPathname && !hasToken) {
       onLogout();
@@ -231,6 +258,14 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setInfo,
     info,
     getPropertyData,
+    guestAdultsInputValue, // Include guestAdultsInputValue state
+    setGuestAdultsInputValue,
+    guestChildrenInputValue, // Include guestChildrenInputValue state
+    setGuestChildrenInputValue,
+    guestInfantsInputValue, // Include guestInfantsInputValue state
+    setGuestInfantsInputValue,
+    showModal,
+    setShowModal,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

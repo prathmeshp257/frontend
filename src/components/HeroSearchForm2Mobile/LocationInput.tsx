@@ -27,6 +27,7 @@ const LocationInput: FC<Props> = ({
 
   const authContext = useContext(AuthContext);
   const searchLocationValue = authContext.searchLocationValue;
+  const setShowModal = authContext.setShowModal;
   const setSearchLocationValue = authContext.setSearchLocationValue;
   const getPropertyFunc = authContext.getPropertyData;
 
@@ -34,6 +35,7 @@ const LocationInput: FC<Props> = ({
     if (e.key === "Enter") {
       e.preventDefault();
       setSearchLocationValue(e.currentTarget.value);
+      setShowModal(false);
       getPropertyFunc();
     } else if (e.currentTarget.value.trim() === "") {
       getPropertyFunc();

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState, useContext } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import { FC } from "react";
 import ClearDataButton from "./ClearDataButton";
@@ -7,6 +7,7 @@ import { UserPlusIcon } from "@heroicons/react/24/outline";
 import { GuestsObject } from "./type";
 import NcInputNumber from "components/NcInputNumber/NcInputNumber";
 import { Link } from "react-router-dom";
+import { AuthContext } from "context/userContext";
 
 export interface GuestsInputProps {
   getPropertyFunc?: any;
@@ -27,13 +28,22 @@ const GuestsInput: FC<GuestsInputProps> = ({
   buttonSubmitHref = "/listing-stay-map",
   hasButtonSubmit = true,
 }) => {
-  const [guestAdultsInputValue, setGuestAdultsInputValue] = useState(0);
-  const [guestChildrenInputValue, setGuestChildrenInputValue] = useState(0);
-  const [guestInfantsInputValue, setGuestInfantsInputValue] = useState(0);
-   const totalGuests = guestChildrenInputValue + guestAdultsInputValue;
-useEffect(() => {
-  setGuests(totalGuests);
-}, [totalGuests]);
+  // const [guestAdultsInputValue, setGuestAdultsInputValue] = useState(0);
+  // const [guestChildrenInputValue, setGuestChildrenInputValue] = useState(0);
+  // const [guestInfantsInputValue, setGuestInfantsInputValue] = useState(0);
+  const authContext = useContext(AuthContext);
+  const guestAdultsInputValue = authContext.guestAdultsInputValue;
+  const setGuestAdultsInputValue = authContext.setGuestAdultsInputValue;
+  const guestChildrenInputValue = authContext.guestChildrenInputValue;
+  const setGuestChildrenInputValue = authContext.setGuestChildrenInputValue;
+  const guestInfantsInputValue = authContext.guestInfantsInputValue;
+  const setGuestInfantsInputValue = authContext.setGuestInfantsInputValue;
+  const totalGuests = guestChildrenInputValue + guestAdultsInputValue;
+  const getPropertyData = authContext.getPropertyData;
+
+  useEffect(() => {
+    setGuests(totalGuests);
+  }, [totalGuests]);
   return (
     <Popover className={`flex relative ${className}`}>
       {({ open }) => (
@@ -63,10 +73,10 @@ useEffect(() => {
               {!!totalGuests && open && (
                 <ClearDataButton
                   onClick={() => {
+                    setGuestInfantsInputValue(0);
                     setGuestAdultsInputValue(0);
                     setGuestChildrenInputValue(0);
-                    setGuestInfantsInputValue(0);
-                    getPropertyFunc();
+                    getPropertyData("clear");
                   }}
                 />
               )}

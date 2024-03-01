@@ -13,9 +13,9 @@ const StaySearchForm = () => {
   //
   const [locationInputTo, setLocationInputTo] = useState("");
   const [guestInput, setGuestInput] = useState<GuestsObject>({
-    guestAdults: 0,
-    guestChildren: 0,
-    guestInfants: 0,
+    guestAdults: 2,
+    guestChildren: 3,
+    guestInfants: 4,
   });
   const [startDate] = useState<Date | null>(new Date("2023/02/06"));
   const [endDate] = useState<Date | null>(new Date("2023/02/23"));
