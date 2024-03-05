@@ -15,7 +15,7 @@ export default function Modal({
   onClose?: () => void;
 }) {
   let overlayRef = useRef<HTMLDivElement>(null);
-
+  console.log("first img", images)
   let [searchParams] = useSearchParams();
   const photoId = searchParams?.get("photoId");
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ export default function Modal({
       setDirection(-1);
     }
     setCurIndex(newVal);
-    // navigate(`${thisPathname}/?${getNewParam({ value: newVal })}`);
+    navigate(`${thisPathname}?${getNewParam({ value: newVal })}`);
   }
 
   useKeypress("ArrowRight", () => {

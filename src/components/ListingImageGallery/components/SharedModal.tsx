@@ -12,13 +12,17 @@ import { useSwipeable } from "react-swipeable";
 import { DEMO_IMAGE } from "../ListingImageGallery";
 import downloadPhoto from "../utils/downloadPhoto";
 import { range } from "../utils/range";
-import type { ListingGalleryImage } from "../utils/types";
+// import type { ListingGalleryImage } from "../utils/types";
 import Twitter from "./Icons/Twitter";
 import { variants } from "utils/animationVariants";
 
+interface ListingGalleryImage {
+  id: number;
+  url: string;
+}
 interface SharedModalProps {
   index: number;
-  images?: ListingGalleryImage[];
+  images?: any [];
   currentPhoto?: ListingGalleryImage;
   changePhotoId: (newVal: number) => void;
   closeModal: () => void;
@@ -28,7 +32,7 @@ interface SharedModalProps {
 
 export default function SharedModal({
   index,
-  images = DEMO_IMAGE,
+  images,
   changePhotoId,
   closeModal,
   navigation,
@@ -43,7 +47,7 @@ export default function SharedModal({
 
   const handlers = useSwipeable({
     onSwipedLeft: () => {
-      if (index < images?.length - 1) {
+      if (index < (images?.length ?? 0) - 1) {
         changePhotoId(index + 1);
       }
     },
@@ -54,8 +58,18 @@ export default function SharedModal({
     },
     trackMouse: true,
   });
-
-  let currentImage = images ? images[index] : currentPhoto;
+const params = new URLSearchParams(document.location.search);
+const photoId = params.get("photoId");
+  // let currentImage: any = images ? images[photoId] : currentPhoto;
+  let currentImage: any = currentPhoto; // Default to currentPhoto if photoId is not present or invalid
+  if (
+    photoId !== null &&
+    !isNaN(Number(photoId)) &&
+    images &&
+    Number(photoId) < images.length
+  ) {
+    currentImage = images[Number(photoId)];
+  }
 
   return (
     <MotionConfig
@@ -82,7 +96,7 @@ export default function SharedModal({
                 className="absolute"
               >
                 <img
-                  src={currentImage?.url || ""}
+                  src={currentImage}
                   width={navigation ? 1280 : 1920}
                   height={navigation ? 853 : 1280}
                   alt="Chisfis listing gallery"
@@ -110,7 +124,7 @@ export default function SharedModal({
                       <ChevronLeftIcon className="h-6 w-6" />
                     </button>
                   )}
-                  {index + 1 < images.length && (
+                  {index + 1 < (images?.length ?? 0) && (
                     <button
                       className="absolute right-3 top-[calc(50%-16px)] rounded-full bg-black/50 p-3 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white focus:outline-none"
                       style={{ transform: "translate3d(0, 0, 0)" }}
@@ -145,7 +159,7 @@ export default function SharedModal({
                 )}
                 <button
                   onClick={() =>
-                    downloadPhoto(currentImage?.url || "", `${index}.jpg`)
+                    downloadPhoto(currentImage || "", `${index}.jpg`)
                   }
                   className="rounded-full bg-black/50 p-2 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white"
                   title="Download fullsize version"
@@ -175,7 +189,7 @@ export default function SharedModal({
                 className="mx-auto mt-6 mb-6 flex aspect-[3/2] h-14"
               >
                 <AnimatePresence initial={false}>
-                  {filteredImages.map(({ id, url }) => (
+                  {filteredImages?.map(({ id, url }) => (
                     <motion.button
                       initial={{
                         width: "0%",
@@ -194,7 +208,7 @@ export default function SharedModal({
                           ? "z-20 rounded-md shadow shadow-black/50"
                           : "z-10"
                       } ${id === 0 ? "rounded-l-md" : ""} ${
-                        id === images.length - 1 ? "rounded-r-md" : ""
+                        id === (images?.length ?? 0) - 1 ? "rounded-r-md" : ""
                       } relative inline-block w-full shrink-0 transform-gpu overflow-hidden focus:outline-none`}
                     >
                       <img

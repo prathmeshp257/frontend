@@ -12,24 +12,34 @@ const DetailPagetLayout = ({ children }: { children: ReactNode }) => {
   const thisPathname = useLocation().pathname;
   const [searchParams] = useSearchParams();
   const modal = searchParams?.get("modal");
+  const queryParams = new URLSearchParams(window.location.search);
+  const propIdParam = queryParams.get("propID");
 
-  const handleCloseModalImageGallery = () => {
-    let params = new URLSearchParams(document.location.search);
+const handleCloseModalImageGallery = () => {
+  const params = new URLSearchParams(window.location.search);
+
+  if (params.has("modal")) {
     params.delete("modal");
-  };
-
+    const newQueryString = params.toString();
+    const newUrl = `${window.location.pathname}?${newQueryString}`;
+    window.history.replaceState({}, "", newUrl);
+      console.log("Modal present");
+  } else {
+    navigate(`/detail?propID=${propIdParam}`);
+      console.log("Modal is not present");
+  }
+};
   const getImageGalleryListing = () => {
-    if (thisPathname?.includes("/listing-stay-detail")) {
+    if (thisPathname?.includes("/detail")) {
       return listingStayImageGallery;
     }
-
-    return [];
   };
 
   return (
     <div className="ListingDetailPage">
       <ListingImageGallery
         isShowModal={modal === "PHOTO_TOUR_SCROLLABLE"}
+        // isShowModal={false}
         onClose={handleCloseModalImageGallery}
         images={getImageGalleryListing()}
       />

@@ -1,6 +1,6 @@
 import "./styles/index.css";
 
-import { FC, Fragment, useEffect, useRef } from "react";
+import { FC, Fragment, useEffect, useRef, useState } from "react";
 import Modal from "./components/Modal";
 import type { ListingGalleryImage } from "./utils/types";
 import { useLastViewedPhoto } from "./utils/useLastViewedPhoto";
@@ -8,6 +8,9 @@ import { ArrowSmallLeftIcon } from "@heroicons/react/24/outline";
 import { Dialog, Transition } from "@headlessui/react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import LikeSaveBtns from "components/LikeSaveBtns";
+import { API_URL } from "api/config";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const PHOTOS: string[] = [
   "https://images.pexels.com/photos/6129967/pexels-photo-6129967.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260",
@@ -73,46 +76,120 @@ const ListingImageGallery: FC<Props> = ({
     onClose && onClose();
   };
 
+  const [gallaryImg, setGallaryImg] = useState<any>([]);
+  const queryParams = new URLSearchParams(window.location.search);
+  const propIdParam = queryParams.get("propID");
+  const getOnePropertyDetails = async () => {
+    try {
+      const response = await axios.get(
+        `${API_URL}/property/get-propertyCard-details?id=${propIdParam}`
+      );
+      if (response.data.error === false) {
+        const coverImage = response.data.propertyDetails?.cover_image;
+        const galleryImages = response.data.propertyDetails?.galleryImgs || [];
+        const combinedImages = [coverImage, ...galleryImages];
+        setGallaryImg(combinedImages);
+        console.log(combinedImages,"sssssssss");
+      }
+    } catch (err) {
+      toast.error("Error while fetching property details");
+      console.error("Error fetching details", err);
+    }
+  };
+  //
+  useEffect(() => {
+    getOnePropertyDetails();
+  }, []);
+interface GalleryImage {
+  value: any;
+}
   const renderContent = () => {
+
     return (
-      <div className=" ">
+      // <div className=" ">
+      //   {photoId && (
+      //     <Modal
+      //       images={images}
+      //       onClose={() => {
+      //         // @ts-ignore
+      //         setLastViewedPhoto(photoId);
+      //         let params = new URLSearchParams(document.location.search);
+      //         params.delete("photoId");
+      //         // navigate(`${thisPathname}/?${params.toString()}`);
+      //       }}
+      //     />
+      //   )}
+
+      //   <div className="columns-1 gap-4 sm:columns-2 xl:columns-3">
+      //     {images.map(({ id, url }) => (
+      //       <div
+      //         key={id}
+      //         onClick={() => {
+      //           const newPathname = getNewParam({ value: id });
+      //           // navigate(`${thisPathname}/?${newPathname}`);
+      //         }}
+      //         ref={id === Number(lastViewedPhoto) ? lastViewedPhotoRef : null}
+      //         className="after:content group relative mb-5 block w-full cursor-zoom-in after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:shadow-highlight focus:outline-none"
+      //       >
+      //         <img
+      //           alt="chisfis listing gallery "
+      //           className="transform rounded-lg brightness-90 transition will-change-auto group-hover:brightness-110 focus:outline-none"
+      //           style={{
+      //             transform: "translate3d(0, 0, 0)",
+      //           }}
+      //           src={url}
+      //           width={720}
+      //           height={480}
+      //           sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 350px"
+      //         />
+      //       </div>
+      //     ))}
+      //   </div>
+      // </div>
+      <div
+        className="w-full"
+      >
         {photoId && (
           <Modal
-            images={images}
+            images={gallaryImg}
             onClose={() => {
               // @ts-ignore
               setLastViewedPhoto(photoId);
               let params = new URLSearchParams(document.location.search);
               params.delete("photoId");
-              // navigate(`${thisPathname}/?${params.toString()}`);
+              navigate(`${thisPathname}?${params.toString()}`);
             }}
           />
         )}
 
         <div className="columns-1 gap-4 sm:columns-2 xl:columns-3">
-          {images.map(({ id, url }) => (
-            <div
-              key={id}
-              onClick={() => {
-                const newPathname = getNewParam({ value: id });
-                // navigate(`${thisPathname}/?${newPathname}`);
-              }}
-              ref={id === Number(lastViewedPhoto) ? lastViewedPhotoRef : null}
-              className="after:content group relative mb-5 block w-full cursor-zoom-in after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:shadow-highlight focus:outline-none"
-            >
-              <img
-                alt="chisfis listing gallery "
-                className="transform rounded-lg brightness-90 transition will-change-auto group-hover:brightness-110 focus:outline-none"
-                style={{
-                  transform: "translate3d(0, 0, 0)",
+          {gallaryImg.map((image: any, index: any) => {
+            return (
+              <div
+                key={index}
+                onClick={() => {
+                  const newPathname = getNewParam({ value: index });
+                  navigate(`${thisPathname}?${newPathname}`);
                 }}
-                src={url}
-                width={720}
-                height={480}
-                sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 350px"
-              />
-            </div>
-          ))}
+                ref={
+                  index === Number(lastViewedPhoto) ? lastViewedPhotoRef : null
+                }
+                className="after:content group relative mb-5 block w-full cursor-zoom-in after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:shadow-highlight focus:outline-none"
+              >
+                <img
+                  alt="chisfis listing gallery "
+                  className="transform rounded-lg brightness-90 transition will-change-auto group-hover:brightness-110 focus:outline-none"
+                  style={{
+                    transform: "translate3d(0, 0, 0)",
+                  }}
+                  src={image}
+                  width={720}
+                  height={480}
+                  sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 350px"
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
     );
@@ -135,16 +212,19 @@ const ListingImageGallery: FC<Props> = ({
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto">
-            <div className="sticky z-10 top-0 p-4 xl:px-10 flex items-center justify-between bg-white">
+            <div className="sticky z-10 top-0 xl:px-10 flex items-center justify-between bg-white">
               <button
                 className="focus:outline-none focus:ring-0 w-10 h-10 rounded-full flex items-center justify-center hover:bg-neutral-100"
                 onClick={handleClose}
               >
                 <ArrowSmallLeftIcon className="w-6 h-6" />
               </button>
+
               <LikeSaveBtns />
             </div>
-
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold flex justify-center">
+              Property Images
+            </h2>
             <div className="flex min-h-full items-center justify-center sm:p-4 pt-0 text-center">
               <Transition.Child
                 as={Fragment}

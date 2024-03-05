@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useEffect, useState } from "react";
+import React, { FC, Fragment, useContext, useEffect, useState } from "react";
 import { ClockIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import CommentListing from "components/CommentListing/CommentListing";
 import FiveStartIconForRate from "components/FiveStartIconForRate/FiveStartIconForRate";
@@ -20,12 +20,14 @@ import { API_URL } from "../../../api/config";
 import axios from "axios";
 import DetailPagetLayout from "../Layout";
 import moment from "moment";
+import { AuthContext } from "context/userContext";
 
 const StayDetailPageContainer: FC<{}> = () => {
   const [propertyData, setPropertyData] = useState<any>({});
   const [totalOwnerProperty, setTotalOwnerProperty] = useState<number>(0);
   const queryParams = new URLSearchParams(window.location.search);
   const propIdParam = queryParams.get("propID");
+
 
   const pathname = window.location.pathname;
 
@@ -183,7 +185,9 @@ const StayDetailPageContainer: FC<{}> = () => {
   }
 
   const handleOpenModalImageGallery = () => {
-    // router(`${thisPathname}/?modal=PHOTO_TOUR_SCROLLABLE`);
+    router(
+      `${thisPathname}?modal=PHOTO_TOUR_SCROLLABLE&propID=${propIdParam}`
+    );
   };
   const address1 = `${street}, ${city} ${state}, ${country} ${postal_code}`;
   const address = room_number
@@ -195,7 +199,7 @@ const StayDetailPageContainer: FC<{}> = () => {
         {/* 1 */}
         <div className="flex justify-between items-center">
           <Badge name={type} />
-          <LikeSaveBtns propID={propIdParam}/>
+          <LikeSaveBtns propID={propIdParam} />
         </div>
 
         {/* 2 */}
@@ -206,10 +210,12 @@ const StayDetailPageContainer: FC<{}> = () => {
         )}
 
         {/* 3 */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4 ">
           <StartRating />
           <span>·</span>
-          <span>
+          {/* display: flex; align-items: baseline; justify-content:
+          center; */}
+          <span className="flex items-baseline justify-center ">
             <i className="las la-map-marker-alt"></i>
             {propertyData && <span className="ml-1"> {address1}</span>}
           </span>
@@ -698,9 +704,13 @@ const StayDetailPageContainer: FC<{}> = () => {
     <div className="nc-ListingStayDetailPage">
       {/*  HEADER */}
       <header className="rounded-md sm:rounded-xl">
-        <div className="relative grid grid-cols-3 sm:grid-cols-4 gap-1 sm:gap-2">
+        <div
+          className="relative grid grid-cols-3 sm:grid-cols-4 gap-1 sm:gap-2"
+          style={PHOTOS.length === 1 ? { height: "530px", width: "100%" } : {}}
+        >
           <div
-            className="col-span-2 row-span-3 sm:row-span-2 relative rounded-md sm:rounded-xl overflow-hidden cursor-pointer "
+            className="col-span-2 row-span-3 sm:row-span-2 relative rounded-md sm:rounded-xl overflow-hidden cursor-pointer"
+            onClick={handleOpenModalImageGallery}
           >
             <img
               className="absolute inset-0 object-cover rounded-md sm:rounded-xl w-full h-full"
@@ -729,6 +739,7 @@ const StayDetailPageContainer: FC<{}> = () => {
               {/* OVERLAY */}
               <div
                 className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-100 transition-opacity cursor-pointer"
+                onClick={handleOpenModalImageGallery}
               />
             </div>
           ))}
