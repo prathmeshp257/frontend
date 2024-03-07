@@ -93,7 +93,7 @@ const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
       <Helmet>
         <title>easystays || Booking</title>
       </Helmet>
-      <BgGlassmorphism />
+      {/* <BgGlassmorphism /> */}
 
       <div className="container relative overflow-hidden">
         {/* HERO SECTION */}

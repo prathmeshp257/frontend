@@ -655,7 +655,7 @@ const handleClearMoreFilterMobile = () =>{
                 &#8203;
               </span>
               <Transition.Child
-                className="inline-block py-8 px-2 h-screen w-full max-w-4xl"
+                className="inline-block py-8 px-2 h-[50%] w-full max-w-4xl"
                 enter="ease-out duration-300"
                 enterFrom="opacity-0 scale-95"
                 enterTo="opacity-100 scale-100"
