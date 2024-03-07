@@ -51,7 +51,7 @@ const BtnLikeIcon: FC<BtnLikeIconProps> = ({
               functFavourite();
             }
           } else {
-            toast.error(<>You must be logged in to add property..</>);
+            toast.error(<>You need login to save property..</>);
           }
           return newLikedState;
         });

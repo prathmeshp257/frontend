@@ -13,6 +13,8 @@ import Avatar from "shared/Avatar/Avatar";
 import { useNavigate } from "react-router-dom";
 import { AuthContext, AuthProvider } from "context/userContext";
 
+    // const authContext = useContext(AuthContext);
+    // const userData = authContext.userData;
 const solutions = [
   {
     name: "Account",

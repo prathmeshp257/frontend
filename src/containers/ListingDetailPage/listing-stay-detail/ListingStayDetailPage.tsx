@@ -23,26 +23,63 @@ import moment from "moment";
 import { AuthContext } from "context/userContext";
 
 const StayDetailPageContainer: FC<{}> = () => {
+  const [show, setShow] = useState<Boolean>(false);
   const [propertyData, setPropertyData] = useState<any>({});
   const [totalOwnerProperty, setTotalOwnerProperty] = useState<number>(0);
+
+  const authContext = useContext(AuthContext);
+  const userData = authContext.userData;
   const queryParams = new URLSearchParams(window.location.search);
   const propIdParam = queryParams.get("propID");
-
+  const token = localStorage.getItem("token");
 
   const pathname = window.location.pathname;
 
   const getOnePropertyDetails = async () => {
     try {
       const response = await axios.get(
-        `${API_URL}/property/get-propertyCard-details?id=${propIdParam}`
+        `${API_URL}/property/get-propertyCard-details?id=${propIdParam}&userId=${userData._id}`
       );
+      console.log(userData._id, "userData");
       if (response.data.error === false) {
+        if (response.data.getTransaction) {
+          setShow(true);
+        }
         setPropertyData(response.data.propertyDetails);
         setTotalOwnerProperty(response.data.countTotalProperties);
       }
     } catch (err) {
       toast.error("Error while fetching property details");
       console.error("Error fetching details", err);
+    }
+  };
+  //show phone number
+  const getPhoneNumber = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return toast.error("You need login to view phone number..");
+    }
+    const queryParams = new URLSearchParams(window.location.search);
+    const propIdParam = queryParams.get("propID");
+    try {
+      const response = await axios.post(
+        `${API_URL}/users/showphone?propId=${propIdParam}`,
+        {},
+        {
+          headers: {
+            token: token,
+          },
+        }
+      );
+      if (response.data.error === true) {
+        setShow(false);
+        return toast.error(`${response.data.message}`);
+      }
+      setShow(true);
+      toast.success("phone number fetch successfully");
+    } catch (err) {
+      toast.error(`${err}`);
+      setShow(false);
     }
   };
   //
@@ -185,9 +222,7 @@ const StayDetailPageContainer: FC<{}> = () => {
   }
 
   const handleOpenModalImageGallery = () => {
-    router(
-      `${thisPathname}?modal=PHOTO_TOUR_SCROLLABLE&propID=${propIdParam}`
-    );
+    router(`${thisPathname}?modal=PHOTO_TOUR_SCROLLABLE&propID=${propIdParam}`);
   };
   const address1 = `${street}, ${city} ${state}, ${country} ${postal_code}`;
   const address = room_number
@@ -298,7 +333,7 @@ const StayDetailPageContainer: FC<{}> = () => {
         {/* 6 */}
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 text-sm text-neutral-700 dark:text-neutral-300 ">
           {newAmmenities
-            .filter((_, i) => i < 5)
+            // .filter((_, i) => i < 5)
             .map((item) => (
               <div key={item.name} className="flex items-center space-x-3">
                 <i className={`text-3xl las ${item.icon}`}></i>
@@ -308,8 +343,8 @@ const StayDetailPageContainer: FC<{}> = () => {
         </div>
 
         {/* ----- */}
-        <div className="w-14 border-b border-neutral-200"></div>
-        {newAmmenities.length > 5 ? (
+        {/* <div className="w-14 border-b border-neutral-200"></div> */}
+        {/* {newAmmenities.length > 5 ? (
           <div>
             <ButtonSecondary onClick={openModalAmenities}>
               Show all {newAmmenities.length} amenities
@@ -318,7 +353,7 @@ const StayDetailPageContainer: FC<{}> = () => {
         ) : (
           ""
         )}
-        {renderMotalAmenities()}
+        {renderMotalAmenities()} */}
       </div>
     );
   };
@@ -425,7 +460,6 @@ const StayDetailPageContainer: FC<{}> = () => {
                 </span>
               </div>
             ))}
-
             <div className="p-4 flex justify-between items-center space-x-4 rounded-lg">
               <span>Minimum number of nights</span>
               <span>{night_min}</span>
@@ -528,29 +562,34 @@ const StayDetailPageContainer: FC<{}> = () => {
 
   const renderSection6 = () => {
     return (
-      <div className="listingSection__wrap">
+      <div
+        className="listingSection__wrap"
+        style={{ maxHeight: "400px", overflowY: "auto" }}
+      >
         {/* HEADING */}
         <h2 className="text-2xl font-semibold">Reviews (23 reviews)</h2>
         <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>
 
         {/* Content */}
-        <div className="space-y-5">
-          <FiveStartIconForRate iconClass="w-6 h-6" className="space-x-0.5" />
-          <div className="relative">
-            <Input
-              fontClass=""
-              sizeClass="h-16 px-4 py-3"
-              rounded="rounded-3xl"
-              placeholder="Share your thoughts ..."
-            />
-            <ButtonCircle
-              className="absolute right-2 top-1/2 transform -translate-y-1/2"
-              size=" w-12 h-12 "
-            >
-              <ArrowRightIcon className="w-5 h-5" />
-            </ButtonCircle>
+        {token && (
+          <div className="space-y-5">
+            <FiveStartIconForRate iconClass="w-6 h-6" className="space-x-0.5" />
+            <div className="relative">
+              <Input
+                fontClass=""
+                sizeClass="h-16 px-4 py-3"
+                rounded="rounded-3xl"
+                placeholder="Share your thoughts ..."
+              />
+              <ButtonCircle
+                className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                size=" w-12 h-12 "
+              >
+                <ArrowRightIcon className="w-5 h-5" />
+              </ButtonCircle>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* comment */}
         <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
@@ -558,10 +597,16 @@ const StayDetailPageContainer: FC<{}> = () => {
           <CommentListing className="py-8" />
           <CommentListing className="py-8" />
           <CommentListing className="py-8" />
-          <div className="pt-8">
-            <ButtonSecondary>View more 20 reviews</ButtonSecondary>
-          </div>
+          <CommentListing className="py-8" />
+          <CommentListing className="py-8" />
+          <CommentListing className="py-8" />
+          <CommentListing className="py-8" />
+          <CommentListing className="py-8" />
+          <CommentListing className="py-8" />
         </div>
+        {/* <div className="pt-8">
+            <ButtonSecondary>View more 20 reviews</ButtonSecondary>
+          </div> */}
       </div>
     );
   };
@@ -632,32 +677,52 @@ const StayDetailPageContainer: FC<{}> = () => {
                 <span className="flex gap-4">
                   {item.rule ? (
                     <svg
+                      width="30"
+                      height="30"
+                      viewBox="0 0 100 100"
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 text-green-500 inline-block p-1 border-2 border-green-500 rounded-full"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
                     >
+                      {/* Circle */}
+                      <circle cx="50" cy="50" r="45" fill="#4CAF50" />
+
+                      {/* Tick */}
                       <path
+                        d="M30 45 L45 60 L75 30"
+                        fill="none"
+                        stroke="#FFFFFF"
+                        strokeWidth="6"
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
                       />
                     </svg>
                   ) : (
                     <svg
+                      width="30"
+                      height="30"
+                      viewBox="0 0 100 100"
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 text-red-500 inline-block p-1 border-2 border-red-500 rounded-full"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
                     >
-                      <path
+                      {/* Circle */}
+                      <circle cx="50" cy="50" r="45" fill="#FF0000" />
+
+                      {/* Cross */}
+                      <line
+                        x1="30"
+                        y1="30"
+                        x2="70"
+                        y2="70"
+                        stroke="#FFFFFF"
+                        strokeWidth="6"
                         strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
+                      />
+                      <line
+                        x1="70"
+                        y1="30"
+                        x2="30"
+                        y2="70"
+                        stroke="#FFFFFF"
+                        strokeWidth="6"
+                        strokeLinecap="round"
                       />
                     </svg>
                   )}
@@ -691,17 +756,79 @@ const StayDetailPageContainer: FC<{}> = () => {
 
   const renderSidebar = () => {
     return (
+      // <div className="listingSectionSidebar__wrap shadow-xl">
+      //   {renderSection4()}
+      //   <ButtonPrimary
+      //     //  href={"/checkout"}
+      //     onClick={show ? () => {} : getPhoneNumber}
+      //   >
+      //     {show ? propertyData?.ownerID?.phoneNumber : "show phone number"}
+      //   </ButtonPrimary>
+      // </div>
       <div className="listingSectionSidebar__wrap shadow-xl">
         {/* PRICE */}
-        {renderSection4()}
+        <div className="flex justify-between">
+          <span className="text-3xl font-semibold">
+            {arrayOfPrice.map((price, index) => {
+              const dayOfWeek = getDayOfWeek(index);
+              if (index === today - 1) {
+                // Today's price
+                return (
+                  <div
+                    key={index}
+                    className={`p-4 bg-neutral-100 dark:bg-neutral-800 flex justify-between items-center space-x-4 rounded-lg`}
+                  >
+                    <span>
+                      {Number(price).toLocaleString("en-IN", {
+                        style: "currency",
+                        currency: "INR",
+                        minimumFractionDigits: 0,
+                      })}
+                    </span>
+                    <span className="ml-1 text-base font-normal text-neutral-500 dark:text-neutral-400">
+                      /day
+                    </span>
+                  </div>
+                );
+              } else {
+                return null; // For other days, don't render anything
+              }
+            })}
+            
+          </span>
+          <StartRating />
+        </div>
+
+        {/* FORM */}
+
+        {/* SUM */}
+        {/* <div className="flex flex-col space-y-4 ">
+          <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+            <span>$19 x 3 day</span>
+            <span>$57</span>
+          </div>
+
+          <div className="border-b border-neutral-200 dark:border-neutral-700"></div>
+          <div className="flex justify-between font-semibold">
+            <span>Total</span>
+            <span>$199</span>
+          </div>
+        </div> */}
+
         {/* SUBMIT */}
-        <ButtonPrimary href={"/checkout"}>Show Phone no.</ButtonPrimary>
+        {/* <ButtonPrimary href={"/checkout"}>Reserve</ButtonPrimary> */}
+        <ButtonPrimary
+          //  href={"/checkout"}
+          onClick={show ? () => {} : getPhoneNumber}
+        >
+          {show ? propertyData?.ownerID?.phoneNumber : "show phone number"}
+        </ButtonPrimary>
       </div>
     );
   };
 
   return (
-    <div className="nc-ListingStayDetailPage">
+    <div className="nc-ListingStayDetailPage py-8">
       {/*  HEADER */}
       <header className="rounded-md sm:rounded-xl">
         <div
@@ -763,7 +890,7 @@ const StayDetailPageContainer: FC<{}> = () => {
           {renderSection1()}
           {renderSection2()}
           {renderSection3()}
-          {/* {renderSection4()} */}
+          {renderSection4()}
           {/* <SectionDateRange /> */}
           {renderSection5()}
           {renderSection6()}

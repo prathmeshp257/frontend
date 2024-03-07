@@ -90,7 +90,7 @@ const SectionGridFilterCard: FC<SectionGridFilterCardProps> = ({
       data-nc-id="SectionGridFilterCard"
     >
       {/* <Heading2 /> */}
-      <div className="mb-8 lg:mb-11">
+      <div className="mb-8 lg:mb-11 flex justify-center">
         {typeFilter && (
           <TabFilters
             getPropertyFunc={getPropertyFunc}

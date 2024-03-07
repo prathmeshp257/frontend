@@ -1,9 +1,12 @@
-import React, { FC } from "react";
+import React, { FC, useContext, useEffect } from "react";
 import Logo from "shared/Logo/Logo";
 import MenuBar from "shared/MenuBar/MenuBar";
 import SwitchDarkMode from "shared/SwitchDarkMode/SwitchDarkMode";
 import LangDropdown from "./LangDropdown";
 import NotifyDropdown from "./NotifyDropdown";
+import { WalletIcon } from "@heroicons/react/24/outline";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faWallet } from "@fortawesome/free-solid-svg-icons";
 import AvatarDropdown from "./AvatarDropdown";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 import CurrencyDropdown from "./CurrencyDropdown";
@@ -11,41 +14,55 @@ import DropdownTravelers from "./DropdownTravelers";
 import { Link, useLocation } from "react-router-dom";
 import HeroSearchForm2MobileFactory from "components/HeroSearchForm2Mobile/HeroSearchForm2MobileFactory";
 import AirbnbYourHome from "shared/Abnb/Abnb";
+import { AuthContext } from "context/userContext";
+import HeroSearchForm2Mobile from "components/HeroSearchForm2Mobile/HeroSearchForm2Mobile";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { API_URL } from "api/config";
 export interface MainNav2Props {
   className?: string;
 }
 
 const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
   const hasToken = !!localStorage.getItem("token");
-  const { pathname } = useLocation();
-  
- const navLinks = [
-   { to: "/", label: "Home" },
-  //  { to: "/ezstays", label: "EZstays Your Home" },
- ];
+const { pathname } = useLocation();
+const showSearchBar = pathname.includes("/detail");
+
+//  const navLinks = [
+//    { to: "/", label: "Home" },
+//   //  { to: "/ezstays", label: "EZstays Your Home" },
+//  ];
   return (
     <div className={`nc-MainNav1 nc-MainNav2 relative z-10 ${className}`}>
       <div className="px-4 lg:container py-4 lg:py-4 relative flex justify-between items-center">
         <Logo />
-        <div className="hidden md:flex justify-between flex-1 items-center space-x-3 sm:space-x-8 lg:space-x-10 px-4">
-          <div className="hidden lg:flex justify-center items-center flex-1 ml-44 gap-4">
-            {/* Mapping over the navLinks array */}
-            {navLinks.map((link, index) => (
-              <Link key={index} to={link.to}>
-                <div
-                  className={` inline-flex items-center text-opacity-90 group py-2 px-4 text-sm sm:text-base font-medium hover:bg-neutral-100 dark:bg-neutral-800 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white  focus-visible:ring-opacity-25 rounded-[30px]
-                  text-black bg-neutral-100 dark:bg-neutral-800`}
-                  role="button"
-                >
-                  <span>{link.label}</span>
-                </div>
-              </Link>
-            ))}
+        <div className="hidden md:flex justify-end flex-1 items-center space-x-3 sm:space-x-8 lg:space-x-10 px-4">
+          {/* This div should be at the end of the parent div */}
+          <div className="flex justify-center flex-[2] max-w-lg">
+            {showSearchBar && (
+              <div className="flex-[3] mx-auto md:px-3">
+                <HeroSearchForm2Mobile />
+                {/* <SectionHeroArchivePage
+                  getPropertyFunc={getPropertyData}
+                  searchLocationValue={searchLocationValue}
+                  setSearchLocationValue={setSearchLocationValue}
+                  guests={guests}
+                  setGuests={setGuests}
+                  currentPage="Stays"
+                  currentTab="Stays"
+                  className="pt-4 pb-12 lg:pb-14 lg:pt-8 "
+                /> */}
+              </div>
+            )}
           </div>
-          <div className="flex items-start cursor-pointer">
-            <h4 className="text-sm ml-4 hover:bg-neutral-100 dark:bg-neutral-800 rounded-full py-2 px-4">
-              EZstays Your Home
-            </h4>
+
+          {/* This div should be in the center of the parent div */}
+          <div className="flex justify-center items-center cursor-pointer">
+            <Link to="easystays-owners.infiny.dev">
+              <h4 className="text-sm ml-4 hover:bg-neutral-100 dark:bg-neutral-800 rounded-full py-2 px-4">
+                EZstays Your Home
+              </h4>
+            </Link>
           </div>
         </div>
 
@@ -64,3 +81,11 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
 };
 
 export default MainNav2;
+function functFavourite() {
+  throw new Error("Function not implemented.");
+}
+
+function setInfo(propertydata: any) {
+  throw new Error("Function not implemented.");
+}
+

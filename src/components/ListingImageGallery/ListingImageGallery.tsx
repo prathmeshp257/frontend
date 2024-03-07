@@ -89,13 +89,13 @@ const ListingImageGallery: FC<Props> = ({
         const galleryImages = response.data.propertyDetails?.galleryImgs || [];
         const combinedImages = [coverImage, ...galleryImages];
         setGallaryImg(combinedImages);
-        console.log(combinedImages,"sssssssss");
       }
     } catch (err) {
       toast.error("Error while fetching property details");
       console.error("Error fetching details", err);
     }
   };
+
   //
   useEffect(() => {
     getOnePropertyDetails();
