@@ -1,4 +1,11 @@
-import React, { useState, useEffect, createContext, ReactNode, Dispatch, SetStateAction} from "react";
+import React, {
+  useState,
+  useEffect,
+  createContext,
+  ReactNode,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import axios from "axios";
 import { API_URL } from "../api/config";
 import { TailSpin } from "react-loader-spinner";
@@ -42,6 +49,8 @@ interface AuthContextProps {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   showSearchModal: boolean;
   setShowSearchModal: React.Dispatch<React.SetStateAction<boolean>>;
+  showHeight: boolean;
+  setShowHeight: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const initialState: AuthContextProps = {
@@ -81,6 +90,8 @@ const initialState: AuthContextProps = {
   //searchbar detail page
   showSearchModal: false,
   setShowSearchModal: () => {},
+  showHeight: false,
+  setShowHeight: () => {},
 };
 
 const AuthContext = createContext<AuthContextProps>(initialState);
@@ -110,6 +121,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [guestInfantsInputValue, setGuestInfantsInputValue] = useState(0);
   const totalGuests = guestAdultsInputValue + guestChildrenInputValue;
   const [showModal, setShowModal] = useState(false);
+  const [showHeight, setShowHeight] = useState(false);
+
   // console.log(guests, "guessssssss");
   // console.log(totalGuests, "totaaaaaal");
   const [showSearchModal, setShowSearchModal] = useState(false);
@@ -276,6 +289,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     //searchbar detail page
     showSearchModal,
     setShowSearchModal,
+    showHeight,
+    setShowHeight,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

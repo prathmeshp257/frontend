@@ -28,7 +28,10 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
   const hasToken = !!localStorage.getItem("token");
 const { pathname } = useLocation();
 const showSearchBar = pathname.includes("/detail");
+  const authContext = useContext(AuthContext);
 
+  // searchbar detail page
+  const showSearchModal = authContext.showSearchModal;
 //  const navLinks = [
 //    { to: "/", label: "Home" },
 //   //  { to: "/ezstays", label: "EZstays Your Home" },
@@ -40,10 +43,11 @@ const showSearchBar = pathname.includes("/detail");
         <div className="hidden md:flex justify-end flex-1 items-center space-x-3 sm:space-x-8 lg:space-x-10 px-4">
           {/* This div should be at the end of the parent div */}
           <div className="flex justify-center flex-[2] max-w-lg">
-            {showSearchBar && (
-              <div className="flex-[3] mx-auto md:px-3">
-                <HeroSearchFormDetailPage />
-                {/* <SectionHeroArchivePage
+            {showSearchBar &&
+              !showSearchModal && (
+                <div className="flex-[3] mx-auto md:px-3">
+                  <HeroSearchFormDetailPage />
+                  {/* <SectionHeroArchivePage
                   getPropertyFunc={getPropertyData}
                   searchLocationValue={searchLocationValue}
                   setSearchLocationValue={setSearchLocationValue}
@@ -53,8 +57,8 @@ const showSearchBar = pathname.includes("/detail");
                   currentTab="Stays"
                   className="pt-4 pb-12 lg:pb-14 lg:pt-8 "
                 /> */}
-              </div>
-            )}
+                </div>
+              )}
           </div>
 
           {/* This div should be in the center of the parent div */}

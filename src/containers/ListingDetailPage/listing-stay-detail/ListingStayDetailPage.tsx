@@ -1,4 +1,12 @@
 import React, { FC, Fragment, useContext, useEffect, useState } from "react";
+//
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import Button from "@mui/material/Button";
+import Modal from "react-modal";
+import DialogTitle from "@mui/material/DialogTitle";
+//
 import { ClockIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import CommentListing from "components/CommentListing/CommentListing";
 import FiveStartIconForRate from "components/FiveStartIconForRate/FiveStartIconForRate";
@@ -33,7 +41,7 @@ const StayDetailPageContainer: FC<{}> = () => {
   const authContext = useContext(AuthContext);
   // searchbar detail page
   const showSearchModal = authContext.showSearchModal;
-  const setShowSearchModal = authContext.setShowSearchModal;  
+  const setShowSearchModal = authContext.setShowSearchModal;
   const getPropertyData = authContext.getPropertyData;
   const showModal = authContext.showModal;
   const setShowModal = authContext.setShowModal;
@@ -105,6 +113,13 @@ const StayDetailPageContainer: FC<{}> = () => {
   useEffect(() => {
     getOnePropertyDetails();
   }, []);
+  const [openDialog, setOpenDailog] = useState(false);
+  const handleOpenDialog = () => {
+    setOpenDailog(true);
+  };
+  const handleCloseDialog = () => {
+    setOpenDailog(false);
+  };
   const {
     _id,
     type,
@@ -251,78 +266,6 @@ const StayDetailPageContainer: FC<{}> = () => {
   //SEARCCH BAR DETAIL PAGE
   const renderSearchBar = () => {
     return (
-      // <div className="HeroSearchForm2Mobile">
-      //   <Transition appear show={showSearchModal} as={Fragment}>
-      //     <Dialog
-      //       as="div"
-      //       className="HeroSearchFormMobile__Dialog relative z-max"
-      //       onClose={() => setShowSearchModal(false)}
-      //     >
-      //       {/* ... existing code ... */}
-      //       <div className="flex h-full">
-      //         {/* ... existing code ... */}
-      //         <Transition.Child
-      //           enter="ease-out transition-transform"
-      //           enterFrom="opacity-0 translate-y-full"
-      //           enterTo="opacity-100 translate-y-0"
-      //           leave="ease-in transition-transform"
-      //           leaveFrom="opacity-100 translate-y-0"
-      //           leaveTo="opacity-0 translate-y-full"
-      //         >
-      //           <Dialog.Panel className="relative h-full overflow-hidden flex-1 flex flex-col justify-center items-center">
-      //             {showSearchModal && (
-      //               <Tab.Group manual>
-      //                 {/* ... existing code ... */}
-      //                 <Tab.Panels className="flex-1 overflow-y-auto hiddenScrollbar py-4">
-      //                   <Tab.Panel>
-      //                     <div className="transition-opacity animate-[myblur_0.4s_ease-in-out]">
-      //                       {showSearchModal && (
-      //                         <Transition.Child
-      //                           enter="ease-out transition-transform"
-      //                           enterFrom="opacity-0 translate-y-full"
-      //                           enterTo="opacity-100 translate-y-0"
-      //                           leave="ease-in transition-transform"
-      //                           leaveFrom="opacity-100 translate-y-0"
-      //                           leaveTo="opacity-0 translate-y-full"
-      //                         >
-      //                           <SectionHeroArchivePage
-      //                             getPropertyFunc={getPropertyData}
-      //                             searchLocationValue={searchLocationValue}
-      //                             setSearchLocationValue={
-      //                               setSearchLocationValue
-      //                             }
-      //                             guests={guestSearch}
-      //                             setGuests={setGuests}
-      //                             currentPage="Stays"
-      //                             currentTab="Stays"
-      //                             className=" pb-12 lg:pb-14"
-      //                           />
-
-      //                           {/* <HeroSearchForm
-      //                           // currentPage={currentPage}
-      //                           // currentTab={currentTab}
-      //                           // getPropertyFunc={getPropertyFunc}
-      //                           searchLocationValue={searchLocationValue}
-      //                           setSearchLocationValue={setSearchLocationValue}
-      //                           guests={guests}
-      //                           setGuests={setGuests}
-      //                         /> */}
-      //                         </Transition.Child>
-      //                       )}
-      //                     </div>
-      //                   </Tab.Panel>
-      //                 </Tab.Panels>
-      //                 {/* ... existing code ... */}
-      //               </Tab.Group>
-      //             )}
-      //           </Dialog.Panel>
-      //         </Transition.Child>{" "}
-      //         {/* ... existing code ... */}
-      //       </div>
-      //       {/* ... existing code ... */}
-      //     </Dialog>
-      //   </Transition>
-      // </div>
       <div
         style={{
           backgroundColor: showSearchModal ? "black" : "transparent",
@@ -337,17 +280,13 @@ const StayDetailPageContainer: FC<{}> = () => {
         }}
       >
         <div className={`HeroSearchForm2Mobile`}>
-          {/* {renderButtonOpenModal()} */}
           <Transition appear show={showSearchModal} as={Fragment}>
             <Dialog
-              // as="div"
               className="HeroSearchFormMobile__Dialog relative z-max"
               onClose={() => setShowSearchModal(false)}
             >
               <div
                 className="fixed inset-0 bg-dark-100 dark:bg-neutral-900 opacity-90"
-                // style={{ background: "black"}}
-
                 onClick={() => setShowSearchModal(false)}
               >
                 <div className="flex">
@@ -361,28 +300,18 @@ const StayDetailPageContainer: FC<{}> = () => {
                     leaveTo="opacity-0 translate-y-0"
                   >
                     <Dialog.Panel
-                      className="relative h-20vh overflow-hidden flex-1 flex flex-col justify-between"
+                      className="relative h-20vh flex-1 flex flex-col justify-between"
                       style={{
-                        minHeight: "50vh",
+                        ...{ minHeight: "60vh" },
                         backgroundColor: "transparent",
                       }}
                     >
                       {showSearchModal && (
                         <Tab.Group manual>
-                          <div className="absolute left-4 top-24">
-                            <button
-                              className=""
-                              onClick={() => setShowSearchModal(false)}
-                            >
-                              {/* <XMarkIcon className="w-5 h-5 text-black dark:text-white" /> */}
-                            </button>
-                          </div>
-                          <div className="flex-1 pt-24 px-1.5 sm:px-4 flex overflow-hidden">
+                          <div className="flex-1 pt-24 px-1.5 sm:px-4 flex">
                             <Tab.Panels className="flex-1 overflow-y-auto hiddenScrollbar py-4 container">
                               <Tab.Panel>
                                 <div className="transition-opacity animate-[myblur_0.4s_ease-in-out]">
-                                  {/* <StaySearchForm /> */}
-
                                   {showSearchModal && (
                                     <SectionHeroArchivePage
                                       getPropertyFunc={getPropertyData}
@@ -413,7 +342,195 @@ const StayDetailPageContainer: FC<{}> = () => {
       </div>
     );
   };
-  //SEARCCH BAR DETAIL PAGE
+  //SHOW ph NO DETAIL PAGE
+  const renderModalShowPhNO = () => {
+    return (
+      // <div className={`HeroSearchForm2Mobile`}>
+      //   <Transition appear show={openDialog} as={Fragment}>
+      //     <div className="transition-opacity animate-[myblur_0.4s_ease-in-out]">
+      //       <Dialog
+      //         className="HeroSearchFormMobile__Dialog relative z-max container"
+      //         open={openDialog}
+      //         onClose={handleCloseDialog}
+      //       >
+      //         <DialogTitle>{"Show Phone Number"}</DialogTitle>
+      //         <DialogContent>
+      //           <DialogContentText id="alert-dialog-slide-description">
+      //             Are you sure, you want to spend 5 coins?
+      //           </DialogContentText>
+      //         </DialogContent>
+      //         <DialogActions>
+      //           <Button onClick={handleCloseDialog}>No</Button>
+      //           <ButtonPrimary onClick={getPhoneNumber}>5 coins</ButtonPrimary>
+      //         </DialogActions>
+      //       </Dialog>
+      //     </div>
+      //   </Transition>
+      // </div>
+            <Transition appear show={showModal} as={Fragment}>
+        <Dialog
+          as="div"
+          className="HeroSearchFormMobile__Dialog relative z-50"
+          onClose={closeModal}
+        >
+          <div className="fixed inset-0 bg-neutral-100 dark:bg-neutral-900">
+            <div className="flex h-full">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out transition-transform"
+                enterFrom="opacity-0 translate-y-52"
+                enterTo="opacity-100 translate-y-0"
+                leave="ease-in transition-transform"
+                leaveFrom="opacity-100 translate-y-0"
+                leaveTo="opacity-0 translate-y-52"
+              >
+                <Dialog.Panel className="relative h-full overflow-hidden flex-1 flex flex-col justify-between ">
+                  <>
+                    <div className="absolute left-4 top-4">
+                      <button
+                        className="focus:outline-none focus:ring-0"
+                        onClick={closeModal}
+                      >
+                        <XMarkIcon className="w-5 h-5 text-black dark:text-white" />
+                      </button>
+                    </div>
+
+                    <div className="flex-1 pt-12 p-1 flex flex-col overflow-auto">
+                      <div className="flex-1 flex flex-col bg-white dark:bg-neutral-800">
+                        <div className="flex-1 flex flex-col transition-opacity animate-[myblur_0.4s_ease-in-out] overflow-auto">
+                          <div className="p-5 ">
+                            <span className="block font-semibold text-xl sm:text-2xl">
+                              {` When's your trip?`}
+                            </span>
+                          </div>
+                          <div className="flex-1 relative flex z-10 ">
+                            <div className="overflow-hidden rounded-3xl ">
+                              <DatePicker
+                                selected={startDate}
+                                onChange={onChangeDate}
+                                startDate={startDate}
+                                endDate={endDate}
+                                selectsRange
+                                monthsShown={2}
+                                showPopperArrow={false}
+                                inline
+                                renderCustomHeader={(p) => (
+                                  <DatePickerCustomHeaderTwoMonth {...p} />
+                                )}
+                                renderDayContents={(day, date) => (
+                                  <DatePickerCustomDay
+                                    dayOfMonth={day}
+                                    date={date}
+                                  />
+                                )}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="px-4 py-3 bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-700 flex justify-between">
+                      <button
+                        type="button"
+                        className="underline font-semibold flex-shrink-0"
+                        onClick={() => {
+                          onChangeDate([null, null]);
+                        }}
+                      >
+                        Clear dates
+                      </button>
+                      <ButtonPrimary
+                        sizeClass="px-6 py-3 !rounded-xl"
+                        onClick={() => {
+                          closeModal();
+                        }}
+                      >
+                        Save
+                      </ButtonPrimary>
+                    </div>
+                  </>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
+      // <div className={`HeroSearchForm2Mobile`}>
+      //   <Transition appear show={openDialog} as={Fragment}>
+      //     <Dialog
+      //       className="HeroSearchFormMobile__Dialog relative z-max"
+      //       onClose={() => setOpenDailog(false)}
+      //     >
+      //       <div
+      //         className="fixed inset-0 bg-dark-100 dark:bg-neutral-900 opacity-90"
+      //         onClick={() => setOpenDailog(false)}
+      //       >
+      //         <div className="flex">
+      //           <Transition.Child
+      //             as={Fragment}
+      //             enter="ease-out transition-transform"
+      //             enterFrom="opacity-0 translate-y-0"
+      //             enterTo="opacity-100 translate-y-150"
+      //             leave="ease-in transition-transform"
+      //             leaveFrom="opacity-100 translate-y-150"
+      //             leaveTo="opacity-0 translate-y-0"
+      //           >
+      //             <Dialog.Panel
+      //               className="relative h-20vh flex-1 flex flex-col justify-between"
+      //               style={{
+      //                 // ...{ minHeight: "60vh" },
+      //                 backgroundColor: "transparent",
+      //               }}
+      //             >
+      //               {openDialog && (
+      //                 <Tab.Group manual>
+      //                   <div className="flex-1 mx-auto  px-1.5 sm:px-4 flex">
+      //                     <Tab.Panels className="flex-1 overflow-y-auto hiddenScrollbar py-4 container">
+      //                       <Tab.Panel>
+      //                         <div className="transition-opacity animate-[myblur_0.4s_ease-in-out]">
+      //                           {openDialog && (
+      //                             <div className="transition-opacity animate-[myblur_0.4s_ease-in-out]">
+      //                               <Dialog
+      //                                 className="HeroSearchFormMobile__Dialog relative z-max container"
+      //                                 open={openDialog}
+         
+      //                                 onClose={handleCloseDialog}
+      //                               >
+      //                                 <DialogTitle>
+      //                                   {"Show Phone Number"}
+      //                                 </DialogTitle>
+      //                                 <DialogContent>
+      //                                   <DialogContentText id="alert-dialog-slide-description">
+      //                                     Are you sure you want to spend 5
+      //                                     coins?
+      //                                   </DialogContentText>
+      //                                 </DialogContent>
+      //                                 <DialogActions>
+      //                                   <Button onClick={handleCloseDialog}>
+      //                                     No
+      //                                   </Button>
+      //                                   <ButtonPrimary onClick={getPhoneNumber}>
+      //                                     5 coins
+      //                                   </ButtonPrimary>
+      //                                 </DialogActions>
+      //                               </Dialog>
+      //                             </div>
+      //                           )}
+      //                         </div>
+      //                       </Tab.Panel>
+      //                     </Tab.Panels>
+      //                   </div>
+      //                 </Tab.Group>
+      //               )}
+      //             </Dialog.Panel>
+      //           </Transition.Child>
+      //         </div>
+      //       </div>
+      //     </Dialog>
+      //   </Transition>
+      // </div>
+    );
+  };
 
   const renderSection1 = () => {
     return (
@@ -1005,7 +1122,9 @@ const StayDetailPageContainer: FC<{}> = () => {
         {/* <ButtonPrimary href={"/checkout"}>Reserve</ButtonPrimary> */}
         <ButtonPrimary
           //  href={"/checkout"}
-          onClick={show ? () => {} : getPhoneNumber}
+          // onClick={show ? () => {} : getPhoneNumber}
+
+          onClick={show ? () => {} : handleOpenDialog}
         >
           {show ? propertyData?.ownerID?.phoneNumber : "Show phone number"}
         </ButtonPrimary>
@@ -1017,7 +1136,7 @@ const StayDetailPageContainer: FC<{}> = () => {
     <div className="nc-ListingStayDetailPage py-8">
       {/*  HEADER */}
       {renderSearchBar()}
-
+      {renderModalShowPhNO()}
       <header className="rounded-md sm:rounded-xl">
         <div
           className="relative grid grid-cols-3 sm:grid-cols-4 gap-1 sm:gap-2"
