@@ -47,7 +47,7 @@ const setGuestInfantsInputValue = authContext.setGuestInfantsInputValue;
     return (
       <button
         onClick={openModal}
-        className="relative flex items-center w-full border border-neutral-200 dark:border-neutral-6000 px-4 py-2 pr-11 rounded-full shadow-lg"
+        className=" relative flex items-center w-full border border-neutral-200 dark:border-neutral-6000 px-4 py-2 pr-11 rounded-full shadow-lg"
       >
         <MagnifyingGlassIcon className="flex-shrink-0 w-5 h-5" />
 

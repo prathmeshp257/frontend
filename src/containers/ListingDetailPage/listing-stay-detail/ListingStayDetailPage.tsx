@@ -821,7 +821,7 @@ const StayDetailPageContainer: FC<{}> = () => {
           //  href={"/checkout"}
           onClick={show ? () => {} : getPhoneNumber}
         >
-          {show ? propertyData?.ownerID?.phoneNumber : "show phone number"}
+          {show ? propertyData?.ownerID?.phoneNumber : "Show phone number"}
         </ButtonPrimary>
       </div>
     );

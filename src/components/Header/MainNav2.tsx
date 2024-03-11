@@ -5,8 +5,8 @@ import SwitchDarkMode from "shared/SwitchDarkMode/SwitchDarkMode";
 import LangDropdown from "./LangDropdown";
 import NotifyDropdown from "./NotifyDropdown";
 import { WalletIcon } from "@heroicons/react/24/outline";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWallet } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faWallet } from "@fortawesome/free-solid-svg-icons";
 import AvatarDropdown from "./AvatarDropdown";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 import CurrencyDropdown from "./CurrencyDropdown";
@@ -15,10 +15,11 @@ import { Link, useLocation } from "react-router-dom";
 import HeroSearchForm2MobileFactory from "components/HeroSearchForm2Mobile/HeroSearchForm2MobileFactory";
 import AirbnbYourHome from "shared/Abnb/Abnb";
 import { AuthContext } from "context/userContext";
-import HeroSearchForm2Mobile from "components/HeroSearchForm2Mobile/HeroSearchForm2Mobile";
+// import HeroSearchForm2Mobile from "components/HeroSearchForm2Mobile/HeroSearchForm2Mobile";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { API_URL } from "api/config";
+import HeroSearchFormDetailPage from "components/HeroSearchForm2Mobile/HeroSearchFormDetailPage";
 export interface MainNav2Props {
   className?: string;
 }
@@ -41,7 +42,7 @@ const showSearchBar = pathname.includes("/detail");
           <div className="flex justify-center flex-[2] max-w-lg">
             {showSearchBar && (
               <div className="flex-[3] mx-auto md:px-3">
-                <HeroSearchForm2Mobile />
+                <HeroSearchFormDetailPage />
                 {/* <SectionHeroArchivePage
                   getPropertyFunc={getPropertyData}
                   searchLocationValue={searchLocationValue}
