@@ -40,6 +40,8 @@ interface AuthContextProps {
   setGuestInfantsInputValue: React.Dispatch<React.SetStateAction<number>>;
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  showSearchModal: boolean;
+  setShowSearchModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const initialState: AuthContextProps = {
@@ -76,6 +78,9 @@ const initialState: AuthContextProps = {
   setGuestInfantsInputValue: () => {},
   showModal: false,
   setShowModal: () => {},
+  //searchbar detail page
+  showSearchModal: false,
+  setShowSearchModal: () => {},
 };
 
 const AuthContext = createContext<AuthContextProps>(initialState);
@@ -107,6 +112,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [showModal, setShowModal] = useState(false);
   // console.log(guests, "guessssssss");
   // console.log(totalGuests, "totaaaaaal");
+  const [showSearchModal, setShowSearchModal] = useState(false);
+  // searchbar details page
 
   const onLogout = () => {
     setUserData(initialState.userData);
@@ -266,6 +273,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setGuestInfantsInputValue,
     showModal,
     setShowModal,
+    //searchbar detail page
+    showSearchModal,
+    setShowSearchModal,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

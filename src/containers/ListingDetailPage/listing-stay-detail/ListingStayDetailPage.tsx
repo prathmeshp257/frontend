@@ -7,7 +7,7 @@ import Avatar from "shared/Avatar/Avatar";
 import Badge from "shared/Badge/Badge";
 import LikeSaveBtns from "components/LikeSaveBtns";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Dialog, Transition } from "@headlessui/react";
+import { Dialog, Tab, Transition } from "@headlessui/react";
 import { ArrowRightIcon, Squares2X2Icon } from "@heroicons/react/24/outline";
 import ButtonSecondary from "shared/Button/ButtonSecondary";
 import ButtonClose from "shared/ButtonClose/ButtonClose";
@@ -21,6 +21,9 @@ import axios from "axios";
 import DetailPagetLayout from "../Layout";
 import moment from "moment";
 import { AuthContext } from "context/userContext";
+import SectionHeroArchivePage from "components/SectionHeroArchivePage/SectionHeroArchivePage";
+import StaySearchForm from "components/HeroSearchForm/(stay-search-form)/StaySearchForm";
+import ButtonSubmit from "components/HeroSearchForm/ButtonSubmit";
 
 const StayDetailPageContainer: FC<{}> = () => {
   const [show, setShow] = useState<Boolean>(false);
@@ -28,6 +31,22 @@ const StayDetailPageContainer: FC<{}> = () => {
   const [totalOwnerProperty, setTotalOwnerProperty] = useState<number>(0);
 
   const authContext = useContext(AuthContext);
+  // searchbar detail page
+  const showSearchModal = authContext.showSearchModal;
+  const setShowSearchModal = authContext.setShowSearchModal;  
+  const getPropertyData = authContext.getPropertyData;
+  const showModal = authContext.showModal;
+  const setShowModal = authContext.setShowModal;
+  const searchLocationValue = authContext.searchLocationValue;
+  const setSearchLocationValue = authContext.setSearchLocationValue;
+  const setGuestAdultsInputValue = authContext.setGuestAdultsInputValue;
+  const setGuestChildrenInputValue = authContext.setGuestChildrenInputValue;
+  const setGuestInfantsInputValue = authContext.setGuestInfantsInputValue;
+  const guestSearch = authContext.guests;
+  const setGuests = authContext.setGuests;
+  const setInfo = authContext.setInfo;
+  // searchbar detail page
+
   const userData = authContext.userData;
   const queryParams = new URLSearchParams(window.location.search);
   const propIdParam = queryParams.get("propID");
@@ -228,6 +247,174 @@ const StayDetailPageContainer: FC<{}> = () => {
   const address = room_number
     ? `${room_number}, ${street} ${city} ${state}, ${country} ${postal_code}`
     : `${street} ${city} ${state}, ${country} ${postal_code}`;
+
+  //SEARCCH BAR DETAIL PAGE
+  const renderSearchBar = () => {
+    return (
+      // <div className="HeroSearchForm2Mobile">
+      //   <Transition appear show={showSearchModal} as={Fragment}>
+      //     <Dialog
+      //       as="div"
+      //       className="HeroSearchFormMobile__Dialog relative z-max"
+      //       onClose={() => setShowSearchModal(false)}
+      //     >
+      //       {/* ... existing code ... */}
+      //       <div className="flex h-full">
+      //         {/* ... existing code ... */}
+      //         <Transition.Child
+      //           enter="ease-out transition-transform"
+      //           enterFrom="opacity-0 translate-y-full"
+      //           enterTo="opacity-100 translate-y-0"
+      //           leave="ease-in transition-transform"
+      //           leaveFrom="opacity-100 translate-y-0"
+      //           leaveTo="opacity-0 translate-y-full"
+      //         >
+      //           <Dialog.Panel className="relative h-full overflow-hidden flex-1 flex flex-col justify-center items-center">
+      //             {showSearchModal && (
+      //               <Tab.Group manual>
+      //                 {/* ... existing code ... */}
+      //                 <Tab.Panels className="flex-1 overflow-y-auto hiddenScrollbar py-4">
+      //                   <Tab.Panel>
+      //                     <div className="transition-opacity animate-[myblur_0.4s_ease-in-out]">
+      //                       {showSearchModal && (
+      //                         <Transition.Child
+      //                           enter="ease-out transition-transform"
+      //                           enterFrom="opacity-0 translate-y-full"
+      //                           enterTo="opacity-100 translate-y-0"
+      //                           leave="ease-in transition-transform"
+      //                           leaveFrom="opacity-100 translate-y-0"
+      //                           leaveTo="opacity-0 translate-y-full"
+      //                         >
+      //                           <SectionHeroArchivePage
+      //                             getPropertyFunc={getPropertyData}
+      //                             searchLocationValue={searchLocationValue}
+      //                             setSearchLocationValue={
+      //                               setSearchLocationValue
+      //                             }
+      //                             guests={guestSearch}
+      //                             setGuests={setGuests}
+      //                             currentPage="Stays"
+      //                             currentTab="Stays"
+      //                             className=" pb-12 lg:pb-14"
+      //                           />
+
+      //                           {/* <HeroSearchForm
+      //                           // currentPage={currentPage}
+      //                           // currentTab={currentTab}
+      //                           // getPropertyFunc={getPropertyFunc}
+      //                           searchLocationValue={searchLocationValue}
+      //                           setSearchLocationValue={setSearchLocationValue}
+      //                           guests={guests}
+      //                           setGuests={setGuests}
+      //                         /> */}
+      //                         </Transition.Child>
+      //                       )}
+      //                     </div>
+      //                   </Tab.Panel>
+      //                 </Tab.Panels>
+      //                 {/* ... existing code ... */}
+      //               </Tab.Group>
+      //             )}
+      //           </Dialog.Panel>
+      //         </Transition.Child>{" "}
+      //         {/* ... existing code ... */}
+      //       </div>
+      //       {/* ... existing code ... */}
+      //     </Dialog>
+      //   </Transition>
+      // </div>
+      <div
+        style={{
+          backgroundColor: showSearchModal ? "black" : "transparent",
+          opacity: showSearchModal ? 0.9 : 1,
+          position: "fixed",
+          top: 90,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: 50,
+          display: showSearchModal ? "block" : "none",
+        }}
+      >
+        <div className={`HeroSearchForm2Mobile`}>
+          {/* {renderButtonOpenModal()} */}
+          <Transition appear show={showSearchModal} as={Fragment}>
+            <Dialog
+              // as="div"
+              className="HeroSearchFormMobile__Dialog relative z-max"
+              onClose={() => setShowSearchModal(false)}
+            >
+              <div
+                className="fixed inset-0 bg-dark-100 dark:bg-neutral-900 opacity-90"
+                // style={{ background: "black"}}
+
+                onClick={() => setShowSearchModal(false)}
+              >
+                <div className="flex">
+                  <Transition.Child
+                    as={Fragment}
+                    enter="ease-out transition-transform"
+                    enterFrom="opacity-0 translate-y-0"
+                    enterTo="opacity-100 translate-y-150"
+                    leave="ease-in transition-transform"
+                    leaveFrom="opacity-100 translate-y-150"
+                    leaveTo="opacity-0 translate-y-0"
+                  >
+                    <Dialog.Panel
+                      className="relative h-20vh overflow-hidden flex-1 flex flex-col justify-between"
+                      style={{
+                        minHeight: "50vh",
+                        backgroundColor: "transparent",
+                      }}
+                    >
+                      {showSearchModal && (
+                        <Tab.Group manual>
+                          <div className="absolute left-4 top-24">
+                            <button
+                              className=""
+                              onClick={() => setShowSearchModal(false)}
+                            >
+                              {/* <XMarkIcon className="w-5 h-5 text-black dark:text-white" /> */}
+                            </button>
+                          </div>
+                          <div className="flex-1 pt-24 px-1.5 sm:px-4 flex overflow-hidden">
+                            <Tab.Panels className="flex-1 overflow-y-auto hiddenScrollbar py-4 container">
+                              <Tab.Panel>
+                                <div className="transition-opacity animate-[myblur_0.4s_ease-in-out]">
+                                  {/* <StaySearchForm /> */}
+
+                                  {showSearchModal && (
+                                    <SectionHeroArchivePage
+                                      getPropertyFunc={getPropertyData}
+                                      searchLocationValue={searchLocationValue}
+                                      setSearchLocationValue={
+                                        setSearchLocationValue
+                                      }
+                                      guests={guestSearch}
+                                      setGuests={setGuests}
+                                      currentPage="Stays"
+                                      currentTab="Stays"
+                                      className="lg:pb-1"
+                                    />
+                                  )}
+                                </div>
+                              </Tab.Panel>
+                            </Tab.Panels>
+                          </div>
+                        </Tab.Group>
+                      )}
+                    </Dialog.Panel>
+                  </Transition.Child>
+                </div>
+              </div>
+            </Dialog>
+          </Transition>
+        </div>
+      </div>
+    );
+  };
+  //SEARCCH BAR DETAIL PAGE
+
   const renderSection1 = () => {
     return (
       <div className="listingSection__wrap !space-y-6">
@@ -794,7 +981,6 @@ const StayDetailPageContainer: FC<{}> = () => {
                 return null; // For other days, don't render anything
               }
             })}
-            
           </span>
           <StartRating />
         </div>
@@ -830,6 +1016,8 @@ const StayDetailPageContainer: FC<{}> = () => {
   return (
     <div className="nc-ListingStayDetailPage py-8">
       {/*  HEADER */}
+      {renderSearchBar()}
+
       <header className="rounded-md sm:rounded-xl">
         <div
           className="relative grid grid-cols-3 sm:grid-cols-4 gap-1 sm:gap-2"
@@ -887,6 +1075,7 @@ const StayDetailPageContainer: FC<{}> = () => {
       <main className=" relative z-10 mt-11 flex flex-col lg:flex-row ">
         {/* CONTENT */}
         <div className="w-full lg:w-3/5 xl:w-2/3 space-y-8 lg:space-y-10 lg:pr-10">
+          {/* { renderSearchBar() } */}
           {renderSection1()}
           {renderSection2()}
           {renderSection3()}

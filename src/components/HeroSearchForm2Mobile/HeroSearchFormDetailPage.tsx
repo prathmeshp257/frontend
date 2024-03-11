@@ -12,9 +12,14 @@ import LocationInput from "components/HeroSearchFormSmall/LocationInput";
 import GuestsInput from "components/HeroSearchFormSmall/GuestsInput";
 
 const HeroSearchFormDetailPage = () => {
-  const [showSearchModal, setShowSearchModal] = useState(false);
+  // const [showSearchModal, setShowSearchModal] = useState(false);
 
   const authContext = useContext(AuthContext);
+
+  // searchbar detail page
+  const showSearchModal = authContext.showSearchModal;
+  const setShowSearchModal = authContext.setShowSearchModal;
+
   const getPropertyData = authContext.getPropertyData;
   const showModal = authContext.showModal;
   const setShowModal = authContext.setShowModal;
@@ -84,76 +89,77 @@ const HeroSearchFormDetailPage = () => {
   return (
     <div className="HeroSearchForm2Mobile">
       {renderButtonOpenModal()}
-      <Transition appear show={showSearchModal} as={Fragment}>
-        <Dialog
-          as="div"
-          className="HeroSearchFormMobile__Dialog relative z-max"
-          onClose={() => setShowSearchModal(false)}
-        >
-          {/* ... existing code ... */}
-          <div className="flex h-full">
-            {/* ... existing code ... */}
-            <Transition.Child
-              enter="ease-out transition-transform"
-              enterFrom="opacity-0 translate-y-full"
-              enterTo="opacity-100 translate-y-0"
-              leave="ease-in transition-transform"
-              leaveFrom="opacity-100 translate-y-0"
-              leaveTo="opacity-0 translate-y-full"
-            >
-              <Dialog.Panel className="relative h-full overflow-hidden flex-1 flex flex-col justify-center items-center">
-                {showSearchModal && (
-                  <Tab.Group manual>
-                    {/* ... existing code ... */}
-                    <Tab.Panels className="flex-1 overflow-y-auto hiddenScrollbar py-4">
-                      <Tab.Panel>
-                        <div className="transition-opacity animate-[myblur_0.4s_ease-in-out]">
-                          {showSearchModal && (
-                            <Transition.Child
-                              enter="ease-out transition-transform"
-                              enterFrom="opacity-0 translate-y-full"
-                              enterTo="opacity-100 translate-y-0"
-                              leave="ease-in transition-transform"
-                              leaveFrom="opacity-100 translate-y-0"
-                              leaveTo="opacity-0 translate-y-full"
-                            >
-                              <SectionHeroArchivePage
-                                getPropertyFunc={getPropertyData}
-                                searchLocationValue={searchLocationValue}
-                                setSearchLocationValue={setSearchLocationValue}
-                                guests={guests}
-                                setGuests={setGuests}
-                                currentPage="Stays"
-                                currentTab="Stays"
-                                className=" pb-12 lg:pb-14"
-                              />
-                              
-                              {/* <HeroSearchForm
-                                // currentPage={currentPage}
-                                // currentTab={currentTab}
-                                // getPropertyFunc={getPropertyFunc}
-                                searchLocationValue={searchLocationValue}
-                                setSearchLocationValue={setSearchLocationValue}
-                                guests={guests}
-                                setGuests={setGuests}
-                              /> */}
-                            </Transition.Child>
-                          )}
-                        </div>
-                      </Tab.Panel>
-                    </Tab.Panels>
-                    {/* ... existing code ... */}
-                  </Tab.Group>
-                )}
-              </Dialog.Panel>
-            </Transition.Child>{" "}
-            {/* ... existing code ... */}
-          </div>
-          {/* ... existing code ... */}
-        </Dialog>
-      </Transition>
     </div>
   );
 };
 
 export default HeroSearchFormDetailPage;
+
+      // <Transition appear show={showSearchModal} as={Fragment}>
+      //   <Dialog
+      //     as="div"
+      //     className="HeroSearchFormMobile__Dialog relative z-max"
+      //     onClose={() => setShowSearchModal(false)}
+      //   >
+      //     {/* ... existing code ... */}
+      //     <div className="flex h-full">
+      //       {/* ... existing code ... */}
+      //       <Transition.Child
+      //         enter="ease-out transition-transform"
+      //         enterFrom="opacity-0 translate-y-full"
+      //         enterTo="opacity-100 translate-y-0"
+      //         leave="ease-in transition-transform"
+      //         leaveFrom="opacity-100 translate-y-0"
+      //         leaveTo="opacity-0 translate-y-full"
+      //       >
+      //         <Dialog.Panel className="relative h-full overflow-hidden flex-1 flex flex-col justify-center items-center">
+      //           {showSearchModal && (
+      //             <Tab.Group manual>
+      //               {/* ... existing code ... */}
+      //               <Tab.Panels className="flex-1 overflow-y-auto hiddenScrollbar py-4">
+      //                 <Tab.Panel>
+      //                   <div className="transition-opacity animate-[myblur_0.4s_ease-in-out]">
+      //                     {showSearchModal && (
+      //                       <Transition.Child
+      //                         enter="ease-out transition-transform"
+      //                         enterFrom="opacity-0 translate-y-full"
+      //                         enterTo="opacity-100 translate-y-0"
+      //                         leave="ease-in transition-transform"
+      //                         leaveFrom="opacity-100 translate-y-0"
+      //                         leaveTo="opacity-0 translate-y-full"
+      //                       >
+      //                         <SectionHeroArchivePage
+      //                           getPropertyFunc={getPropertyData}
+      //                           searchLocationValue={searchLocationValue}
+      //                           setSearchLocationValue={setSearchLocationValue}
+      //                           guests={guests}
+      //                           setGuests={setGuests}
+      //                           currentPage="Stays"
+      //                           currentTab="Stays"
+      //                           className=" pb-12 lg:pb-14"
+      //                         />
+                              
+      //                         {/* <HeroSearchForm
+      //                           // currentPage={currentPage}
+      //                           // currentTab={currentTab}
+      //                           // getPropertyFunc={getPropertyFunc}
+      //                           searchLocationValue={searchLocationValue}
+      //                           setSearchLocationValue={setSearchLocationValue}
+      //                           guests={guests}
+      //                           setGuests={setGuests}
+      //                         /> */}
+      //                       </Transition.Child>
+      //                     )}
+      //                   </div>
+      //                 </Tab.Panel>
+      //               </Tab.Panels>
+      //               {/* ... existing code ... */}
+      //             </Tab.Group>
+      //           )}
+      //         </Dialog.Panel>
+      //       </Transition.Child>{" "}
+      //       {/* ... existing code ... */}
+      //     </div>
+      //     {/* ... existing code ... */}
+      //   </Dialog>
+      // </Transition>

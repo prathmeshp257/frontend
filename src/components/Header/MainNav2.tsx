@@ -59,11 +59,11 @@ const showSearchBar = pathname.includes("/detail");
 
           {/* This div should be in the center of the parent div */}
           <div className="flex justify-center items-center cursor-pointer">
-            <Link to="easystays-owners.infiny.dev">
+            <a href="easystays-owners.infiny.dev">
               <h4 className="text-sm ml-4 hover:bg-neutral-100 dark:bg-neutral-800 rounded-full py-2 px-4">
                 EZstays Your Home
               </h4>
-            </Link>
+            </a>
           </div>
         </div>
 

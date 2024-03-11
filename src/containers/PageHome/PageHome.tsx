@@ -89,6 +89,7 @@ const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
     <div
       className={`nc-ListingStayPage relative overflow-hidden ${className}`}
       data-nc-id="ListingStayPage"
+      // style={{ height: "90vh" }}
     >
       <Helmet>
         <title>easystays || Booking</title>
