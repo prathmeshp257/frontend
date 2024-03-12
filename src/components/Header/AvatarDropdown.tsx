@@ -1,6 +1,6 @@
 import { Popover, Transition } from "@headlessui/react";
 import {
-  UserCircleIcon,
+  UserCircleIcon,WalletIcon,
   ChatBubbleBottomCenterTextIcon,
   HeartIcon,
   HomeIcon,
@@ -21,17 +21,17 @@ const solutions = [
     href: "/account",
     icon: UserCircleIcon,
   },
+  {
+    name: "wallet",
+    href: "/account",
+    icon: WalletIcon,
+  },
 ];
 
 const solutionsFoot = [
   {
     name: "Logout",
     icon: ArrowRightOnRectangleIcon,
-  },
-  {
-    name: "EZstay your home",
-    href: "/",
-    icon: HomeIcon,
   }
 ];
 

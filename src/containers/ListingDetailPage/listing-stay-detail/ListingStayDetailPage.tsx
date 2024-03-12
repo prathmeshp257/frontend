@@ -32,9 +32,11 @@ import { AuthContext } from "context/userContext";
 import SectionHeroArchivePage from "components/SectionHeroArchivePage/SectionHeroArchivePage";
 import StaySearchForm from "components/HeroSearchForm/(stay-search-form)/StaySearchForm";
 import ButtonSubmit from "components/HeroSearchForm/ButtonSubmit";
+import XMarkIcon from "@heroicons/react/24/solid/XMarkIcon";
+import DetailPageShowPhNo from "components/HeroSearchForm2Mobile/DetailsPageShowphNo";
 
 const StayDetailPageContainer: FC<{}> = () => {
-  const [show, setShow] = useState<Boolean>(false);
+  const [show, setShow] = useState<any>(false);
   const [propertyData, setPropertyData] = useState<any>({});
   const [totalOwnerProperty, setTotalOwnerProperty] = useState<number>(0);
 
@@ -42,12 +44,16 @@ const StayDetailPageContainer: FC<{}> = () => {
   // searchbar detail page
   const showSearchModal = authContext.showSearchModal;
   const setShowSearchModal = authContext.setShowSearchModal;
+
   const getPropertyData = authContext.getPropertyData;
-  const showModal = authContext.showModal;
-  const setShowModal = authContext.setShowModal;
+
+  const showModalPh = authContext.showModalPh;
+  const setShowModalPh = authContext.setShowModalPh;
+
   const searchLocationValue = authContext.searchLocationValue;
   const setSearchLocationValue = authContext.setSearchLocationValue;
-  const setGuestAdultsInputValue = authContext.setGuestAdultsInputValue;
+  const showHeight = authContext.showHeight;
+
   const setGuestChildrenInputValue = authContext.setGuestChildrenInputValue;
   const setGuestInfantsInputValue = authContext.setGuestInfantsInputValue;
   const guestSearch = authContext.guests;
@@ -113,13 +119,24 @@ const StayDetailPageContainer: FC<{}> = () => {
   useEffect(() => {
     getOnePropertyDetails();
   }, []);
-  const [openDialog, setOpenDailog] = useState(false);
   const handleOpenDialog = () => {
-    setOpenDailog(true);
+    setShowModalPh(true);
   };
   const handleCloseDialog = () => {
-    setOpenDailog(false);
+    setShowModalPh(false);
   };
+  const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
+ const handleConfirmPhoneNumber = () => {
+   getPhoneNumber();
+   console.log("Phone number confirmed");
+   setConfirmDialogVisible(false);
+ };
+
+ const handleCancelPhoneNumber = () => {
+   console.log("Phone number confirmation canceled");
+   setConfirmDialogVisible(false);
+ };
+
   const {
     _id,
     type,
@@ -268,7 +285,9 @@ const StayDetailPageContainer: FC<{}> = () => {
     return (
       <div
         style={{
-          backgroundColor: showSearchModal ? "black" : "transparent",
+          backgroundColor: showSearchModal
+            ? "rgba(0, 0, 0, 0.5)"
+            : "transparent",
           opacity: showSearchModal ? 0.9 : 1,
           position: "fixed",
           top: 90,
@@ -302,14 +321,14 @@ const StayDetailPageContainer: FC<{}> = () => {
                     <Dialog.Panel
                       className="relative h-20vh flex-1 flex flex-col justify-between"
                       style={{
-                        ...{ minHeight: "60vh" },
+                        minHeight: showHeight ? "70vh" : undefined,
                         backgroundColor: "transparent",
                       }}
                     >
                       {showSearchModal && (
                         <Tab.Group manual>
                           <div className="flex-1 pt-24 px-1.5 sm:px-4 flex">
-                            <Tab.Panels className="flex-1 overflow-y-auto hiddenScrollbar py-4 container">
+                            <Tab.Panels className="flex-1 overflow-y-auto hiddenScrollbar pt-4 container">
                               <Tab.Panel>
                                 <div className="transition-opacity animate-[myblur_0.4s_ease-in-out]">
                                   {showSearchModal && (
@@ -345,191 +364,116 @@ const StayDetailPageContainer: FC<{}> = () => {
   //SHOW ph NO DETAIL PAGE
   const renderModalShowPhNO = () => {
     return (
-      // <div className={`HeroSearchForm2Mobile`}>
-      //   <Transition appear show={openDialog} as={Fragment}>
-      //     <div className="transition-opacity animate-[myblur_0.4s_ease-in-out]">
-      //       <Dialog
-      //         className="HeroSearchFormMobile__Dialog relative z-max container"
-      //         open={openDialog}
-      //         onClose={handleCloseDialog}
-      //       >
-      //         <DialogTitle>{"Show Phone Number"}</DialogTitle>
-      //         <DialogContent>
-      //           <DialogContentText id="alert-dialog-slide-description">
-      //             Are you sure, you want to spend 5 coins?
-      //           </DialogContentText>
-      //         </DialogContent>
-      //         <DialogActions>
-      //           <Button onClick={handleCloseDialog}>No</Button>
-      //           <ButtonPrimary onClick={getPhoneNumber}>5 coins</ButtonPrimary>
-      //         </DialogActions>
-      //       </Dialog>
-      //     </div>
-      //   </Transition>
-      // </div>
-            <Transition appear show={showModal} as={Fragment}>
-        <Dialog
-          as="div"
-          className="HeroSearchFormMobile__Dialog relative z-50"
-          onClose={closeModal}
-        >
-          <div className="fixed inset-0 bg-neutral-100 dark:bg-neutral-900">
-            <div className="flex h-full">
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out transition-transform"
-                enterFrom="opacity-0 translate-y-52"
-                enterTo="opacity-100 translate-y-0"
-                leave="ease-in transition-transform"
-                leaveFrom="opacity-100 translate-y-0"
-                leaveTo="opacity-0 translate-y-52"
-              >
-                <Dialog.Panel className="relative h-full overflow-hidden flex-1 flex flex-col justify-between ">
-                  <>
-                    <div className="absolute left-4 top-4">
-                      <button
-                        className="focus:outline-none focus:ring-0"
-                        onClick={closeModal}
-                      >
-                        <XMarkIcon className="w-5 h-5 text-black dark:text-white" />
-                      </button>
-                    </div>
-
-                    <div className="flex-1 pt-12 p-1 flex flex-col overflow-auto">
-                      <div className="flex-1 flex flex-col bg-white dark:bg-neutral-800">
-                        <div className="flex-1 flex flex-col transition-opacity animate-[myblur_0.4s_ease-in-out] overflow-auto">
-                          <div className="p-5 ">
-                            <span className="block font-semibold text-xl sm:text-2xl">
-                              {` When's your trip?`}
-                            </span>
-                          </div>
-                          <div className="flex-1 relative flex z-10 ">
-                            <div className="overflow-hidden rounded-3xl ">
-                              <DatePicker
-                                selected={startDate}
-                                onChange={onChangeDate}
-                                startDate={startDate}
-                                endDate={endDate}
-                                selectsRange
-                                monthsShown={2}
-                                showPopperArrow={false}
-                                inline
-                                renderCustomHeader={(p) => (
-                                  <DatePickerCustomHeaderTwoMonth {...p} />
-                                )}
-                                renderDayContents={(day, date) => (
-                                  <DatePickerCustomDay
-                                    dayOfMonth={day}
-                                    date={date}
-                                  />
-                                )}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="px-4 py-3 bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-700 flex justify-between">
-                      <button
-                        type="button"
-                        className="underline font-semibold flex-shrink-0"
-                        onClick={() => {
-                          onChangeDate([null, null]);
-                        }}
-                      >
-                        Clear dates
-                      </button>
-                      <ButtonPrimary
-                        sizeClass="px-6 py-3 !rounded-xl"
-                        onClick={() => {
-                          closeModal();
-                        }}
-                      >
-                        Save
-                      </ButtonPrimary>
-                    </div>
-                  </>
-                </Dialog.Panel>
-              </Transition.Child>
-            </div>
-          </div>
-        </Dialog>
-      </Transition>
-      // <div className={`HeroSearchForm2Mobile`}>
-      //   <Transition appear show={openDialog} as={Fragment}>
-      //     <Dialog
-      //       className="HeroSearchFormMobile__Dialog relative z-max"
-      //       onClose={() => setOpenDailog(false)}
-      //     >
-      //       <div
-      //         className="fixed inset-0 bg-dark-100 dark:bg-neutral-900 opacity-90"
-      //         onClick={() => setOpenDailog(false)}
-      //       >
-      //         <div className="flex">
-      //           <Transition.Child
-      //             as={Fragment}
-      //             enter="ease-out transition-transform"
-      //             enterFrom="opacity-0 translate-y-0"
-      //             enterTo="opacity-100 translate-y-150"
-      //             leave="ease-in transition-transform"
-      //             leaveFrom="opacity-100 translate-y-150"
-      //             leaveTo="opacity-0 translate-y-0"
-      //           >
-      //             <Dialog.Panel
-      //               className="relative h-20vh flex-1 flex flex-col justify-between"
-      //               style={{
-      //                 // ...{ minHeight: "60vh" },
-      //                 backgroundColor: "transparent",
-      //               }}
-      //             >
-      //               {openDialog && (
-      //                 <Tab.Group manual>
-      //                   <div className="flex-1 mx-auto  px-1.5 sm:px-4 flex">
-      //                     <Tab.Panels className="flex-1 overflow-y-auto hiddenScrollbar py-4 container">
-      //                       <Tab.Panel>
-      //                         <div className="transition-opacity animate-[myblur_0.4s_ease-in-out]">
-      //                           {openDialog && (
-      //                             <div className="transition-opacity animate-[myblur_0.4s_ease-in-out]">
-      //                               <Dialog
-      //                                 className="HeroSearchFormMobile__Dialog relative z-max container"
-      //                                 open={openDialog}
-         
-      //                                 onClose={handleCloseDialog}
-      //                               >
-      //                                 <DialogTitle>
-      //                                   {"Show Phone Number"}
-      //                                 </DialogTitle>
-      //                                 <DialogContent>
-      //                                   <DialogContentText id="alert-dialog-slide-description">
-      //                                     Are you sure you want to spend 5
-      //                                     coins?
-      //                                   </DialogContentText>
-      //                                 </DialogContent>
-      //                                 <DialogActions>
-      //                                   <Button onClick={handleCloseDialog}>
-      //                                     No
-      //                                   </Button>
-      //                                   <ButtonPrimary onClick={getPhoneNumber}>
-      //                                     5 coins
-      //                                   </ButtonPrimary>
-      //                                 </DialogActions>
-      //                               </Dialog>
-      //                             </div>
-      //                           )}
-      //                         </div>
-      //                       </Tab.Panel>
-      //                     </Tab.Panels>
-      //                   </div>
-      //                 </Tab.Group>
-      //               )}
-      //             </Dialog.Panel>
-      //           </Transition.Child>
-      //         </div>
-      //       </div>
-      //     </Dialog>
-      //   </Transition>
-      // </div>
+      <div
+        style={{
+          backgroundColor: showModalPh ? "black" : "transparent",
+          opacity: showModalPh ? 0.9 : 1,
+          position: "fixed",
+          top: 90,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: 50,
+          display: showModalPh ? "block" : "none",
+        }}
+      >
+        <div>
+          <Transition appear show={showModalPh} as={React.Fragment}>
+            <Dialog
+              className="HeroSearchFormMobile__Dialog relative z-max"
+              open={showModalPh}
+              onClose={handleCloseDialog}
+            >
+              <DialogTitle>{"Dialog Title"}</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-slide-description">
+                  Are you sure you want to perform this action?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleCloseDialog}>No</Button>
+                <Button onClick={handleCloseDialog}>Yes</Button>
+              </DialogActions>
+            </Dialog>
+          </Transition>
+        </div>
+      </div>
     );
+    // <div className={`HeroSearchForm2Mobile`}>
+    //   <Transition appear show={openDialog} as={Fragment}>
+    //     <Dialog
+    //       className="HeroSearchFormMobile__Dialog relative z-max"
+    //       onClose={() => setOpenDailog(false)}
+    //     >
+    //       <div
+    //         className="fixed inset-0 bg-dark-100 dark:bg-neutral-900 opacity-90"
+    //         onClick={() => setOpenDailog(false)}
+    //       >
+    //         <div className="flex">
+    //           <Transition.Child
+    //             as={Fragment}
+    //             enter="ease-out transition-transform"
+    //             enterFrom="opacity-0 translate-y-0"
+    //             enterTo="opacity-100 translate-y-150"
+    //             leave="ease-in transition-transform"
+    //             leaveFrom="opacity-100 translate-y-150"
+    //             leaveTo="opacity-0 translate-y-0"
+    //           >
+    //             <Dialog.Panel
+    //               className="relative h-20vh flex-1 flex flex-col justify-between"
+    //               style={{
+    //                 // ...{ minHeight: "60vh" },
+    //                 backgroundColor: "transparent",
+    //               }}
+    //             >
+    //               {openDialog && (
+    //                 <Tab.Group manual>
+    //                   <div className="flex-1 mx-auto  px-1.5 sm:px-4 flex">
+    //                     <Tab.Panels className="flex-1 overflow-y-auto hiddenScrollbar py-4 container">
+    //                       <Tab.Panel>
+    //                         <div className="transition-opacity animate-[myblur_0.4s_ease-in-out]">
+    //                           {openDialog && (
+    //                             <div className="transition-opacity animate-[myblur_0.4s_ease-in-out]">
+    //                               <Dialog
+    //                                 className="HeroSearchFormMobile__Dialog relative z-max container"
+    //                                 open={openDialog}
+
+    //                                 onClose={handleCloseDialog}
+    //                               >
+    //                                 <DialogTitle>
+    //                                   {"Show Phone Number"}
+    //                                 </DialogTitle>
+    //                                 <DialogContent>
+    //                                   <DialogContentText id="alert-dialog-slide-description">
+    //                                     Are you sure you want to spend 5
+    //                                     coins?
+    //                                   </DialogContentText>
+    //                                 </DialogContent>
+    //                                 <DialogActions>
+    //                                   <Button onClick={handleCloseDialog}>
+    //                                     No
+    //                                   </Button>
+    //                                   <ButtonPrimary onClick={getPhoneNumber}>
+    //                                     5 coins
+    //                                   </ButtonPrimary>
+    //                                 </DialogActions>
+    //                               </Dialog>
+    //                             </div>
+    //                           )}
+    //                         </div>
+    //                       </Tab.Panel>
+    //                     </Tab.Panels>
+    //                   </div>
+    //                 </Tab.Group>
+    //               )}
+    //             </Dialog.Panel>
+    //           </Transition.Child>
+    //         </div>
+    //       </div>
+    //     </Dialog>
+    //   </Transition>
+    // </div>
+    // );
   };
 
   const renderSection1 = () => {
@@ -1058,6 +1002,111 @@ const StayDetailPageContainer: FC<{}> = () => {
     );
   };
 
+// interface ConfirmationDialogProps {
+//   onConfirm: () => void;
+//   onCancel: () => void;
+// }
+
+// const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
+//   onConfirm,
+//   onCancel,
+// }) => {
+//   return (
+//     <div className="confirmation-dialog">
+//       <p>Are you sure you want to get the phone number?</p>
+//       <div>
+//         <ButtonPrimary onClick={onConfirm}>Yes</ButtonPrimary>
+//         <ButtonPrimary onClick={onCancel}>No</ButtonPrimary>
+//       </div>
+//     </div>
+//   );
+// };
+interface ConfirmationDialogProps {
+  open: boolean;
+  onCancel: () => void;
+  onConfirm: () => void;
+}
+
+// const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
+//   open,
+//   onCancel,
+//   onConfirm,
+// }) => {
+//   return (
+//     <div className={`confirmation-dialog ${open ? "open" : ""}`}>
+//       <div className="confirmation-dialog-overlay" onClick={onCancel}></div>
+//       <div className="confirmation-dialog-content">
+//         <div className="confirmation-dialog-header">Dialog Title</div>
+//         <div className="confirmation-dialog-body">
+//           <p>Are you sure you want to perform this action?</p>
+//         </div>
+//         <div className="confirmation-dialog-footer">
+//           <button onClick={onCancel}>No</button>
+//           <button onClick={onConfirm}>Yes</button>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
+  open,
+  onConfirm,
+  onCancel,
+}) => {
+  return (
+    <div
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        zIndex: 1000,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      {open && (
+        <>
+          <div
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
+            }}
+            onClick={onCancel}
+          ></div>
+          <div
+            style={{
+              backgroundColor: "white",
+              zIndex: 2000,
+              padding: "20px",
+              borderRadius: "8px",
+              boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
+            }}
+          >
+            <div style={{ fontSize: "18px", fontWeight: "bold" }}>
+              Show Phone Number
+            </div>
+            <div style={{ marginTop: "10px" }}>
+              <p>Are you sure you want to spend 5 coins?</p>
+            </div>
+            <div style={{ marginTop: "20px", textAlign: "right" }}>
+              <Button onClick={onCancel}>No</Button>
+              <span style={{ marginLeft: "10px" }}></span>
+              <ButtonPrimary onClick={onConfirm}>5 Coins</ButtonPrimary>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
+
   const renderSidebar = () => {
     return (
       // <div className="listingSectionSidebar__wrap shadow-xl">
@@ -1102,29 +1151,11 @@ const StayDetailPageContainer: FC<{}> = () => {
           <StartRating />
         </div>
 
-        {/* FORM */}
-
-        {/* SUM */}
-        {/* <div className="flex flex-col space-y-4 ">
-          <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-            <span>$19 x 3 day</span>
-            <span>$57</span>
-          </div>
-
-          <div className="border-b border-neutral-200 dark:border-neutral-700"></div>
-          <div className="flex justify-between font-semibold">
-            <span>Total</span>
-            <span>$199</span>
-          </div>
-        </div> */}
-
-        {/* SUBMIT */}
-        {/* <ButtonPrimary href={"/checkout"}>Reserve</ButtonPrimary> */}
         <ButtonPrimary
           //  href={"/checkout"}
           // onClick={show ? () => {} : getPhoneNumber}
 
-          onClick={show ? () => {} : handleOpenDialog}
+          onClick={show ? () => {} : () => setConfirmDialogVisible(true)}
         >
           {show ? propertyData?.ownerID?.phoneNumber : "Show phone number"}
         </ButtonPrimary>
@@ -1136,7 +1167,14 @@ const StayDetailPageContainer: FC<{}> = () => {
     <div className="nc-ListingStayDetailPage py-8">
       {/*  HEADER */}
       {renderSearchBar()}
-      {renderModalShowPhNO()}
+      {/* {renderModalShowPhNO()} */}
+      {confirmDialogVisible && (
+        <ConfirmationDialog
+          open={confirmDialogVisible}
+          onConfirm={handleConfirmPhoneNumber}
+          onCancel={handleCancelPhoneNumber}
+        />
+      )}
       <header className="rounded-md sm:rounded-xl">
         <div
           className="relative grid grid-cols-3 sm:grid-cols-4 gap-1 sm:gap-2"

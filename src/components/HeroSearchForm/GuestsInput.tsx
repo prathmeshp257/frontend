@@ -6,7 +6,7 @@ import ButtonSubmit from "./ButtonSubmit";
 import { UserPlusIcon } from "@heroicons/react/24/outline";
 import { GuestsObject } from "./type";
 import NcInputNumber from "components/NcInputNumber/NcInputNumber";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { AuthContext } from "context/userContext";
 
 export interface GuestsInputProps {
@@ -32,6 +32,9 @@ const GuestsInput: FC<GuestsInputProps> = ({
   // const [guestChildrenInputValue, setGuestChildrenInputValue] = useState(0);
   // const [guestInfantsInputValue, setGuestInfantsInputValue] = useState(0);
   const authContext = useContext(AuthContext);
+  // searchbar detail page
+  const showHeight = authContext.showHeight;
+  const setShowHeight = authContext.setShowHeight;
   const guestAdultsInputValue = authContext.guestAdultsInputValue;
   const setGuestAdultsInputValue = authContext.setGuestAdultsInputValue;
   const guestChildrenInputValue = authContext.guestChildrenInputValue;
@@ -41,12 +44,21 @@ const GuestsInput: FC<GuestsInputProps> = ({
   const totalGuests = guestChildrenInputValue + guestAdultsInputValue;
   const getPropertyData = authContext.getPropertyData;
 
+   const location = useLocation();
+  const detailPage = location.pathname.includes("detail")
   useEffect(() => {
     setGuests(totalGuests);
   }, [totalGuests]);
-  return (
-    <Popover className={`flex relative ${className}`}>
-      {({ open }) => (
+return (
+  <Popover className={`flex relative ${className}`}>
+    {({ open }) => {
+      if (open) {
+        setShowHeight(true);
+      } else {
+        setShowHeight(false);
+      }
+
+      return (
         <>
           <div
             className={`flex-1 z-10 flex items-center focus:outline-none ${
@@ -56,7 +68,9 @@ const GuestsInput: FC<GuestsInputProps> = ({
             <Popover.Button
               type="button"
               className={`relative z-10 flex-1 flex text-left items-center ${fieldClassName} space-x-3 focus:outline-none`}
-              onClickCapture={() => document.querySelector("html")?.click()}
+              onClickCapture={() => {
+                document.querySelector("html")?.click();
+              }}
             >
               <div className="text-neutral-300 dark:text-neutral-400">
                 <UserPlusIcon className="w-5 h-5 lg:w-7 lg:h-7" />
@@ -153,9 +167,10 @@ const GuestsInput: FC<GuestsInputProps> = ({
             </Popover.Panel>
           </Transition>
         </>
-      )}
-    </Popover>
-  );
+      );
+    }}
+  </Popover>
+);
 };
 
 export default GuestsInput;

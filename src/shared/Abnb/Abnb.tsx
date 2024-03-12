@@ -107,8 +107,8 @@ const AirbnbYourHome = () => {
                     ))}
                   </div>
                   <hr className="h-[1px] border-t border-neutral-300 dark:border-neutral-700" />
-                  <div className="relative grid gap-8 bg-white dark:bg-neutral-800 p-7">
-                    {solutionsFoot.map((item: any, index) => (
+                  {/* <div className="relative grid gap-8 bg-white dark:bg-neutral-800 p-7">
+                    {solutionsFoot && solutionsFoot.length > 0 &&  solutionsFoot.map((item: any, index) => (
                       <Link
                         key={index}
                         to={item.href}
@@ -126,7 +126,7 @@ const AirbnbYourHome = () => {
                         </div>
                       </Link>
                     ))}
-                  </div>
+                  </div> */}
                 </div>
               </Popover.Panel>
             </Transition>

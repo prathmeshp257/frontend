@@ -51,6 +51,10 @@ interface AuthContextProps {
   setShowSearchModal: React.Dispatch<React.SetStateAction<boolean>>;
   showHeight: boolean;
   setShowHeight: React.Dispatch<React.SetStateAction<boolean>>;
+  // show: boolean;
+  // setShow: React.Dispatch<React.SetStateAction<boolean>>;
+  showModalPh: boolean;
+  setShowModalPh: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const initialState: AuthContextProps = {
@@ -92,6 +96,10 @@ const initialState: AuthContextProps = {
   setShowSearchModal: () => {},
   showHeight: false,
   setShowHeight: () => {},
+  // show: false,
+  // setShow: () => {},
+  showModalPh: false,
+  setShowModalPh: () => {},
 };
 
 const AuthContext = createContext<AuthContextProps>(initialState);
@@ -126,6 +134,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   // console.log(guests, "guessssssss");
   // console.log(totalGuests, "totaaaaaal");
   const [showSearchModal, setShowSearchModal] = useState(false);
+  const [showModalPh, setShowModalPh] = useState(false);
+  // const [show, setShow] = useState(false);
   // searchbar details page
 
   const onLogout = () => {
@@ -291,6 +301,10 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setShowSearchModal,
     showHeight,
     setShowHeight,
+    // show,
+    // setShow,
+    showModalPh,
+    setShowModalPh,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
