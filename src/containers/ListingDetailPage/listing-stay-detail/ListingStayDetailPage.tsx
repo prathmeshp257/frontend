@@ -36,6 +36,7 @@ import XMarkIcon from "@heroicons/react/24/solid/XMarkIcon";
 import DetailPageShowPhNo from "components/HeroSearchForm2Mobile/DetailsPageShowphNo";
 
 const StayDetailPageContainer: FC<{}> = () => {
+  const [configData, setConfigData] = useState<any>({});
   const [show, setShow] = useState<any>(false);
   const [propertyData, setPropertyData] = useState<any>({});
   const [totalOwnerProperty, setTotalOwnerProperty] = useState<number>(0);
@@ -65,6 +66,8 @@ const StayDetailPageContainer: FC<{}> = () => {
   const queryParams = new URLSearchParams(window.location.search);
   const propIdParam = queryParams.get("propID");
   const token = localStorage.getItem("token");
+
+  const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
 
   const pathname = window.location.pathname;
 
@@ -114,28 +117,46 @@ const StayDetailPageContainer: FC<{}> = () => {
       toast.error(`${err}`);
       setShow(false);
     }
+    authContext.getAdminData();
   };
-  //
+  //get coins from config
+  const getConfigCoins = async () => {
+    try {
+      const response = await axios.post(
+        `${API_URL}/users/getConfigCoin`,
+        {},
+        {
+          headers: {
+            token: token,
+          },
+        }
+      );
+      if (response.data.error === true) {
+        return toast.error(`${response.data.message}`);
+      }
+      setConfigData(response.data.configDB);
+    } catch (err) {
+      toast.error(`${err}`);
+    }
+  };
   useEffect(() => {
     getOnePropertyDetails();
   }, []);
+
   const handleOpenDialog = () => {
     setShowModalPh(true);
   };
   const handleCloseDialog = () => {
     setShowModalPh(false);
   };
-  const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
- const handleConfirmPhoneNumber = () => {
-   getPhoneNumber();
-   console.log("Phone number confirmed");
-   setConfirmDialogVisible(false);
- };
+  const handleConfirmPhoneNumber = () => {
+    getPhoneNumber();
+    setConfirmDialogVisible(false);
+  };
 
- const handleCancelPhoneNumber = () => {
-   console.log("Phone number confirmation canceled");
-   setConfirmDialogVisible(false);
- };
+  const handleCancelPhoneNumber = () => {
+    setConfirmDialogVisible(false);
+  };
 
   const {
     _id,
@@ -312,16 +333,16 @@ const StayDetailPageContainer: FC<{}> = () => {
                   <Transition.Child
                     as={Fragment}
                     enter="ease-out transition-transform"
-                    enterFrom="opacity-0 translate-y-0"
-                    enterTo="opacity-100 translate-y-150"
+                    enterFrom="opacity-0 scale-75"
+                    enterTo="opacity-100 scale-100"
                     leave="ease-in transition-transform"
-                    leaveFrom="opacity-100 translate-y-150"
-                    leaveTo="opacity-0 translate-y-0"
+                    leaveFrom="opacity-100 scale-100"
+                    leaveTo="opacity-0 scale-75"
                   >
                     <Dialog.Panel
                       className="relative h-20vh flex-1 flex flex-col justify-between"
                       style={{
-                        minHeight: showHeight ? "70vh" : undefined,
+                        minHeight: showHeight ? "75vh" : undefined,
                         backgroundColor: "transparent",
                       }}
                     >
@@ -330,7 +351,7 @@ const StayDetailPageContainer: FC<{}> = () => {
                           <div className="flex-1 pt-24 px-1.5 sm:px-4 flex">
                             <Tab.Panels className="flex-1 overflow-y-auto hiddenScrollbar pt-4 container">
                               <Tab.Panel>
-                                <div className="transition-opacity animate-[myblur_0.4s_ease-in-out]">
+                                <div className="transition-opacity animate-[myblur_0.4s_ease]">
                                   {showSearchModal && (
                                     <SectionHeroArchivePage
                                       getPropertyFunc={getPropertyData}
@@ -693,9 +714,7 @@ const StayDetailPageContainer: FC<{}> = () => {
               <div
                 key={index}
                 className={`p-4 ${
-                  index === today - 1
-                    ? "bg-neutral-100 dark:bg-neutral-800"
-                    : ""
+                  index % 2 === 0 ? "bg-neutral-100 dark:bg-neutral-800" : ""
                 } flex justify-between items-center space-x-4 rounded-lg`}
               >
                 <span>{getDayOfWeek(index)}</span>
@@ -1002,110 +1021,113 @@ const StayDetailPageContainer: FC<{}> = () => {
     );
   };
 
-// interface ConfirmationDialogProps {
-//   onConfirm: () => void;
-//   onCancel: () => void;
-// }
+  // interface ConfirmationDialogProps {
+  //   onConfirm: () => void;
+  //   onCancel: () => void;
+  // }
 
-// const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
-//   onConfirm,
-//   onCancel,
-// }) => {
-//   return (
-//     <div className="confirmation-dialog">
-//       <p>Are you sure you want to get the phone number?</p>
-//       <div>
-//         <ButtonPrimary onClick={onConfirm}>Yes</ButtonPrimary>
-//         <ButtonPrimary onClick={onCancel}>No</ButtonPrimary>
-//       </div>
-//     </div>
-//   );
-// };
-interface ConfirmationDialogProps {
-  open: boolean;
-  onCancel: () => void;
-  onConfirm: () => void;
-}
+  // const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
+  //   onConfirm,
+  //   onCancel,
+  // }) => {
+  //   return (
+  //     <div className="confirmation-dialog">
+  //       <p>Are you sure you want to get the phone number?</p>
+  //       <div>
+  //         <ButtonPrimary onClick={onConfirm}>Yes</ButtonPrimary>
+  //         <ButtonPrimary onClick={onCancel}>No</ButtonPrimary>
+  //       </div>
+  //     </div>
+  //   );
+  // };
+  interface ConfirmationDialogProps {
+    open: boolean;
+    onCancel: () => void;
+    onConfirm: () => void;
+  }
 
-// const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
-//   open,
-//   onCancel,
-//   onConfirm,
-// }) => {
-//   return (
-//     <div className={`confirmation-dialog ${open ? "open" : ""}`}>
-//       <div className="confirmation-dialog-overlay" onClick={onCancel}></div>
-//       <div className="confirmation-dialog-content">
-//         <div className="confirmation-dialog-header">Dialog Title</div>
-//         <div className="confirmation-dialog-body">
-//           <p>Are you sure you want to perform this action?</p>
-//         </div>
-//         <div className="confirmation-dialog-footer">
-//           <button onClick={onCancel}>No</button>
-//           <button onClick={onConfirm}>Yes</button>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
-  open,
-  onConfirm,
-  onCancel,
-}) => {
-  return (
-    <div
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100%",
-        zIndex: 1000,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      {open && (
-        <>
-          <div
-            style={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              backgroundColor: "rgba(0, 0, 0, 0.5)",
-            }}
-            onClick={onCancel}
-          ></div>
-          <div
-            style={{
-              backgroundColor: "white",
-              zIndex: 2000,
-              padding: "20px",
-              borderRadius: "8px",
-              boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
-            }}
-          >
-            <div style={{ fontSize: "18px", fontWeight: "bold" }}>
-              Show Phone Number
+  // const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
+  //   open,
+  //   onCancel,
+  //   onConfirm,
+  // }) => {
+  //   return (
+  //     <div className={`confirmation-dialog ${open ? "open" : ""}`}>
+  //       <div className="confirmation-dialog-overlay" onClick={onCancel}></div>
+  //       <div className="confirmation-dialog-content">
+  //         <div className="confirmation-dialog-header">Dialog Title</div>
+  //         <div className="confirmation-dialog-body">
+  //           <p>Are you sure you want to perform this action?</p>
+  //         </div>
+  //         <div className="confirmation-dialog-footer">
+  //           <button onClick={onCancel}>No</button>
+  //           <button onClick={onConfirm}>Yes</button>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // };
+  const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
+    open,
+    onConfirm,
+    onCancel,
+  }) => {
+    return (
+      <div
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: 1000,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {open && (
+          <>
+            <div
+              style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
+              }}
+              onClick={onCancel}
+            ></div>
+            <div
+              style={{
+                backgroundColor: "white",
+                zIndex: 2000,
+                padding: "20px",
+                borderRadius: "8px",
+                boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
+              }}
+            >
+              <div style={{ fontSize: "18px", fontWeight: "bold" }}>
+                Show Phone Number
+              </div>
+              <div style={{ marginTop: "10px" }}>
+                <p>
+                  Are you sure you want to view phone number with{" "}
+                  {configData.coin} coins?
+                </p>
+              </div>
+              <div style={{ marginTop: "20px", textAlign: "right" }}>
+                <Button onClick={onCancel}>No</Button>
+                <span style={{ marginLeft: "10px" }}></span>
+                <ButtonPrimary onClick={onConfirm}>Yes</ButtonPrimary>
+              </div>
             </div>
-            <div style={{ marginTop: "10px" }}>
-              <p>Are you sure you want to spend 5 coins?</p>
-            </div>
-            <div style={{ marginTop: "20px", textAlign: "right" }}>
-              <Button onClick={onCancel}>No</Button>
-              <span style={{ marginLeft: "10px" }}></span>
-              <ButtonPrimary onClick={onConfirm}>5 Coins</ButtonPrimary>
-            </div>
-          </div>
-        </>
-      )}
-    </div>
-  );
-};
+          </>
+        )}
+      </div>
+    );
+  };
 
   const renderSidebar = () => {
     return (
@@ -1155,7 +1177,10 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
           //  href={"/checkout"}
           // onClick={show ? () => {} : getPhoneNumber}
 
-          onClick={show ? () => {} : () => setConfirmDialogVisible(true)}
+          onClick={show ? () => {} : () => {
+            setConfirmDialogVisible(true);
+            getConfigCoins();
+          }}
         >
           {show ? propertyData?.ownerID?.phoneNumber : "Show phone number"}
         </ButtonPrimary>

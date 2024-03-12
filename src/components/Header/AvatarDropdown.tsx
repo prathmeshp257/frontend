@@ -1,7 +1,10 @@
 import { Popover, Transition } from "@headlessui/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCoins } from "@fortawesome/free-solid-svg-icons";
 import {
   UserCircleIcon,WalletIcon,
   ChatBubbleBottomCenterTextIcon,
+  CurrencyDollarIcon,
   HeartIcon,
   HomeIcon,
   ArrowRightOnRectangleIcon,
@@ -15,29 +18,32 @@ import { AuthContext, AuthProvider } from "context/userContext";
 
     // const authContext = useContext(AuthContext);
     // const userData = authContext.userData;
-const solutions = [
-  {
-    name: "Account",
-    href: "/account",
-    icon: UserCircleIcon,
-  },
-  {
-    name: "wallet",
-    href: "/account",
-    icon: WalletIcon,
-  },
-];
+    
 
-const solutionsFoot = [
-  {
-    name: "Logout",
-    icon: ArrowRightOnRectangleIcon,
-  }
-];
 
 export default function AvatarDropdown() {
   const authContext = useContext(AuthContext);
   const dataAdmin = authContext.userData;
+  console.log(dataAdmin, "Avatar");
+  const solutions = [
+    {
+      name: "Account",
+      href: "/account",
+      icon: UserCircleIcon,
+    },
+    {
+      name: `${dataAdmin?.wallet_balance}`,
+      href: "",
+      icon: CurrencyDollarIcon,
+    },
+  ];
+
+  const solutionsFoot = [
+    {
+      name: "Logout",
+      icon: ArrowRightOnRectangleIcon,
+    },
+  ];
   return (
     <div className="AvatarDropdown relative">
       <Popover>

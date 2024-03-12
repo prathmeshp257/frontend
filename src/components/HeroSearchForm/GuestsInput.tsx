@@ -44,8 +44,6 @@ const GuestsInput: FC<GuestsInputProps> = ({
   const totalGuests = guestChildrenInputValue + guestAdultsInputValue;
   const getPropertyData = authContext.getPropertyData;
 
-   const location = useLocation();
-  const detailPage = location.pathname.includes("detail")
   useEffect(() => {
     setGuests(totalGuests);
   }, [totalGuests]);

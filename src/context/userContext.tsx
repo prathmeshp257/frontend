@@ -10,6 +10,8 @@ import axios from "axios";
 import { API_URL } from "../api/config";
 import { TailSpin } from "react-loader-spinner";
 import { toast } from "react-toastify";
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "@reach/router";
 
 interface UserData {
   _id: string;
@@ -18,6 +20,7 @@ interface UserData {
   dateOfBirth: string;
   phoneNumber: string;
   image: string;
+  wallet_balance: any;
 }
 
 interface AuthContextProps {
@@ -65,6 +68,7 @@ const initialState: AuthContextProps = {
     dateOfBirth: "",
     phoneNumber: "",
     image: "",
+    wallet_balance: "",
   },
   onLogout: () => {},
   getAdminData: async () => {},
@@ -116,6 +120,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     dateOfBirth: "",
     phoneNumber: "",
     image: "",
+    wallet_balance: 0,
   } as any);
   const [favPropData, setFavPropData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -162,6 +167,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           dateOfBirth: info.dateOfBirth,
           phoneNumber: info.phoneNumber,
           image: info.image,
+          wallet_balance: info.wallet_balance,
         });
       }
       setLoading(false);
@@ -238,9 +244,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       toast.error(`${err}`);
     }
   };
+  // const location = useLocation();
+  // const detailPage = location.pathname.includes("detail");
   const getPropertyData = async (filter_type: String) => {
-    console.log("ssssssssssssssssssssss", filter_type);
-    console.log("ssssssssssssssssssss");
     try {
       const response = await axios.post(`${API_URL}/property/get-property`, {
         locationSearch: filter_type === "clear" ? "" : searchLocationValue,
@@ -248,6 +254,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       });
       if (response.data.error === false) {
         setInfo(response.data.propertydata);
+        // window.location.replace("/");
       }
     } catch (err) {
       toast.error("Error while fetching properties data");
