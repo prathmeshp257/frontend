@@ -136,7 +136,7 @@ const StayDetailPageContainer: FC<{}> = () => {
       }
       setConfigData(response.data.configDB);
     } catch (err) {
-      toast.error(`${err}`);
+       toast.error(`${err}`);
     }
   };
   useEffect(() => {
@@ -296,6 +296,13 @@ const StayDetailPageContainer: FC<{}> = () => {
   const handleOpenModalImageGallery = () => {
     router(`${thisPathname}?modal=PHOTO_TOUR_SCROLLABLE&propID=${propIdParam}`);
   };
+  const onClickShowPhoneNumber =() =>{
+    if(!token){
+      return toast.error("You need login to view phone number..");
+    }     
+          setConfirmDialogVisible(true);
+          getConfigCoins();
+  };
   const address1 = `${street}, ${city} ${state}, ${country} ${postal_code}`;
   const address = room_number
     ? `${room_number}, ${street} ${city} ${state}, ${country} ${postal_code}`
@@ -385,120 +392,6 @@ const StayDetailPageContainer: FC<{}> = () => {
         </div>
       </div>
     );
-  };
-  //SHOW ph NO DETAIL PAGE
-  const renderModalShowPhNO = () => {
-    return (
-      <div
-        style={{
-          backgroundColor: showModalPh ? "black" : "transparent",
-          opacity: showModalPh ? 0.9 : 1,
-          position: "fixed",
-          top: 90,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          zIndex: 50,
-          display: showModalPh ? "block" : "none",
-        }}
-      >
-        <div>
-          <Transition appear show={showModalPh} as={React.Fragment}>
-            <Dialog
-              className="HeroSearchFormMobile__Dialog relative z-max"
-              open={showModalPh}
-              onClose={handleCloseDialog}
-            >
-              <DialogTitle>{"Dialog Title"}</DialogTitle>
-              <DialogContent>
-                <DialogContentText id="alert-dialog-slide-description">
-                  Are you sure you want to perform this action?
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleCloseDialog}>No</Button>
-                <Button onClick={handleCloseDialog}>Yes</Button>
-              </DialogActions>
-            </Dialog>
-          </Transition>
-        </div>
-      </div>
-    );
-    // <div className={`HeroSearchForm2Mobile`}>
-    //   <Transition appear show={openDialog} as={Fragment}>
-    //     <Dialog
-    //       className="HeroSearchFormMobile__Dialog relative z-max"
-    //       onClose={() => setOpenDailog(false)}
-    //     >
-    //       <div
-    //         className="fixed inset-0 bg-dark-100 dark:bg-neutral-900 opacity-90"
-    //         onClick={() => setOpenDailog(false)}
-    //       >
-    //         <div className="flex">
-    //           <Transition.Child
-    //             as={Fragment}
-    //             enter="ease-out transition-transform"
-    //             enterFrom="opacity-0 translate-y-0"
-    //             enterTo="opacity-100 translate-y-150"
-    //             leave="ease-in transition-transform"
-    //             leaveFrom="opacity-100 translate-y-150"
-    //             leaveTo="opacity-0 translate-y-0"
-    //           >
-    //             <Dialog.Panel
-    //               className="relative h-20vh flex-1 flex flex-col justify-between"
-    //               style={{
-    //                 // ...{ minHeight: "60vh" },
-    //                 backgroundColor: "transparent",
-    //               }}
-    //             >
-    //               {openDialog && (
-    //                 <Tab.Group manual>
-    //                   <div className="flex-1 mx-auto  px-1.5 sm:px-4 flex">
-    //                     <Tab.Panels className="flex-1 overflow-y-auto hiddenScrollbar py-4 container">
-    //                       <Tab.Panel>
-    //                         <div className="transition-opacity animate-[myblur_0.4s_ease-in-out]">
-    //                           {openDialog && (
-    //                             <div className="transition-opacity animate-[myblur_0.4s_ease-in-out]">
-    //                               <Dialog
-    //                                 className="HeroSearchFormMobile__Dialog relative z-max container"
-    //                                 open={openDialog}
-
-    //                                 onClose={handleCloseDialog}
-    //                               >
-    //                                 <DialogTitle>
-    //                                   {"Show Phone Number"}
-    //                                 </DialogTitle>
-    //                                 <DialogContent>
-    //                                   <DialogContentText id="alert-dialog-slide-description">
-    //                                     Are you sure you want to spend 5
-    //                                     coins?
-    //                                   </DialogContentText>
-    //                                 </DialogContent>
-    //                                 <DialogActions>
-    //                                   <Button onClick={handleCloseDialog}>
-    //                                     No
-    //                                   </Button>
-    //                                   <ButtonPrimary onClick={getPhoneNumber}>
-    //                                     5 coins
-    //                                   </ButtonPrimary>
-    //                                 </DialogActions>
-    //                               </Dialog>
-    //                             </div>
-    //                           )}
-    //                         </div>
-    //                       </Tab.Panel>
-    //                     </Tab.Panels>
-    //                   </div>
-    //                 </Tab.Group>
-    //               )}
-    //             </Dialog.Panel>
-    //           </Transition.Child>
-    //         </div>
-    //       </div>
-    //     </Dialog>
-    //   </Transition>
-    // </div>
-    // );
   };
 
   const renderSection1 = () => {
@@ -1182,8 +1075,8 @@ const StayDetailPageContainer: FC<{}> = () => {
           // onClick={show ? () => {} : getPhoneNumber}
 
           onClick={show ? () => {} : () => {
-            setConfirmDialogVisible(true);
-            getConfigCoins();
+            onClickShowPhoneNumber();
+            
           }}
         >
           {show ? propertyData?.ownerID?.phoneNumber : "Show phone number"}
