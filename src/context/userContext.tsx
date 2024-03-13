@@ -58,6 +58,23 @@ interface AuthContextProps {
   // setShow: React.Dispatch<React.SetStateAction<boolean>>;
   showModalPh: boolean;
   setShowModalPh: React.Dispatch<React.SetStateAction<boolean>>;
+  // Add the new state values here:
+  typevalues: string[];
+  setTypevalues: React.Dispatch<React.SetStateAction<string[]>>;
+  rangePrices: { min: number; max: number };
+  setRangePrices: React.Dispatch<
+    React.SetStateAction<{ min: number; max: number }>
+  >;
+  beds: number;
+  setBeds: React.Dispatch<React.SetStateAction<number>>;
+  bedrooms: number;
+  setBedrooms: React.Dispatch<React.SetStateAction<number>>;
+  bathrooms: number;
+  setBathrooms: React.Dispatch<React.SetStateAction<number>>;
+  amenitiesValues: string[];
+  setAmenitiesValues: React.Dispatch<React.SetStateAction<string[]>>;
+  houseRulesValues: string[];
+  setHouseRulesValues: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const initialState: AuthContextProps = {
@@ -104,6 +121,21 @@ const initialState: AuthContextProps = {
   // setShow: () => {},
   showModalPh: false,
   setShowModalPh: () => {},
+  // Add the new state values here:
+  typevalues: [],
+  setTypevalues: () => {},
+  rangePrices: { min: 0, max: 0 },
+  setRangePrices: () => {},
+  beds: 0,
+  setBeds: () => {},
+  bedrooms: 0,
+  setBedrooms: () => {},
+  bathrooms: 0,
+  setBathrooms: () => {},
+  amenitiesValues: [],
+  setAmenitiesValues: () => {},
+  houseRulesValues: [],
+  setHouseRulesValues: () => {},
 };
 
 const AuthContext = createContext<AuthContextProps>(initialState);
@@ -124,7 +156,15 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   } as any);
   const [favPropData, setFavPropData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-  //search bar feature
+  //filter page funct
+    const [typevalues, setTypevalues] = useState<string[]>([]);
+    const [rangePrices, setRangePrices] = useState({ min: 0, max: 0 });
+    const [beds, setBeds] = useState(0);
+    const [bedrooms, setBedrooms] = useState(0);
+    const [bathrooms, setBathrooms] = useState(0);
+    const [amenitiesValues, setAmenitiesValues] = useState<string[]>([]);
+    const [houseRulesValues, setHouseRulesValues] = useState<string[]>([]);
+  //search bar funct
   const [info, setInfo] = useState<any[]>([]);
   const [searchLocationValue, setSearchLocationValue] = useState<string>("");
   const [guests, setGuests] = useState(0);
@@ -312,6 +352,21 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // setShow,
     showModalPh,
     setShowModalPh,
+    // Add the new state values here:
+    typevalues,
+    setTypevalues,
+    rangePrices,
+    setRangePrices,
+    beds: 0,
+    setBeds,
+    bedrooms: 0,
+    setBedrooms,
+    bathrooms: 0,
+    setBathrooms,
+    amenitiesValues,
+    setAmenitiesValues,
+    houseRulesValues,
+    setHouseRulesValues,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

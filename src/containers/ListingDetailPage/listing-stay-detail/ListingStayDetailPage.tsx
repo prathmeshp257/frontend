@@ -348,8 +348,12 @@ const StayDetailPageContainer: FC<{}> = () => {
                     >
                       {showSearchModal && (
                         <Tab.Group manual>
-                          <div className="flex-1 pt-24 px-1.5 sm:px-4 flex">
-                            <Tab.Panels className="flex-1 overflow-y-auto hiddenScrollbar pt-4 container">
+                          <div className="flex-1 mx-4
+                           sm:px-4 flex" style={{marginLeft: "0px"}}>
+                            <Tab.Panels
+                              className="flex-1 overflow-y-auto hiddenScrollbar pt-4 container"
+                              style={{ marginTop: "6rem" }}
+                            >
                               <Tab.Panel>
                                 <div className="transition-opacity animate-[myblur_0.4s_ease]">
                                   {showSearchModal && (

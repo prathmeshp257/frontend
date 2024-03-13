@@ -40,11 +40,12 @@ const showSearchBar = pathname.includes("/detail");
     <div className={`nc-MainNav1 nc-MainNav2 relative z-10 ${className}`}>
       <div className="px-4 lg:container py-4 lg:py-4 relative flex justify-between items-center">
         <Logo />
-        <div className="hidden md:flex justify-end flex-1 items-center space-x-3 sm:space-x-8 lg:space-x-10 px-4 ">
+        <div className="hidden md:flex justify-end flex-1 items-center space-x-3 sm:space-x-8 lg:space-x-10 " style={{paddingRight: "3rem"}}>
           {/* This div should be at the end of the parent div */}
           <div className="flex justify-center flex-[2] max-w-lg">
-            {showSearchBar && (
-              //  && !showSearchModal
+            {showSearchBar && 
+            // !showSearchModal &&
+             (
               <div
                 className="mx-auto md:px-3"
                 style={{
@@ -53,23 +54,17 @@ const showSearchBar = pathname.includes("/detail");
                 }}
               >
                 <HeroSearchFormDetailPage />
-                {/* <SectionHeroArchivePage
-        getPropertyFunc={getPropertyData}
-        searchLocationValue={searchLocationValue}
-        setSearchLocationValue={setSearchLocationValue}
-        guests={guests}
-        setGuests={setGuests}
-        currentPage="Stays"
-        currentTab="Stays"
-        className="pt-4 pb-12 lg:pb-14 lg:pt-8"
-      /> */}
               </div>
             )}
           </div>
 
           {/* This div should be in the center of the parent div */}
           <div className="flex justify-center items-center cursor-pointer">
-            <a href="easystays-owners.infiny.dev">
+            <a
+              href="https://easystays-owners.infiny.dev"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <h4 className="text-sm ml-4 hover:bg-neutral-100 dark:bg-neutral-800 rounded-full py-2 px-4">
                 EZstays Your Home
               </h4>

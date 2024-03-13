@@ -19,26 +19,39 @@ export interface ListingStayPageProps {
 
 const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
   const [loading, setLoading] = useState(false);
-  const [typevalues, setTypevalues] = useState<string[]>([]);
-  const [rangePrices, setRangePrices] = useState({ min: 0, max: 0 });
-  const [beds, setBeds] = useState(0);
-  const [bedrooms, setBedrooms] = useState(0);
-  const [bathrooms, setBathrooms] = useState(0);
-  const [amenitiesValues, setAmenitiesValues] = useState<string[]>([]);
-  const [houseRulesValues, setHouseRulesValues] = useState<string[]>([]);
-  //search bar feature
-  // const [searchLocationValue, setSearchLocationValue] = useState<string>("");
-  // const [guests, setGuests] = useState(0);
+
   //like feature
   const [favourite, setFavourite] = useState(false);
   const authContext = useContext(AuthContext);
-  const functFavourite = authContext.getFavouriteProps;
-  const searchLocationValue = authContext.searchLocationValue;
-  const setSearchLocationValue = authContext.setSearchLocationValue;
-  const guests = authContext.guests;
-  const setGuests = authContext.setGuests;
-  const setInfo = authContext.setInfo;
-  const info = authContext.info;
+  //filter page funct
+const {
+  typevalues,
+  setTypevalues,
+  rangePrices,
+  setRangePrices,
+  beds,
+  setBeds,
+  bedrooms,
+  setBedrooms,
+  bathrooms,
+  setBathrooms,
+  amenitiesValues,
+  setAmenitiesValues,
+  houseRulesValues,
+  setHouseRulesValues,
+} = authContext;
+
+  //searchbar funct 
+const {
+  getFavouriteProps: functFavourite,
+  searchLocationValue,
+  setSearchLocationValue,
+  guests,
+  setGuests,
+  setInfo,
+  info,
+} = authContext;
+
 
   const hasToken = !!localStorage.getItem("token");
   const getPropertyData = async (filter_type: String) => {
