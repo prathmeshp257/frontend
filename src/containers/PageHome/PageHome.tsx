@@ -19,47 +19,45 @@ export interface ListingStayPageProps {
 
 const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
   const [loading, setLoading] = useState(false);
-
   //like feature
   const [favourite, setFavourite] = useState(false);
   const authContext = useContext(AuthContext);
   //filter page funct
-const {
-  typevalues,
-  setTypevalues,
-  rangePrices,
-  setRangePrices,
-  beds,
-  setBeds,
-  bedrooms,
-  setBedrooms,
-  bathrooms,
-  setBathrooms,
-  amenitiesValues,
-  setAmenitiesValues,
-  houseRulesValues,
-  setHouseRulesValues,
-} = authContext;
+  const {
+    typevalues,
+    setTypevalues,
+    rangePrices,
+    setRangePrices,
+    beds,
+    setBeds,
+    bedrooms,
+    setBedrooms,
+    bathrooms,
+    setBathrooms,
+    amenitiesValues,
+    setAmenitiesValues,
+    houseRulesValues,
+    setHouseRulesValues,
+  } = authContext;
 
-  //searchbar funct 
-const {
-  getFavouriteProps: functFavourite,
-  searchLocationValue,
-  setSearchLocationValue,
-  guests,
-  setGuests,
-  setInfo,
-  info,
-} = authContext;
-
+  //searchbar funct
+  const {
+    getFavouriteProps: functFavourite,
+    searchLocationValue,
+    setSearchLocationValue,
+    guests,
+    setGuests,
+    setInfo,
+    info,
+  } = authContext;
 
   const hasToken = !!localStorage.getItem("token");
   const getPropertyData = async (filter_type: String) => {
     try {
       // console.log(guests, "hahaha");
-      if (hasToken){
+      if (hasToken) {
         await functFavourite();
-      } 
+      }
       const response = await axios.post(`${API_URL}/property/get-property`, {
         type: filter_type === "type" ? [] : typevalues,
         min: filter_type === "price" ? 0 : rangePrices.min,

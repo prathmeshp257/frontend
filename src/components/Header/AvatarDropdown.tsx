@@ -24,7 +24,6 @@ import { AuthContext, AuthProvider } from "context/userContext";
 export default function AvatarDropdown() {
   const authContext = useContext(AuthContext);
   const dataAdmin = authContext.userData;
-  console.log(dataAdmin, "Avatar");
   const solutions = [
     {
       name: "Account",

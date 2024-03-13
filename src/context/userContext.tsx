@@ -17,7 +17,7 @@ interface UserData {
   _id: string;
   name: string;
   email: string;
-  dateOfBirth: string;
+  dateOfBirth: any;
   phoneNumber: string;
   image: string;
   wallet_balance: any;
@@ -357,11 +357,11 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setTypevalues,
     rangePrices,
     setRangePrices,
-    beds: 0,
+    beds,
     setBeds,
-    bedrooms: 0,
+    bedrooms,
     setBedrooms,
-    bathrooms: 0,
+    bathrooms,
     setBathrooms,
     amenitiesValues,
     setAmenitiesValues,

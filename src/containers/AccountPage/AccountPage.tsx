@@ -14,6 +14,7 @@ import { AuthContext } from "context/userContext";
 import { Cropper, ReactCropperElement } from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import Modal from "react-modal";
+import moment from 'moment'
 
 export interface AccountPageProps {
   className?: string;
@@ -31,7 +32,6 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
 
   const authContext = useContext(AuthContext);
   const dataAdmin = authContext.userData;
-
   const handleUpdate = async (values: any) => {
     setisLoading(true);
     try {
@@ -73,7 +73,7 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
     initialValues: {
       name: dataAdmin.name,
       email: dataAdmin.email,
-      dateOfBirth: dataAdmin.dateOfBirth,
+      dateOfBirth: moment(dataAdmin.dateOfBirth).format('YYYY-MM-DD'),
       phoneNumber: dataAdmin.phoneNumber,
     },
     validationSchema: Yup.object({
@@ -162,8 +162,8 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
             <div className="relative rounded-full overflow-hidden flex">
               <Avatar
                 sizeClass="w-32 h-32"
-                imgUrl={image? image: dataAdmin?.image}
-                userName={ dataAdmin?.name}
+                imgUrl={image ? image : dataAdmin?.image}
+                userName={dataAdmin?.name}
               />
               <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center text-neutral-50 cursor-pointer">
                 <svg

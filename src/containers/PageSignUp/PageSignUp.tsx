@@ -47,7 +47,6 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
       const text = response.data.message;
 
       if (response.data.error === false) {
-        localStorage.setItem("token", response.data.token);
 
         toast.success(text);
         setTimeout(() => {
