@@ -10,8 +10,6 @@ import axios from "axios";
 import { API_URL } from "../api/config";
 import { TailSpin } from "react-loader-spinner";
 import { toast } from "react-toastify";
-import { useLocation } from "react-router-dom";
-import { useNavigate } from "@reach/router";
 
 interface UserData {
   _id: string;
@@ -144,7 +142,9 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
+
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+
   const [userData, setUserData] = useState<UserData>({
     _id: "",
     name: "",
@@ -176,13 +176,11 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [showModal, setShowModal] = useState(false);
   const [showHeight, setShowHeight] = useState(false);
 
-  // console.log(guests, "guessssssss");
-  // console.log(totalGuests, "totaaaaaal");
   const [showSearchModal, setShowSearchModal] = useState(false);
   const [showModalPh, setShowModalPh] = useState(false);
   // const [show, setShow] = useState(false);
-  // searchbar details page
 
+  // searchbar details page
   const onLogout = () => {
     setUserData(initialState.userData);
     localStorage.clear();
@@ -284,8 +282,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       toast.error(`${err}`);
     }
   };
-  // const location = useLocation();
-  // const detailPage = location.pathname.includes("detail");
+
   const getPropertyData = async (filter_type: String) => {
     try {
       const response = await axios.post(`${API_URL}/property/get-property`, {
@@ -294,7 +291,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       });
       if (response.data.error === false) {
         setInfo(response.data.propertydata);
-        // window.location.replace("/");
       }
     } catch (err) {
       toast.error("Error while fetching properties data");
@@ -335,11 +331,11 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setInfo,
     info,
     getPropertyData,
-    guestAdultsInputValue, // Include guestAdultsInputValue state
+    guestAdultsInputValue,
     setGuestAdultsInputValue,
-    guestChildrenInputValue, // Include guestChildrenInputValue state
+    guestChildrenInputValue,
     setGuestChildrenInputValue,
-    guestInfantsInputValue, // Include guestInfantsInputValue state
+    guestInfantsInputValue,
     setGuestInfantsInputValue,
     showModal,
     setShowModal,
@@ -352,7 +348,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // setShow,
     showModalPh,
     setShowModalPh,
-    // Add the new state values here:
     typevalues,
     setTypevalues,
     rangePrices,

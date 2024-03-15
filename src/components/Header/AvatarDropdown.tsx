@@ -16,11 +16,6 @@ import Avatar from "shared/Avatar/Avatar";
 import { useNavigate } from "react-router-dom";
 import { AuthContext, AuthProvider } from "context/userContext";
 
-    // const authContext = useContext(AuthContext);
-    // const userData = authContext.userData;
-    
-
-
 export default function AvatarDropdown() {
   const authContext = useContext(AuthContext);
   const dataAdmin = authContext.userData;

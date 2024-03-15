@@ -1,13 +1,13 @@
 import { StarIcon } from "@heroicons/react/24/solid";
 import React, { FC } from "react";
 import Avatar from "shared/Avatar/Avatar";
+import moment from "moment";
 
 interface CommentListingDataType {
-  name: string;
-  avatar?: string;
-  date: string;
-  comment: string;
-  starPoint: number;
+  userId?: { image: any; name: any }; // Make userId optional
+  createdAt: string;
+  review: string;
+  rating: number;
 }
 
 export interface CommentListingProps {
@@ -16,19 +16,15 @@ export interface CommentListingProps {
   hasListingTitle?: boolean;
 }
 
-const DEMO_DATA: CommentListingDataType = {
-  name: "Cody Fisher",
-  date: "May 20, 2021",
-  comment:
-    "There’s no stopping the tech giant. Apple now opens its 100th store in China.There’s no stopping the tech giant.",
-  starPoint: 5,
-};
-
 const CommentListing: FC<CommentListingProps> = ({
   className = "",
-  data = DEMO_DATA,
+  data = {},
   hasListingTitle,
 }) => {
+  if (!data?.userId) {
+    return null;
+  }
+
   return (
     <div
       className={`nc-CommentListing flex space-x-4 ${className}`}
@@ -38,15 +34,15 @@ const CommentListing: FC<CommentListingProps> = ({
         <Avatar
           sizeClass="h-10 w-10 text-lg"
           radius="rounded-full"
-          userName={data.name}
-          imgUrl={data.avatar}
+          userName={data?.userId?.name}
+          imgUrl={data?.userId?.image}
         />
       </div>
       <div className="flex-grow">
         <div className="flex justify-between space-x-3">
           <div className="flex flex-col">
             <div className="text-sm font-semibold">
-              <span>{data.name}</span>
+              <span>{data?.userId?.name}</span>
               {hasListingTitle && (
                 <>
                   <span className="text-neutral-500 dark:text-neutral-400 font-normal">
@@ -57,19 +53,24 @@ const CommentListing: FC<CommentListingProps> = ({
               )}
             </div>
             <span className="text-sm text-neutral-500 dark:text-neutral-400 mt-0.5">
-              {data.date}
+              {moment(data?.createdAt).format("MMMM DD, YYYY")}{" "}
             </span>
           </div>
           <div className="flex text-yellow-500">
-            <StarIcon className="w-4 h-4" />
-            <StarIcon className="w-4 h-4" />
-            <StarIcon className="w-4 h-4" />
-            <StarIcon className="w-4 h-4" />
-            <StarIcon className="w-4 h-4" />
+            {[...Array(5)].map((_, index) => (
+              <StarIcon
+                key={index}
+                className={`w-4 h-4 ${
+                  index < (data?.rating || 0)
+                    ? "text-yellow-500"
+                    : "text-gray-300"
+                }`}
+              />
+            ))}
           </div>
         </div>
         <span className="block mt-3 text-neutral-6000 dark:text-neutral-300">
-          {data.comment}
+          {data?.review}
         </span>
       </div>
     </div>

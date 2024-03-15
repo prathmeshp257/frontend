@@ -33,7 +33,6 @@ import SectionHeroArchivePage from "components/SectionHeroArchivePage/SectionHer
 import StaySearchForm from "components/HeroSearchForm/(stay-search-form)/StaySearchForm";
 import ButtonSubmit from "components/HeroSearchForm/ButtonSubmit";
 import XMarkIcon from "@heroicons/react/24/solid/XMarkIcon";
-import DetailPageShowPhNo from "components/HeroSearchForm2Mobile/DetailsPageShowphNo";
 
 const StayDetailPageContainer: FC<{}> = () => {
   const [configData, setConfigData] = useState<any>({});
@@ -48,9 +47,6 @@ const StayDetailPageContainer: FC<{}> = () => {
 
   const getPropertyData = authContext.getPropertyData;
 
-  const showModalPh = authContext.showModalPh;
-  const setShowModalPh = authContext.setShowModalPh;
-
   const searchLocationValue = authContext.searchLocationValue;
   const setSearchLocationValue = authContext.setSearchLocationValue;
   const showHeight = authContext.showHeight;
@@ -61,16 +57,48 @@ const StayDetailPageContainer: FC<{}> = () => {
   const setGuests = authContext.setGuests;
   const setInfo = authContext.setInfo;
   // searchbar detail page
-
   const userData = authContext.userData;
   const queryParams = new URLSearchParams(window.location.search);
   const propIdParam = queryParams.get("propID");
   const token = localStorage.getItem("token");
 
   const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
+ // rating and review 
+   const [allReview, setAllReview] = useState<any>([]);
+   const [reviewValue, setReviewValue] = useState("");
+   const [ratingValue, setRatingValue] = useState(5);
+   const [errorEmptyReview, setErrorEmptyReview] = useState("");
+   const [avgRating, setAvgRating] = useState(0);
 
   const pathname = window.location.pathname;
-
+  //rating allReviews
+  const getPropertyRatings = async () => {
+    try {
+      const response = await axios.get(
+        `${API_URL}/users/get-prop-review?propId=${propIdParam}`
+      );
+      if (response.data.error === false) {
+        toast.success(<>reviews got!</>);
+        setAllReview(response.data?.allReviews);
+        calculateAverageRating(response.data?.allReviews);
+      }
+    } catch (err) {
+      console.error("error while fetching userInfo", err);
+      toast.error(`${err}`);
+    }
+  };
+  const calculateAverageRating = (allReview:any) => {
+    if (allReview.length > 0) {
+      const allRating = allReview.reduce((total: number, review: any) => {
+        return total + review.rating;
+      }, 0);
+      const average = allRating / allReview.length;
+      setAvgRating(Number(average.toFixed(1)));
+    } else {
+      setAvgRating(0);
+    }
+  };
+  //
   const getOnePropertyDetails = async () => {
     try {
       const response = await axios.get(
@@ -83,6 +111,7 @@ const StayDetailPageContainer: FC<{}> = () => {
         }
         setPropertyData(response.data.propertyDetails);
         setTotalOwnerProperty(response.data.countTotalProperties);
+        getPropertyRatings();
       }
     } catch (err) {
       toast.error("Error while fetching property details");
@@ -136,19 +165,53 @@ const StayDetailPageContainer: FC<{}> = () => {
       }
       setConfigData(response.data.configDB);
     } catch (err) {
-       toast.error(`${err}`);
+      toast.error(`${err}`);
     }
   };
+
+    const handleChangeReview = (e: any) => {
+      setReviewValue(e.target.value);
+      setErrorEmptyReview("");
+    };
+
+    const handleSubmitReview = async () => {
+      const token = localStorage.getItem("token");
+      if (reviewValue === "") {
+        setErrorEmptyReview("Please enter your thoughts.");
+        return;
+      } else {
+        setErrorEmptyReview("");
+      }
+      try {
+        const response = await axios.post(
+          `${API_URL}/users/add-review`,
+          {
+            propId: propIdParam,
+            review: reviewValue,
+            rating: ratingValue,
+          },
+          {
+            headers: {
+              token: token,
+            },
+          }
+        );
+        if (response.data.error === false) {
+          toast.success(<>review posted!</>);
+          getPropertyRatings();
+          setReviewValue("");
+          setRatingValue(5);
+        }
+      } catch (err) {
+        console.error("error while fetching userInfo", err);
+        toast.error(`${err}`);
+      }
+    };
+
   useEffect(() => {
     getOnePropertyDetails();
   }, []);
 
-  const handleOpenDialog = () => {
-    setShowModalPh(true);
-  };
-  const handleCloseDialog = () => {
-    setShowModalPh(false);
-  };
   const handleConfirmPhoneNumber = () => {
     getPhoneNumber();
     setConfirmDialogVisible(false);
@@ -196,7 +259,6 @@ const StayDetailPageContainer: FC<{}> = () => {
     cover_image,
     galleryImgs,
   } = propertyData;
-  //photos
   const arrayOfPrice = [
     monday,
     tuesday,
@@ -296,12 +358,12 @@ const StayDetailPageContainer: FC<{}> = () => {
   const handleOpenModalImageGallery = () => {
     router(`${thisPathname}?modal=PHOTO_TOUR_SCROLLABLE&propID=${propIdParam}`);
   };
-  const onClickShowPhoneNumber =() =>{
-    if(!token){
+  const onClickShowPhoneNumber = () => {
+    if (!token) {
       return toast.error("You need login to view phone number..");
-    }     
-          setConfirmDialogVisible(true);
-          getConfigCoins();
+    }
+    getConfigCoins();
+    setConfirmDialogVisible(true);
   };
   const address1 = `${street}, ${city} ${state}, ${country} ${postal_code}`;
   const address = room_number
@@ -355,8 +417,11 @@ const StayDetailPageContainer: FC<{}> = () => {
                     >
                       {showSearchModal && (
                         <Tab.Group manual>
-                          <div className="flex-1 mx-4
-                           sm:px-4 flex" style={{marginLeft: "0px"}}>
+                          <div
+                            className="flex-1 mx-4
+                           sm:px-4 flex"
+                            style={{ marginLeft: "0px" }}
+                          >
                             <Tab.Panels
                               className="flex-1 overflow-y-auto hiddenScrollbar pt-4 container"
                               style={{ marginTop: "6rem" }}
@@ -412,7 +477,7 @@ const StayDetailPageContainer: FC<{}> = () => {
 
         {/* 3 */}
         <div className="flex items-center space-x-4 ">
-          <StartRating />
+          <StartRating point={avgRating} reviewCount={allReview.length} />
           <span>·</span>
           {/* display: flex; align-items: baseline; justify-content:
           center; */}
@@ -459,8 +524,7 @@ const StayDetailPageContainer: FC<{}> = () => {
           <div className="flex items-center space-x-3">
             <i className=" las la-bath text-2xl"></i>
             <span className=" ">
-              {bathrooms}
-              <span className="hidden sm:inline-block">baths</span>
+              {bathrooms} <span className="hidden sm:inline-block">baths</span>
             </span>
           </div>
           <div className="flex items-center space-x-3">
@@ -724,6 +788,7 @@ const StayDetailPageContainer: FC<{}> = () => {
     );
   };
 
+
   const renderSection6 = () => {
     return (
       <div
@@ -731,46 +796,56 @@ const StayDetailPageContainer: FC<{}> = () => {
         style={{ maxHeight: "400px", overflowY: "auto" }}
       >
         {/* HEADING */}
-        <h2 className="text-2xl font-semibold">Reviews (23 reviews)</h2>
+        <h2 className="text-2xl font-semibold">
+          Reviews ({allReview.length} reviews)
+        </h2>
         <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>
 
         {/* Content */}
         {token && (
           <div className="space-y-5">
-            <FiveStartIconForRate iconClass="w-6 h-6" className="space-x-0.5" />
+            <FiveStartIconForRate
+              iconClass="w-6 h-6"
+              className="space-x-0.5"
+              ratingValue={ratingValue}
+              setRatingValue={setRatingValue}
+            />
             <div className="relative">
               <Input
                 fontClass=""
                 sizeClass="h-16 px-4 py-3"
                 rounded="rounded-3xl"
+                value={reviewValue}
+                onChange={handleChangeReview}
                 placeholder="Share your thoughts ..."
               />
               <ButtonCircle
                 className="absolute right-2 top-1/2 transform -translate-y-1/2"
                 size=" w-12 h-12 "
+                onClick={handleSubmitReview}
               >
                 <ArrowRightIcon className="w-5 h-5" />
               </ButtonCircle>
             </div>
+            {errorEmptyReview && (
+              <p className="text-red-500">{errorEmptyReview}</p>
+            )}
           </div>
         )}
 
         {/* comment */}
         <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
-          <CommentListing className="py-8" />
-          <CommentListing className="py-8" />
-          <CommentListing className="py-8" />
-          <CommentListing className="py-8" />
-          <CommentListing className="py-8" />
-          <CommentListing className="py-8" />
-          <CommentListing className="py-8" />
-          <CommentListing className="py-8" />
-          <CommentListing className="py-8" />
-          <CommentListing className="py-8" />
+          <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
+            {allReview
+              .slice()
+              .reverse()
+              .map((review: any, index: number) => {
+                return (
+                  <CommentListing key={index} className="py-8" data={review} />
+                );
+              })}
+          </div>
         </div>
-        {/* <div className="pt-8">
-            <ButtonSecondary>View more 20 reviews</ButtonSecondary>
-          </div> */}
       </div>
     );
   };
@@ -918,52 +993,12 @@ const StayDetailPageContainer: FC<{}> = () => {
     );
   };
 
-  // interface ConfirmationDialogProps {
-  //   onConfirm: () => void;
-  //   onCancel: () => void;
-  // }
-
-  // const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
-  //   onConfirm,
-  //   onCancel,
-  // }) => {
-  //   return (
-  //     <div className="confirmation-dialog">
-  //       <p>Are you sure you want to get the phone number?</p>
-  //       <div>
-  //         <ButtonPrimary onClick={onConfirm}>Yes</ButtonPrimary>
-  //         <ButtonPrimary onClick={onCancel}>No</ButtonPrimary>
-  //       </div>
-  //     </div>
-  //   );
-  // };
   interface ConfirmationDialogProps {
     open: boolean;
     onCancel: () => void;
     onConfirm: () => void;
   }
 
-  // const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
-  //   open,
-  //   onCancel,
-  //   onConfirm,
-  // }) => {
-  //   return (
-  //     <div className={`confirmation-dialog ${open ? "open" : ""}`}>
-  //       <div className="confirmation-dialog-overlay" onClick={onCancel}></div>
-  //       <div className="confirmation-dialog-content">
-  //         <div className="confirmation-dialog-header">Dialog Title</div>
-  //         <div className="confirmation-dialog-body">
-  //           <p>Are you sure you want to perform this action?</p>
-  //         </div>
-  //         <div className="confirmation-dialog-footer">
-  //           <button onClick={onCancel}>No</button>
-  //           <button onClick={onConfirm}>Yes</button>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   );
-  // };
   const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
     open,
     onConfirm,
@@ -1028,15 +1063,6 @@ const StayDetailPageContainer: FC<{}> = () => {
 
   const renderSidebar = () => {
     return (
-      // <div className="listingSectionSidebar__wrap shadow-xl">
-      //   {renderSection4()}
-      //   <ButtonPrimary
-      //     //  href={"/checkout"}
-      //     onClick={show ? () => {} : getPhoneNumber}
-      //   >
-      //     {show ? propertyData?.ownerID?.phoneNumber : "show phone number"}
-      //   </ButtonPrimary>
-      // </div>
       <div className="listingSectionSidebar__wrap shadow-xl">
         {/* PRICE */}
         <div className="flex justify-between">
@@ -1063,21 +1089,22 @@ const StayDetailPageContainer: FC<{}> = () => {
                   </div>
                 );
               } else {
-                return null; // For other days, don't render anything
+                return null;
               }
             })}
           </span>
-          <StartRating />
+          <StartRating point={avgRating} reviewCount={allReview.length} />
         </div>
 
         <ButtonPrimary
           //  href={"/checkout"}
-          // onClick={show ? () => {} : getPhoneNumber}
-
-          onClick={show ? () => {} : () => {
-            onClickShowPhoneNumber();
-            
-          }}
+          onClick={
+            show
+              ? () => {}
+              : () => {
+                  onClickShowPhoneNumber();
+                }
+          }
         >
           {show ? propertyData?.ownerID?.phoneNumber : "Show phone number"}
         </ButtonPrimary>
@@ -1089,7 +1116,6 @@ const StayDetailPageContainer: FC<{}> = () => {
     <div className="nc-ListingStayDetailPage py-8">
       {/*  HEADER */}
       {renderSearchBar()}
-      {/* {renderModalShowPhNO()} */}
       {confirmDialogVisible && (
         <ConfirmationDialog
           open={confirmDialogVisible}

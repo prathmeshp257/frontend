@@ -6,19 +6,26 @@ export interface FiveStartIconForRateProps {
   className?: string;
   iconClass?: string;
   defaultPoint?: number;
+  ratingValue?: number;
+  setRatingValue?: (value: any) => void;
 }
 
 const FiveStartIconForRate: FC<FiveStartIconForRateProps> = ({
   className = "",
   iconClass = "w-4 h-4",
   defaultPoint = 5,
+  ratingValue,
+  setRatingValue,
 }) => {
-  const [point, setPoint] = useState(defaultPoint);
+  // const [point, setPoint] = useState(defaultPoint);
   const [currentHover, setCurrentHover] = useState(0);
 
   useEffect(() => {
-    setPoint(defaultPoint);
-  }, [defaultPoint]);
+    if (setRatingValue) {
+      // Check if setRatingValue is defined
+      setRatingValue(defaultPoint);
+    }
+  }, [defaultPoint, setRatingValue]);
 
   return (
     <div
@@ -30,11 +37,13 @@ const FiveStartIconForRate: FC<FiveStartIconForRateProps> = ({
           <StarIcon
             key={item}
             className={`${
-              point >= item || currentHover >= item ? "text-yellow-500" : ""
+              (ratingValue && ratingValue >= item) || currentHover >= item
+                ? "text-yellow-500"
+                : ""
             } ${iconClass}`}
             onMouseEnter={() => setCurrentHover(() => item)}
             onMouseLeave={() => setCurrentHover(() => 0)}
-            onClick={() => setPoint(() => item)}
+            onClick={() => setRatingValue && setRatingValue(item)}
           />
         );
       })}

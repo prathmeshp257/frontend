@@ -205,7 +205,6 @@ const TabFilters: FC<filterCardProps> = ({
           switch (typez) {
             case "more_filters":
               handleClearMorefilter();
-
               break;
             case "room_filters":
               handleClearRoomsfilter();
@@ -260,7 +259,9 @@ const handleClearMoreFilterMobile = () =>{
               className={`
     flex items-center justify-center px-4 py-2 text-sm rounded-full border 
     border-neutral-300 dark:border-neutral-700 hover:border-neutral-400 
-    dark:hover:border-neutral-500 focus:outline-none 
+    dark:hover:border-neutral-500 focus:outline-none ${
+      open ? "!border-neutral-400" : ""
+    } 
     ${
       typeFilter && typeFilter.length > 0
         ? "border-primary-500 text-primary-700"
@@ -338,7 +339,7 @@ const handleClearMoreFilterMobile = () =>{
           <>
             <Popover.Button
               className={`flex items-center justify-center px-4 py-2 text-sm rounded-full border border-neutral-300 dark:border-neutral-700 hover:border-neutral-400 dark:hover:border-neutral-500 focus:outline-none ${
-                open ? "!border-primary-500 " : ""
+                open ? "!border-neutral-400" : ""
               } 
               ${
                 (beds && beds > 0) ||
@@ -430,9 +431,9 @@ const handleClearMoreFilterMobile = () =>{
             <Popover.Button
               className={`flex items-center justify-center px-4 py-2 text-sm rounded-full border 
     border-neutral-300 dark:border-neutral-700 hover:border-neutral-400 
-    dark:hover:border-neutral-500 focus:outline-none  ${
-      max && max > 0 ? "border-primary-500 text-primary-700" : ""
-    }`}
+    dark:hover:border-neutral-500 focus:outline-none ${
+      open ? "!border-neutral-400" : ""
+    }  ${max && max > 0 ? "border-primary-500 text-primary-700" : ""}`}
             >
               <span>
                 {`₹${convertNumbThousand(min)} - ₹${convertNumbThousand(max)}`}{" "}

@@ -6,7 +6,7 @@ import ButtonSubmit from "./ButtonSubmit";
 import { UserPlusIcon } from "@heroicons/react/24/outline";
 import { GuestsObject } from "./type";
 import NcInputNumber from "components/NcInputNumber/NcInputNumber";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "context/userContext";
 
 export interface GuestsInputProps {
@@ -47,6 +47,16 @@ const GuestsInput: FC<GuestsInputProps> = ({
   useEffect(() => {
     setGuests(totalGuests);
   }, [totalGuests]);
+
+      const { pathname } = useLocation();
+      const navigate = useNavigate();
+  const SearchProperty =()=>{
+      const redirectToHome = pathname.includes("/detail");
+      getPropertyData();
+      if (redirectToHome) {
+          navigate("/");
+        }
+  }
 return (
   <Popover className={`flex relative ${className}`}>
     {({ open }) => {
@@ -99,7 +109,7 @@ return (
                 <button
                   type="button"
                   className="h-14 md:h-16 w-full md:w-16 rounded-full bg-primary-6000 hover:bg-primary-700 flex items-center justify-center text-neutral-50 focus:outline-none"
-                  onClick={getPropertyFunc}
+                  onClick={SearchProperty}
                 >
                   <span className="mr-3 md:hidden">Search</span>
                   <svg
