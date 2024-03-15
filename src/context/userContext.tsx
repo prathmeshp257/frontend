@@ -73,6 +73,7 @@ interface AuthContextProps {
   setAmenitiesValues: React.Dispatch<React.SetStateAction<string[]>>;
   houseRulesValues: string[];
   setHouseRulesValues: React.Dispatch<React.SetStateAction<string[]>>;
+  clearAllFilterValues: any;
 }
 
 const initialState: AuthContextProps = {
@@ -134,6 +135,7 @@ const initialState: AuthContextProps = {
   setAmenitiesValues: () => {},
   houseRulesValues: [],
   setHouseRulesValues: () => {},
+  clearAllFilterValues: () => {},
 };
 
 const AuthContext = createContext<AuthContextProps>(initialState);
@@ -282,7 +284,15 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       toast.error(`${err}`);
     }
   };
-
+  const clearAllFilterValues = () => {
+    setTypevalues([]);
+    setRangePrices({ min: 0, max: 0 });
+    setBeds(0);
+    setBedrooms(0);
+    setBathrooms(0);
+    setAmenitiesValues([]);
+    setHouseRulesValues([]);
+  }
   const getPropertyData = async (filter_type: String) => {
     try {
       const response = await axios.post(`${API_URL}/property/get-property`, {
@@ -362,6 +372,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setAmenitiesValues,
     houseRulesValues,
     setHouseRulesValues,
+    //
+    clearAllFilterValues,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

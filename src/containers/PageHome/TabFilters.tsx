@@ -243,7 +243,6 @@ const handleClearMoreFilterMobile = () =>{
   setBathrooms(0);
   setAmenitiesValues([]);
   setHouseRulesValues([]);
-  
 }
   const renderTabsTypeOfPlace = (
     data: {

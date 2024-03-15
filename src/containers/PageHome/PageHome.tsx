@@ -54,7 +54,6 @@ const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
   const hasToken = !!localStorage.getItem("token");
   const getPropertyData = async (filter_type: String) => {
     try {
-      // console.log(guests, "hahaha");
       if (hasToken) {
         await functFavourite();
       }

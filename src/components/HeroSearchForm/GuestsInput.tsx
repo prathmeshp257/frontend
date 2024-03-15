@@ -43,6 +43,7 @@ const GuestsInput: FC<GuestsInputProps> = ({
   const setGuestInfantsInputValue = authContext.setGuestInfantsInputValue;
   const totalGuests = guestChildrenInputValue + guestAdultsInputValue;
   const getPropertyData = authContext.getPropertyData;
+  const clearAllFilterValues = authContext.clearAllFilterValues;
 
   useEffect(() => {
     setGuests(totalGuests);
@@ -53,6 +54,7 @@ const GuestsInput: FC<GuestsInputProps> = ({
   const SearchProperty =()=>{
       const redirectToHome = pathname.includes("/detail");
       getPropertyData();
+      clearAllFilterValues();
       if (redirectToHome) {
           navigate("/");
         }
