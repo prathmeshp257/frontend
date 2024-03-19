@@ -68,6 +68,20 @@ const StayCard: FC<StayCardProps> = ({
     cover_image,
     galleryImgs,
   } = data;
+  const authContext = useContext(AuthContext);
+  const dataFavourite = authContext.favPropData;
+  const getFavPropFunc = authContext.getFavouriteProps;
+  const addtoSavedList = authContext.addtoSavedList;
+  const delFromSavedList = authContext.delFromSavedList;
+  //
+  const {
+    //rating
+    ratingInfo,
+    setRatingInfo,
+  } = authContext;
+
+  const avg = ratingInfo.filter((val: any) => val._id === _id);
+  console.log(avg[0]?.count, "sdsdsdsdsdsd");
   const address = room_number
     ? `${room_number}, ${street} ${city} ${state}, ${country} ${postal_code}`
     : `${street} ${city} ${state}, ${country} ${postal_code}`;
@@ -99,15 +113,9 @@ const StayCard: FC<StayCardProps> = ({
     }
   };
 
-   const authContext = useContext(AuthContext);
-   const dataFavourite = authContext.favPropData;
-   const getFavPropFunc = authContext.getFavouriteProps;
-   const addtoSavedList = authContext.addtoSavedList;
-   const delFromSavedList = authContext.delFromSavedList;
-
   const renderSliderGallery = () => {
     const combinedArray = [cover_image || "", ...(galleryImgs || [])];
-
+    console.log(ratingInfo, "ratttttttttttttttttttttt");
     return (
       <div className="relative w-full">
         <GallerySlider
@@ -181,7 +189,10 @@ const StayCard: FC<StayCardProps> = ({
             )}
           </span>
           {!!reviewStart && (
-            <StartRating reviewCount={reviewCount} point={reviewStart} />
+            <StartRating
+              reviewCount={avg[0]?.count}
+              point={avg[0]?.averageRating}
+            />
           )}
         </div>
       </div>

@@ -83,6 +83,9 @@ interface AuthContextProps {
   setRatingValue: Dispatch<SetStateAction<number>>;
   avgRating: number;
   setAvgRating: Dispatch<SetStateAction<number>>;
+  ///
+  ratingInfo: any[];
+  setRatingInfo: Dispatch<SetStateAction<any[]>>;
 }
 
 const initialState: AuthContextProps = {
@@ -154,6 +157,9 @@ const initialState: AuthContextProps = {
   setRatingValue: () => {},
   avgRating: 0,
   setAvgRating: () => {},
+  //rating
+  ratingInfo: [],
+  setRatingInfo: () => {},
 };
 
 const AuthContext = createContext<AuthContextProps>(initialState);
@@ -181,7 +187,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [favPropData, setFavPropData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   //filter page funct
-  const [typevalues, setTypevalues] = useState<string[]>([]);
+  const [typevalues, setTypevalues] = useState<any>([]);
   const [rangePrices, setRangePrices] = useState({ min: 0, max: 0 });
   const [beds, setBeds] = useState(0);
   const [bedrooms, setBedrooms] = useState(0);
@@ -190,6 +196,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [houseRulesValues, setHouseRulesValues] = useState<string[]>([]);
   //search bar funct
   const [info, setInfo] = useState<any[]>([]);
+  // setRatingInfo;
+  const [ratingInfo, setRatingInfo] = useState<any[]>([]);
+
   const [searchLocationValue, setSearchLocationValue] = useState<string>("");
   const [guests, setGuests] = useState(0);
 
@@ -209,6 +218,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     if (!searchLocationValue && searchLocationValue==='') {
       getPropertyData("clear");
+      // console.log(ratingInfo, "sdfsdfsdfsdfsdfsdfsdf");
     }
   }, [searchLocationValue]);
   const onLogout = () => {
@@ -333,6 +343,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       });
       if (response.data.error === false) {
         setInfo(response.data.propertydata);
+        setRatingInfo(response.data.ratingData);
       }
     } catch (err) {
       toast.error("Error while fetching properties data");
@@ -415,6 +426,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setRatingValue,
     avgRating,
     setAvgRating,
+    //rating
+    ratingInfo,
+    setRatingInfo,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

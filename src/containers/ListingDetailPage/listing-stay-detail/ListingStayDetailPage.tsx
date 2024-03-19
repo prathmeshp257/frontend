@@ -61,7 +61,7 @@ const {
   ratingValue,
   setRatingValue,
   avgRating,
-  setAvgRating
+  setAvgRating,
 } = authContext;
 
   const queryParams = new URLSearchParams(window.location.search);
@@ -69,6 +69,7 @@ const {
   const token = localStorage.getItem("token");
 
   const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
+
  // rating and review 
 
   //  const [allReview, setAllReview] = useState<any>([]);
@@ -207,6 +208,7 @@ const {
           getPropertyRatings();
           setReviewValue("");
           setRatingValue(5);
+          getPropertyData();
         }
       } catch (err) {
         console.error("error while fetching userInfo", err);
