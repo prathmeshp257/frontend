@@ -1,12 +1,13 @@
 import BgGlassmorphism from "components/BgGlassmorphism/BgGlassmorphism";
 import SectionHeroArchivePage from "components/SectionHeroArchivePage/SectionHeroArchivePage";
-
 import SectionGridFilterCard from "./SectionGridFilterCard";
 import { Helmet } from "react-helmet";
 import HeroSearchForm, {
   SearchTab,
 } from "components/HeroSearchForm/HeroSearchForm";
-import React, { useState, FC, useEffect, useContext } from "react";
+import { Dialog, Tab, Transition } from "@headlessui/react";
+import { ArrowRightIcon, Squares2X2Icon } from "@heroicons/react/24/outline";
+import React, { useState, FC, useEffect, useContext, Fragment } from "react";
 import axios from "axios";
 import { API_URL } from "../../api/config";
 import { toast } from "react-toastify";
@@ -24,6 +25,11 @@ const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
   const authContext = useContext(AuthContext);
   //filter page funct
   const {
+    //
+    showSearchModal,
+    setShowSearchModal,
+    showHeight,
+    //
     typevalues,
     setTypevalues,
     rangePrices,
@@ -42,6 +48,7 @@ const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
 
   //searchbar funct
   const {
+    guests: guestSearch,
     getFavouriteProps: functFavourite,
     searchLocationValue,
     setSearchLocationValue,
@@ -94,7 +101,93 @@ const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
   useEffect(() => {
     getPropertyData("");
   }, []);
-
+  const renderSearchBar = () => {
+    return (
+      <div
+        style={{
+          backgroundColor: showSearchModal
+            ? "rgba(0, 0, 0, 0.5)"
+            : "transparent",
+          opacity: showSearchModal ? 0.9 : 1,
+          position: "fixed",
+          top: 90,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: 50,
+          display: showSearchModal ? "block" : "none",
+        }}
+      >
+        <div className={`HeroSearchForm2Mobile`}>
+          <Transition appear show={showSearchModal} as={Fragment}>
+            <Dialog
+              className="HeroSearchFormMobile__Dialog relative z-max"
+              onClose={() => setShowSearchModal(false)}
+            >
+              <div
+                className="fixed inset-0 bg-dark-100 dark:bg-neutral-900 opacity-90"
+                onClick={() => setShowSearchModal(false)}
+              >
+                <div className="flex">
+                  <Transition.Child
+                    as={Fragment}
+                    enter="ease-out transition-transform"
+                    enterFrom="opacity-0 scale-75"
+                    enterTo="opacity-100 scale-100"
+                    leave="ease-in transition-transform"
+                    leaveFrom="opacity-100 scale-100"
+                    leaveTo="opacity-0 scale-75"
+                  >
+                    <Dialog.Panel
+                      className="relative h-20vh flex-1 flex flex-col justify-between"
+                      style={{
+                        minHeight: showHeight ? "75vh" : undefined,
+                        backgroundColor: "transparent",
+                      }}
+                    >
+                      {showSearchModal && (
+                        <Tab.Group manual>
+                          <div
+                            className="flex-1 mx-4
+                           sm:px-4 flex"
+                            style={{ marginLeft: "0px" }}
+                          >
+                            <Tab.Panels
+                              className="flex-1 overflow-y-auto hiddenScrollbar pt-4 container"
+                              style={{ marginTop: "6rem" }}
+                            >
+                              <Tab.Panel>
+                                <div className="transition-opacity animate-[myblur_0.4s_ease]">
+                                  {showSearchModal && (
+                                    <SectionHeroArchivePage
+                                      getPropertyFunc={getPropertyData}
+                                      searchLocationValue={searchLocationValue}
+                                      setSearchLocationValue={
+                                        setSearchLocationValue
+                                      }
+                                      guests={guestSearch}
+                                      setGuests={setGuests}
+                                      currentPage="Stays"
+                                      currentTab="Stays"
+                                      className="lg:pb-1"
+                                    />
+                                  )}
+                                </div>
+                              </Tab.Panel>
+                            </Tab.Panels>
+                          </div>
+                        </Tab.Group>
+                      )}
+                    </Dialog.Panel>
+                  </Transition.Child>
+                </div>
+              </div>
+            </Dialog>
+          </Transition>
+        </div>
+      </div>
+    );
+  };
   return (
     <div
       className={`nc-ListingStayPage relative overflow-hidden ${className}`}
@@ -116,9 +209,9 @@ const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
           setGuests={setGuests}
           currentPage="Stays"
           currentTab="Stays"
-          className="pt-4 pb-12 lg:pb-14 lg:pt-8 "
+          className="pt-4 pb-12 lg:pb-14 lg:pt-8"
         />
-
+        {renderSearchBar()}
         {/* PROPERTY SECTION */}
         <SectionGridFilterCard
           getPropertyFunc={getPropertyData}

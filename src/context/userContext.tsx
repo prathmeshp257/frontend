@@ -74,6 +74,15 @@ interface AuthContextProps {
   houseRulesValues: string[];
   setHouseRulesValues: React.Dispatch<React.SetStateAction<string[]>>;
   clearAllFilterValues: any;
+  //rating and reviews
+  allReview: any[];
+  setAllReview: Dispatch<SetStateAction<any[]>>;
+  reviewValue: string;
+  setReviewValue: Dispatch<SetStateAction<string>>;
+  ratingValue: number;
+  setRatingValue: Dispatch<SetStateAction<number>>;
+  avgRating: number;
+  setAvgRating: Dispatch<SetStateAction<number>>;
 }
 
 const initialState: AuthContextProps = {
@@ -136,6 +145,15 @@ const initialState: AuthContextProps = {
   houseRulesValues: [],
   setHouseRulesValues: () => {},
   clearAllFilterValues: () => {},
+  // Other existing properties...
+  allReview: [],
+  setAllReview: () => {},
+  reviewValue: "",
+  setReviewValue: () => {},
+  ratingValue: 5,
+  setRatingValue: () => {},
+  avgRating: 0,
+  setAvgRating: () => {},
 };
 
 const AuthContext = createContext<AuthContextProps>(initialState);
@@ -144,9 +162,7 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-
   const [userData, setUserData] = useState<UserData>({
     _id: "",
     name: "",
@@ -156,16 +172,22 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     image: "",
     wallet_balance: 0,
   } as any);
+  //rating and reviews
+  const [allReview, setAllReview] = useState<any>([]);
+  const [reviewValue, setReviewValue] = useState("");
+  const [ratingValue, setRatingValue] = useState(5);
+  const [avgRating, setAvgRating] = useState(0);
+  //favourites and loading
   const [favPropData, setFavPropData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   //filter page funct
-    const [typevalues, setTypevalues] = useState<string[]>([]);
-    const [rangePrices, setRangePrices] = useState({ min: 0, max: 0 });
-    const [beds, setBeds] = useState(0);
-    const [bedrooms, setBedrooms] = useState(0);
-    const [bathrooms, setBathrooms] = useState(0);
-    const [amenitiesValues, setAmenitiesValues] = useState<string[]>([]);
-    const [houseRulesValues, setHouseRulesValues] = useState<string[]>([]);
+  const [typevalues, setTypevalues] = useState<string[]>([]);
+  const [rangePrices, setRangePrices] = useState({ min: 0, max: 0 });
+  const [beds, setBeds] = useState(0);
+  const [bedrooms, setBedrooms] = useState(0);
+  const [bathrooms, setBathrooms] = useState(0);
+  const [amenitiesValues, setAmenitiesValues] = useState<string[]>([]);
+  const [houseRulesValues, setHouseRulesValues] = useState<string[]>([]);
   //search bar funct
   const [info, setInfo] = useState<any[]>([]);
   const [searchLocationValue, setSearchLocationValue] = useState<string>("");
@@ -183,6 +205,12 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   // const [show, setShow] = useState(false);
 
   // searchbar details page
+
+  useEffect(() => {
+    if (!searchLocationValue && searchLocationValue==='') {
+      getPropertyData("clear");
+    }
+  }, [searchLocationValue]);
   const onLogout = () => {
     setUserData(initialState.userData);
     localStorage.clear();
@@ -292,11 +320,15 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setBathrooms(0);
     setAmenitiesValues([]);
     setHouseRulesValues([]);
-  }
+    // getPropertyData("clear");
+  };
   const getPropertyData = async (filter_type: String) => {
     try {
       const response = await axios.post(`${API_URL}/property/get-property`, {
-        locationSearch: filter_type === "clear" ? "" : searchLocationValue,
+        locationSearch:searchLocationValue,
+          // filter_type === "clear" && !searchLocationValue
+          //   ? ""
+          //   : searchLocationValue,
         guestsSearch: filter_type === "clear" ? 0 : totalGuests,
       });
       if (response.data.error === false) {
@@ -374,6 +406,15 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setHouseRulesValues,
     //
     clearAllFilterValues,
+    //
+    allReview,
+    setAllReview,
+    reviewValue,
+    setReviewValue,
+    ratingValue,
+    setRatingValue,
+    avgRating,
+    setAvgRating,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

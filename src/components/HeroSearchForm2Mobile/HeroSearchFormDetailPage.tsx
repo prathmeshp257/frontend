@@ -59,7 +59,7 @@ const HeroSearchFormDetailPage = () => {
     return (
       <button
         onClick={openModal}
-        className=" relative flex items-center w-full border border-neutral-200 dark:border-neutral-6000 px-4 py-2 pr-11 rounded-full shadow-lg"
+        className=" relative flex items-center w-full border border-neutral-200 dark:border-neutral-6000 px-4 py-2 rounded-full shadow-lg"
       >
         <div className="ml-3 flex-1 text-left overflow-hidden">
           <span className="block font-medium text-sm">Where to?</span>

@@ -31,7 +31,9 @@ const HeroSearchForm: FC<HeroSearchFormProps> = ({
 }) => {
   return (
     <div className={`nc-HeroSearchForm w-full py-5 lg:py-0 ${className}`}>
-      <form className="w-full relative mt-8 flex rounded-full shadow-xl dark:shadow-2xl bg-white dark:bg-neutral-800 ">
+      {/* <form className="w-[70%] h-20 relative mt-10 flex rounded-full shadow-xl dark:shadow-2xl bg-white dark:bg-neutral-800 m-auto"> */}
+        <form className="w-[70%] h-20 relative mt-10 flex rounded-full border shadow-xl
+        dark:shadow-2xl bg-white dark:bg-neutral-800 m-auto">
         <LocationInput
           className="flex-[1.5]"
           searchLocationValue={searchLocationValue}

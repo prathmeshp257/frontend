@@ -41,34 +41,41 @@ const StayDetailPageContainer: FC<{}> = () => {
   const [totalOwnerProperty, setTotalOwnerProperty] = useState<number>(0);
 
   const authContext = useContext(AuthContext);
-  // searchbar detail page
-  const showSearchModal = authContext.showSearchModal;
-  const setShowSearchModal = authContext.setShowSearchModal;
+const {
+  showSearchModal,
+  setShowSearchModal,
+  getPropertyData,
+  searchLocationValue,
+  setSearchLocationValue,
+  showHeight,
+  setGuestChildrenInputValue,
+  setGuestInfantsInputValue,
+  guests: guestSearch,
+  setGuests,
+  setInfo,
+  userData,
+  allReview,
+  setAllReview,
+  reviewValue,
+  setReviewValue,
+  ratingValue,
+  setRatingValue,
+  avgRating,
+  setAvgRating
+} = authContext;
 
-  const getPropertyData = authContext.getPropertyData;
-
-  const searchLocationValue = authContext.searchLocationValue;
-  const setSearchLocationValue = authContext.setSearchLocationValue;
-  const showHeight = authContext.showHeight;
-
-  const setGuestChildrenInputValue = authContext.setGuestChildrenInputValue;
-  const setGuestInfantsInputValue = authContext.setGuestInfantsInputValue;
-  const guestSearch = authContext.guests;
-  const setGuests = authContext.setGuests;
-  const setInfo = authContext.setInfo;
-  // searchbar detail page
-  const userData = authContext.userData;
   const queryParams = new URLSearchParams(window.location.search);
   const propIdParam = queryParams.get("propID");
   const token = localStorage.getItem("token");
 
   const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
  // rating and review 
-   const [allReview, setAllReview] = useState<any>([]);
-   const [reviewValue, setReviewValue] = useState("");
-   const [ratingValue, setRatingValue] = useState(5);
+
+  //  const [allReview, setAllReview] = useState<any>([]);
+  //  const [reviewValue, setReviewValue] = useState("");
+  //  const [ratingValue, setRatingValue] = useState(5);
+  //  const [avgRating, setAvgRating] = useState(0);
    const [errorEmptyReview, setErrorEmptyReview] = useState("");
-   const [avgRating, setAvgRating] = useState(0);
 
   const pathname = window.location.pathname;
   //rating allReviews
@@ -78,7 +85,6 @@ const StayDetailPageContainer: FC<{}> = () => {
         `${API_URL}/users/get-prop-review?propId=${propIdParam}`
       );
       if (response.data.error === false) {
-        toast.success(<>reviews got!</>);
         setAllReview(response.data?.allReviews);
         calculateAverageRating(response.data?.allReviews);
       }
@@ -911,13 +917,13 @@ const StayDetailPageContainer: FC<{}> = () => {
             {arrayofRules.map((item, index) => (
               <div
                 key={index}
-                className="flex space-x-10 justify-between p-3 rounded-lg"
+                className="flex space-x-10 justify-between py-3 rounded-lg"
               >
                 <span className="flex gap-4">
                   {item.rule ? (
                     <svg
-                      width="30"
-                      height="30"
+                      width="20"
+                      height="20"
                       viewBox="0 0 100 100"
                       xmlns="http://www.w3.org/2000/svg"
                     >
@@ -936,8 +942,8 @@ const StayDetailPageContainer: FC<{}> = () => {
                     </svg>
                   ) : (
                     <svg
-                      width="30"
-                      height="30"
+                      width="20"
+                      height="20"
                       viewBox="0 0 100 100"
                       xmlns="http://www.w3.org/2000/svg"
                     >
@@ -1074,7 +1080,7 @@ const StayDetailPageContainer: FC<{}> = () => {
                 return (
                   <div
                     key={index}
-                    className={`p-4 bg-neutral-100 dark:bg-neutral-800 flex justify-between items-center space-x-4 rounded-lg`}
+                    className={`p-4 flex justify-between items-center space-x-4 rounded-lg`}
                   >
                     <span>
                       {Number(price).toLocaleString("en-IN", {

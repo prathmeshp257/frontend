@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import Logo from "shared/Logo/Logo";
 import MenuBar from "shared/MenuBar/MenuBar";
 import SwitchDarkMode from "shared/SwitchDarkMode/SwitchDarkMode";
@@ -25,9 +25,11 @@ export interface MainNav2Props {
 }
 
 const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
+    const [showSearchBarOnScroll, setShowSearchBarOnScroll] = useState(false);
+
   const hasToken = !!localStorage.getItem("token");
 const { pathname } = useLocation();
-const showSearchBar = pathname.includes("/detail");
+const showSearchBarDetailPage = pathname.includes("/detail");
   const authContext = useContext(AuthContext);
 
   // searchbar detail page
@@ -36,26 +38,44 @@ const showSearchBar = pathname.includes("/detail");
 //    { to: "/", label: "Home" },
 //   //  { to: "/ezstays", label: "EZstays Your Home" },
 //  ];
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 100) {
+        setShowSearchBarOnScroll(true);
+      } else {
+        setShowSearchBarOnScroll(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
   return (
     <div className={`nc-MainNav1 nc-MainNav2 relative z-10 ${className}`}>
-      <div className="px-4 lg:container py-4 lg:py-4 relative flex justify-between items-center">
+      <div className="px-4 lg:container py-4 lg:py-4 relative flex justify-between items-center border-b border-gray-200">
         <Logo />
-        <div className="hidden md:flex justify-end flex-1 items-center space-x-3 sm:space-x-8 lg:space-x-10 " style={{paddingRight: "3rem"}}>
+        <div
+          className="hidden md:flex justify-end flex-1 items-center space-x-3 sm:space-x-8 lg:space-x-10 "
+          style={{ paddingRight: "3rem" }}
+        >
           {/* This div should be at the end of the parent div */}
           <div className="flex justify-center flex-[2] max-w-lg">
-            {showSearchBar && 
-            // !showSearchModal &&
-             (
-              <div
-                className="mx-auto md:px-3"
-                style={{
-                  transition: "width 2s ease",
-                  width: "155%",
-                }}
-              >
-                <HeroSearchFormDetailPage />
-              </div>
-            )}
+            {showSearchBarDetailPage ||
+              showSearchBarOnScroll ? (
+                // !showSearchModal &&
+                <div
+                  className="mx-auto md:px-3"
+                  style={{
+                    transition: "width 2s ease",
+                    width: "155%",
+                  }}
+                >
+                  <HeroSearchFormDetailPage />
+                </div>
+              ): null}
           </div>
 
           {/* This div should be in the center of the parent div */}

@@ -1,6 +1,7 @@
 import { ClockIcon, MapPinIcon } from "@heroicons/react/24/outline";
-import React, { useState, useRef, useEffect, FC } from "react";
+import React, { useState, useRef, useEffect, FC, useContext } from "react";
 import ClearDataButton from "./ClearDataButton";
+import { AuthContext } from "context/userContext";
 
 export interface LocationInputProps {
   getPropertyFunc?: any;
@@ -28,6 +29,11 @@ const LocationInput: FC<LocationInputProps> = ({
 
   const [value, setValue] = useState("");
   const [showPopover, setShowPopover] = useState(autoFocus);
+  const authContext = useContext(AuthContext);
+  const clearAllFilterValues = authContext.clearAllFilterValues;
+  const setShowSearchModal = authContext.setShowSearchModal;
+
+
   const searchLocationFunction = () => {
     if (searchLocationValue && "") {
       getPropertyFunc();
@@ -36,12 +42,18 @@ const LocationInput: FC<LocationInputProps> = ({
   useEffect(() => {
     setShowPopover(autoFocus);
   }, [autoFocus]);
-
+//
   const handleChangeData = (e: any) => {
     if (e.key === "Enter") {
+//  e.preventDefault();
+//  setSearchLocationValue(e.currentTarget.value, () => {
+//    getPropertyFunc();
+//   });
       e.preventDefault();
       setSearchLocationValue(e.currentTarget.value);
       getPropertyFunc();
+      setShowSearchModal(false);
+  clearAllFilterValues();
     } else if (e.currentTarget.value.trim() === "") {
       getPropertyFunc();
     }
@@ -88,9 +100,17 @@ const LocationInput: FC<LocationInputProps> = ({
         <div className="text-neutral-300 dark:text-neutral-400">
           <MapPinIcon className="w-5 h-5 lg:w-7 lg:h-7" />
         </div>
+        {/* <div className="flex-grow">
+          <span className="block xl:text-sm font-semibold">
+            {totalGuests || ""} Guests
+          </span>
+          <span className="block mt-1 text-sm text-neutral-400 leading-none font-light">
+            {totalGuests ? "Guests" : "Add total guests"}
+          </span>
+        </div> */}
         <div className="flex-grow">
           <input
-            className={`block w-full bg-transparent border-none focus:ring-0 pl-1 focus:outline-none focus:placeholder-neutral-300 xl:text-lg font-semibold placeholder-neutral-800 dark:placeholder-neutral-200 truncate`}
+            className={`block w-full bg-transparent border-none focus:ring-0 pl-1 focus:outline-none focus:placeholder-neutral-300 xl:text-md font-semibold placeholder-neutral-800 dark:placeholder-neutral-200 truncate`}
             placeholder={placeHolder}
             value={searchLocationValue}
             autoFocus={showPopover}
@@ -104,7 +124,7 @@ const LocationInput: FC<LocationInputProps> = ({
             ref={inputRef}
           />
           <span className="block mt-0.5 text-sm text-neutral-400 font-light ">
-            <span className="line-clamp-1">{!!value ? placeHolder : desc}</span>
+            <span className="line-clamp-1 " >{!!value ? placeHolder : desc}</span>
           </span>
           {value && showPopover && (
             <ClearDataButton

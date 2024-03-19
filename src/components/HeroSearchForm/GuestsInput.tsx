@@ -44,6 +44,7 @@ const GuestsInput: FC<GuestsInputProps> = ({
   const totalGuests = guestChildrenInputValue + guestAdultsInputValue;
   const getPropertyData = authContext.getPropertyData;
   const clearAllFilterValues = authContext.clearAllFilterValues;
+  const setShowSearchModal = authContext.setShowSearchModal;
 
   useEffect(() => {
     setGuests(totalGuests);
@@ -54,10 +55,12 @@ const GuestsInput: FC<GuestsInputProps> = ({
   const SearchProperty =()=>{
       const redirectToHome = pathname.includes("/detail");
       getPropertyData();
+      setShowSearchModal(false);
       clearAllFilterValues();
       if (redirectToHome) {
           navigate("/");
         }
+        window.scrollTo({ top: 0, behavior: "smooth" });
   }
 return (
   <Popover className={`flex relative ${className}`}>
@@ -86,11 +89,11 @@ return (
                 <UserPlusIcon className="w-5 h-5 lg:w-7 lg:h-7" />
               </div>
               <div className="flex-grow">
-                <span className="block xl:text-lg font-semibold">
+                <span className="block xl:text-sm font-semibold">
                   {totalGuests || ""} Guests
                 </span>
                 <span className="block mt-1 text-sm text-neutral-400 leading-none font-light">
-                  {totalGuests ? "Guests" : "Add totalGuests"}
+                  {totalGuests ? "Guests" : "Add total guests"}
                 </span>
               </div>
 
@@ -101,6 +104,7 @@ return (
                     setGuestAdultsInputValue(0);
                     setGuestChildrenInputValue(0);
                     getPropertyData("clear");
+                    // SearchProperty();
                   }}
                 />
               )}
@@ -110,7 +114,7 @@ return (
               <div className="pr-2 xl:pr-4">
                 <button
                   type="button"
-                  className="h-14 md:h-16 w-full md:w-16 rounded-full bg-primary-6000 hover:bg-primary-700 flex items-center justify-center text-neutral-50 focus:outline-none"
+                  className="h-10 md:h-12 w-full md:w-12 rounded-full bg-primary-6000 hover:bg-primary-700 flex items-center justify-center text-neutral-50 focus:outline-none"
                   onClick={SearchProperty}
                 >
                   <span className="mr-3 md:hidden">Search</span>
