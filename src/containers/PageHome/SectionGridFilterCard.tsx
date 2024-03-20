@@ -126,8 +126,8 @@ const SectionGridFilterCard: FC<SectionGridFilterCardProps> = ({
             ))}
           </div>
         ) : (
-          <div className="flex justify-center items-center h-[250px] text-lg">
-            No data found for this search field
+          <div className="flex justify-center items-center h-[400px] text-lg">
+            No Data Found For This Search Field.
           </div>
         )}
       </div>

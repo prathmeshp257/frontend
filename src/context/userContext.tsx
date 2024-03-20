@@ -333,6 +333,11 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // getPropertyData("clear");
   };
   const getPropertyData = async (filter_type: String) => {
+    const hasToken = localStorage.getItem("token");
+
+     if (hasToken) {
+       await getFavouriteProps();
+     }
     try {
       const response = await axios.post(`${API_URL}/property/get-property`, {
         locationSearch:searchLocationValue,

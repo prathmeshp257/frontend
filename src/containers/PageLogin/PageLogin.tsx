@@ -55,8 +55,9 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
         localStorage.setItem("token", response.data.token);
 
         toast.success(text);
-        setTimeout(() => {
+        setTimeout(async() => {
           navigate("/");
+        await authContext.getFavouriteProps();
           authContext.getAdminData();
         }, 1000);
       }

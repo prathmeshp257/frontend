@@ -1,4 +1,4 @@
-import React, { FC, useContext, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import GallerySlider from "components/GallerySlider/GallerySlider";
 import { StayDataCard, StayDataType } from "data/types";
 import StartRating from "components/StartRating/StartRating";
@@ -112,10 +112,9 @@ const StayCard: FC<StayCardProps> = ({
       return "₹..";
     }
   };
-
   const renderSliderGallery = () => {
+
     const combinedArray = [cover_image || "", ...(galleryImgs || [])];
-    console.log(ratingInfo, "ratttttttttttttttttttttt");
     return (
       <div className="relative w-full">
         <GallerySlider

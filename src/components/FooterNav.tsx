@@ -6,6 +6,7 @@ import {
   ArrowTopRightOnSquareIcon,
   HomeIcon,
 } from "@heroicons/react/24/outline";
+import { UserPlusIcon } from "@heroicons/react/24/outline";
 import React, { useEffect, useRef, useContext, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { PathName } from "routers/types";

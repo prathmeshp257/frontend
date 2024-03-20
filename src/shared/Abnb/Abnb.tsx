@@ -10,6 +10,8 @@ import {
   FingerPrintIcon,
   LifebuoyIcon,
 } from "@heroicons/react/24/outline";
+import { UserPlusIcon } from "@heroicons/react/24/outline";
+
 import { Fragment, useContext } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -27,7 +29,7 @@ const solutions = [
   {
     name: "Sign up",
     href: "/signup",
-    icon: ArrowRightOnRectangleIcon,
+    icon: UserPlusIcon,
   },
 ];
 

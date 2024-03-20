@@ -27,12 +27,12 @@ const BtnLikeIcon: FC<BtnLikeIconProps> = ({
   const functFavourite = authContext.getFavouriteProps;
   
   function checkId(dataFavourite: any, idd: any) {
-    return dataFavourite.some((obj: any) => obj._id === idd);
+    return dataFavourite.some((obj: any) => obj?._id === idd);
   }
   useEffect(() => {
     const result = checkId(dataFavourite, idd);
     setLikedState(result);
-  }, []);
+  }, [dataFavourite]);
   return (
     <div
       className={`nc-BtnLikeIcon w-8 h-8 flex items-center justify-center rounded-full cursor-pointer ${

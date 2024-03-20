@@ -28,19 +28,28 @@ const AccountSavelists = () => {
           <Tab.Group>
             <Tab.Panels>
               <Tab.Panel className="mt-8">
+                  {dataFavourite && dataFavourite.length > 0 ? (
                 <div className="grid grid-cols-1 gap-6 md:gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                  {dataFavourite
-                    .filter((_: any, i: number) => i < 8)
-                    .map((property: any) => (
-                      <StayCard
-                        key={property._id}
-                        currentProperty={property}
-                        data={property}
-                        className="shadow-2xl"
-                        size={"default"}
-                      />
-                    ))}
-                </div>
+
+                    {dataFavourite
+                      .filter((_: any, i: number) => i < 8)
+                      .map((property: any) => (
+                        <StayCard
+                          key={property._id}
+                          currentProperty={property}
+                          data={property}
+                          className="shadow-2xl"
+                          size={"default"}
+                        />
+                      ))}
+                      </div>
+                  ) : (
+                    <div className="flex justify-center items-center h-[250px] text-lg">
+                      There Is No Favourite Property Availabe
+                    </div>
+                  )}
+                  
+                
                 <div className="flex mt-11 justify-center items-center">
                   <ButtonSecondary onClick={handleShowMore}>
                     Show me more

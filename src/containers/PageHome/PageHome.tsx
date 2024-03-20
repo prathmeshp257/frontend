@@ -61,9 +61,9 @@ const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
   const hasToken = !!localStorage.getItem("token");
   const getPropertyData = async (filter_type: String) => {
     try {
-      if (hasToken) {
-        await functFavourite();
-      }
+      // if (hasToken) {
+      //   await functFavourite();
+      // }
       const response = await axios.post(`${API_URL}/property/get-property`, {
         type: filter_type === "type" ? [] : typevalues,
         min: filter_type === "price" ? 0 : rangePrices.min,
