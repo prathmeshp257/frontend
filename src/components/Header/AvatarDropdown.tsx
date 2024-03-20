@@ -2,7 +2,8 @@ import { Popover, Transition } from "@headlessui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCoins } from "@fortawesome/free-solid-svg-icons";
 import {
-  UserCircleIcon,WalletIcon,
+  UserCircleIcon,
+  WalletIcon,
   ChatBubbleBottomCenterTextIcon,
   CurrencyDollarIcon,
   HeartIcon,
@@ -10,7 +11,7 @@ import {
   ArrowRightOnRectangleIcon,
   LifebuoyIcon,
 } from "@heroicons/react/24/outline";
-import { Fragment, useContext } from "react";
+import { Fragment, useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Avatar from "shared/Avatar/Avatar";
 import { useNavigate } from "react-router-dom";
@@ -38,13 +39,42 @@ export default function AvatarDropdown() {
       icon: ArrowRightOnRectangleIcon,
     },
   ];
+  const [isOpen, setIsOpen] = useState(false);
+  const popoverRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const popoverElement = popoverRef.current as HTMLElement | null;
+      if (popoverElement && !popoverElement.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
+
+  const closePopover = () => {
+    setIsOpen(false);
+  };
   return (
     <div className="AvatarDropdown relative">
-      <Popover>
+      <Popover
+        onClick={closePopover}
+        as="div"
+        className="AvatarDropdown relative"
+        ref={popoverRef}
+      >
         {({ open }) => (
           <>
             <Popover.Button
               className={`inline-flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
+              onClick={() => setIsOpen(!isOpen)}
             >
               <div
                 className="border flex gap-4 pl-3 pr-2 py-2"
@@ -77,6 +107,7 @@ export default function AvatarDropdown() {
               </div>
             </Popover.Button>
             <Transition
+              show={isOpen}
               as={Fragment}
               enter="transition ease-out duration-200"
               enterFrom="opacity-0 translate-y-1"
@@ -91,6 +122,7 @@ export default function AvatarDropdown() {
                     <Link
                       to="/account"
                       className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
+                      onClick={closePopover}
                     >
                       <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
                         {/* {item.icon && (
@@ -117,6 +149,7 @@ export default function AvatarDropdown() {
                         key={index}
                         to={item.href}
                         className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
+                        onClick={closePopover}
                       >
                         <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
                           {item.icon && (

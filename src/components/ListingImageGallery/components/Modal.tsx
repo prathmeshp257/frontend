@@ -15,7 +15,6 @@ export default function Modal({
   onClose?: () => void;
 }) {
   let overlayRef = useRef<HTMLDivElement>(null);
-  console.log("first img", images)
   let [searchParams] = useSearchParams();
   const photoId = searchParams?.get("photoId");
   const navigate = useNavigate();

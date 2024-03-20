@@ -23,10 +23,8 @@ const handleCloseModalImageGallery = () => {
     const newQueryString = params.toString();
     const newUrl = `${window.location.pathname}?${newQueryString}`;
     window.history.replaceState({}, "", newUrl);
-      console.log("Modal present");
   } else {
     navigate(`/detail?propID=${propIdParam}`);
-      console.log("Modal is not present");
   }
 };
   const getImageGalleryListing = () => {

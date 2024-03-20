@@ -81,7 +81,6 @@ const StayCard: FC<StayCardProps> = ({
   } = authContext;
 
   const avg = ratingInfo.filter((val: any) => val._id === _id);
-  console.log(avg[0]?.count, "sdsdsdsdsdsd");
   const address = room_number
     ? `${room_number}, ${street} ${city} ${state}, ${country} ${postal_code}`
     : `${street} ${city} ${state}, ${country} ${postal_code}`;

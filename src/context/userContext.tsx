@@ -218,7 +218,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     if (!searchLocationValue && searchLocationValue==='') {
       getPropertyData("clear");
-      // console.log(ratingInfo, "sdfsdfsdfsdfsdfsdfsdf");
     }
   }, [searchLocationValue]);
   const onLogout = () => {

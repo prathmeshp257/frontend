@@ -75,7 +75,7 @@ const AccountPass = () => {
     <div>
       <CommonLayout>
         <form
-          className="space-y-6 sm:space-y-8"
+          className="space-y-6 sm:space-y-8 h-[440px]"
           onSubmit={validation.handleSubmit}
         >
           <div className=" max-w-xl space-y-6">

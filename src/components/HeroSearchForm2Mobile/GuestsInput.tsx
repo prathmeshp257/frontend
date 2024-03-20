@@ -39,8 +39,6 @@ const GuestsInput: FC<GuestsInputProps> = ({
 
 useEffect(() => {
   setGuests(totalGuests);
-  console.log(guestAdultsInputValue, "1st");
-  console.log(guestChildrenInputValue, "2nd");
 }, [totalGuests]);
   const handleChangeData = (value: number, type: keyof GuestsObject) => {
     let newValue = {

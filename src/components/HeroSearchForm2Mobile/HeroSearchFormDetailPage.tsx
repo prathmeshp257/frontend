@@ -39,13 +39,11 @@ const HeroSearchFormDetailPage = () => {
 
   //
   function closeModal() {
-    console.log("closed modal");
     setShowSearchModal(false);
   }
 
   function openModal() {
     setShowSearchModal(true);
-    console.log("modal opened")
   }
   function resetFormValues() {
     setSearchLocationValue("");

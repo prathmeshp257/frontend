@@ -111,7 +111,6 @@ const {
       const response = await axios.get(
         `${API_URL}/property/get-propertyCard-details?id=${propIdParam}&userId=${userData._id}`
       );
-      console.log(userData._id, "userData");
       if (response.data.error === false) {
         if (response.data.getTransaction) {
           setShow(true);

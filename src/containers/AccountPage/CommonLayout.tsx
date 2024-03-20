@@ -8,7 +8,9 @@ export interface CommonLayoutProps {
 
 const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
   return (
-    <div className="nc-CommonLayoutProps bg-neutral-50 dark:bg-neutral-900">
+    <div
+      className="nc-CommonLayoutProps bg-neutral-50 dark:bg-neutral-900"
+    >
       <div className="border-b border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800">
         <div className="container">
           <div className="flex space-x-8 md:space-x-14 overflow-x-auto hiddenScrollbar">
@@ -45,7 +47,7 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
           </div>
         </div>
       </div>
-      <div className="container pt-14 sm:pt-20 pb-24 lg:pb-32">{children}</div>
+      <div className="container pt-14 sm:pt-20 pb-24 lg:pb-30">{children}</div>
     </div>
   );
 };
