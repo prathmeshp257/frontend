@@ -79,12 +79,11 @@ const StayCard: FC<StayCardProps> = ({
     ratingInfo,
     setRatingInfo,
   } = authContext;
-
   const avg = ratingInfo.filter((val: any) => val._id === _id);
   const address = room_number
     ? `${room_number}, ${street} ${city} ${state}, ${country} ${postal_code}`
     : `${street} ${city} ${state}, ${country} ${postal_code}`;
-  const reviewStart = 4.8;
+  const reviewStart = avg.length;
   const reviewCount = 28;
   const getPriceForToday = () => {
     const daysOfWeek = [

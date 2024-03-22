@@ -372,6 +372,13 @@ const {
     getConfigCoins();
     setConfirmDialogVisible(true);
   };
+    const {
+      //rating
+      ratingInfo,
+    } = authContext;
+  const avg = ratingInfo.filter((val: any) => val._id === _id);
+
+  const reviewStart = avg.length;
   const address1 = `${street}, ${city} ${state}, ${country} ${postal_code}`;
   const address = room_number
     ? `${room_number}, ${street} ${city} ${state}, ${country} ${postal_code}`
@@ -484,7 +491,12 @@ const {
 
         {/* 3 */}
         <div className="flex items-center space-x-4 ">
-          <StartRating point={avgRating} reviewCount={allReview.length} />
+          {!!reviewStart && (
+            <StartRating
+              reviewCount={avg[0]?.count}
+              point={avg[0]?.averageRating}
+            />
+          )}
           <span>·</span>
           {/* display: flex; align-items: baseline; justify-content:
           center; */}
@@ -1100,7 +1112,12 @@ const {
               }
             })}
           </span>
-          <StartRating point={avgRating} reviewCount={allReview.length} />
+          {!!reviewStart && (
+            <StartRating
+              reviewCount={avg[0]?.count}
+              point={avg[0]?.averageRating}
+            />
+          )}
         </div>
 
         <ButtonPrimary
