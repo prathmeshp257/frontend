@@ -190,7 +190,7 @@ const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
   };
   return (
     <div
-      className={`nc-ListingStayPage relative overflow-hidden ${className}`}
+      className={`nc-ListingStayPage relative overflow-hidden ${className} gap-10`}
       data-nc-id="ListingStayPage"
       // style={{ height: "90vh" }}
     >
@@ -200,7 +200,16 @@ const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
       {/* <BgGlassmorphism /> */}
 
       <div className="container relative overflow-hidden">
-        
+        <h2
+          className="font-[600] text-black text-3xl sm:text-4xl md:text-4xl lg:text-2xl xl:text-7xl !leading-[115%] justify-center m-auto text-center p-6"
+          style={{
+            fontSize: "55px",
+            letterSpacing: "-2px",
+            wordSpacing: "2px",
+          }}
+        >
+          Travel anywhere, <br /> your getaway, your way!
+        </h2>
         {/* HERO SECTION */}
         <SectionHeroArchivePage
           getPropertyFunc={getPropertyData}
