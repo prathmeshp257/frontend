@@ -40,7 +40,7 @@ const showSearchBarDetailPage = pathname.includes("/detail");
 //  ];
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 100) {
+      if (window.scrollY > 240) {
         setShowSearchBarOnScroll(true);
       } else {
         setShowSearchBarOnScroll(false);
