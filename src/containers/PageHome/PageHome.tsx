@@ -200,6 +200,7 @@ const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
       {/* <BgGlassmorphism /> */}
 
       <div className="container relative overflow-hidden">
+        
         {/* HERO SECTION */}
         <SectionHeroArchivePage
           getPropertyFunc={getPropertyData}
