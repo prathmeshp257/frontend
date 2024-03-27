@@ -59,7 +59,7 @@ const showSearchBarDetailPage = pathname.includes("/detail");
         <Logo />
         <div
           className="hidden md:flex justify-end flex-1 items-center space-x-3 sm:space-x-8 lg:space-x-10 "
-          style={{ paddingRight: "3rem" }}
+          style={{ paddingRight: "4rem" }}
         >
           {/* This div should be at the end of the parent div */}
           <div className="flex justify-center flex-[2] max-w-lg">
