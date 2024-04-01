@@ -81,7 +81,7 @@ const showSearchBarDetailPage = pathname.includes("/detail");
           {/* This div should be in the center of the parent div */}
           <div className="flex justify-center items-center cursor-pointer">
             <a
-              href="https://easystays-owners.infiny.dev"
+              href="https://easystays-owners.infinydev.com"
               target="_blank"
               rel="noopener noreferrer"
             >

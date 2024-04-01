@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useState } from "react";
+import React, { FC, Fragment, useContext, useState } from "react";
 import { Dialog, Popover, Transition } from "@headlessui/react";
 import NcInputNumber from "components/NcInputNumber/NcInputNumber";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
@@ -7,6 +7,7 @@ import ButtonClose from "shared/ButtonClose/ButtonClose";
 import Checkbox from "shared/Checkbox/Checkbox";
 import Slider from "rc-slider";
 import convertNumbThousand from "utils/convertNumbThousand";
+import { AuthContext } from "context/userContext";
 
 const typeOfPaces = [
   {
@@ -125,6 +126,10 @@ const TabFilters: FC<filterCardProps> = ({
   const closeModalMoreFilter = () => setisOpenMoreFilter(false);
   const openModalMoreFilter = () => setisOpenMoreFilter(true);
   //
+  //
+  const authContext = useContext(AuthContext);
+  const getPropertyData = authContext.getPropertyData;
+  //
   const closeModalMoreFilterMobile = () => setisOpenMoreFilterMobile(false);
   const openModalMoreFilterMobile = () => setisOpenMoreFilterMobile(true);
 
@@ -216,6 +221,8 @@ const TabFilters: FC<filterCardProps> = ({
               handleCleartypefilter();
               break;
             default:
+              handleClearMoreFilterMobile();
+              getPropertyData();
               break;
           }
         }}
@@ -235,15 +242,15 @@ const TabFilters: FC<filterCardProps> = ({
       </span>
     );
   };
-const handleClearMoreFilterMobile = () =>{
-  setRangePrices({ min: 0, max: 0 });
-  setTypefilter([]);
-  setBeds(0);
-  setBedrooms(0);
-  setBathrooms(0);
-  setAmenitiesValues([]);
-  setHouseRulesValues([]);
-}
+  const handleClearMoreFilterMobile = () => {
+    setRangePrices({ min: 0, max: 0 });
+    setTypefilter([]);
+    setBeds(0);
+    setBedrooms(0);
+    setBathrooms(0);
+    setAmenitiesValues([]);
+    setHouseRulesValues([]);
+  };
   const renderTabsTypeOfPlace = (
     data: {
       name: string;
@@ -748,8 +755,8 @@ const handleClearMoreFilterMobile = () =>{
           className={`flex lg:hidden items-center justify-center px-4 py-2 text-sm rounded-full border border-primary-500 bg-primary-50 text-primary-700 focus:outline-none cursor-pointer`}
           onClick={openModalMoreFilterMobile}
         >
-          <span>More filters (3)</span>
-          {renderXClear(setRangePrices)}
+          <span>More filters (5)</span>
+          {renderXClear("default")}
         </div>
 
         <Transition appear show={isOpenMoreFilterMobile} as={Fragment}>
@@ -934,7 +941,8 @@ const handleClearMoreFilterMobile = () =>{
                       onClick={() => {
                         closeModalMoreFilterMobile();
                         handleClearMoreFilterMobile();
-                        getPropertyFunc();
+                        getPropertyData();
+                        // getPropertyFunc();
                       }}
                       sizeClass="px-4 py-2 sm:px-5"
                     >
