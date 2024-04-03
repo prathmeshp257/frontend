@@ -14,8 +14,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+//
+import { useGoogleLogin } from "@react-oauth/google";
 import { AuthContext } from "context/userContext";
-
 export interface PageLoginProps {
   className?: string;
 }
@@ -44,6 +45,59 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
   const [password, setPassword] = useState("");
   const authContext = useContext(AuthContext);
 
+    const loginWithGoogle = useGoogleLogin({
+      onSuccess: async (response) => {
+        try {
+          const res = await axios.get(
+            "https://www.googleapis.com/oauth2/v3/userinfo",
+            {
+              headers: {
+                Authorization: `Bearer ${response.access_token}`,
+              },
+            }
+          );
+          // const UserSignup = await axios.post(
+          // signupwithgoogle;
+          // )
+          try {
+            const response = await axios.post(
+              `${API_URL}/users/signupwithgoogle`,
+              {
+                name: res.data.name,
+                email: res.data.email,
+                image: res.data.picture,
+              }
+            );
+
+            const text = response.data.message;
+
+            if (response.data.error === false) {
+              localStorage.setItem("token", response.data.token);
+
+              toast.success(text);
+              setTimeout(async () => {
+                navigate("/");
+                await authContext.getFavouriteProps();
+                authContext.getAdminData();
+              }, 1000);
+            }
+            if (response.data.error === true && !!response.data.result) {
+              toast.error(response.data.result.msg);
+            }
+
+            if (response.data.error === true) {
+              toast.error(text);
+            }
+          } catch (error) {
+            toast.error("Error during login");
+            console.error("Error during login:", error);
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      },
+    });
+
   const handleLogin = async (values: any) => {
     setisLoading(true);
     try {
@@ -59,7 +113,7 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
           navigate("/");
         await authContext.getFavouriteProps();
           authContext.getAdminData();
-        }, 1000);
+        }, 500);
       }
       if (response.data.error === true) {
         toast.error(text);
@@ -100,22 +154,19 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
         </h2>
         <div className="max-w-md mx-auto space-y-10">
           <div className="grid gap-3">
-            {loginSocials.map((item, index) => (
-              <a
-                key={index}
-                href={item.href}
-                className="nc-will-change-transform flex w-full rounded-lg bg-primary-50 dark:bg-neutral-800 px-4 py-3 transform transition-transform sm:px-6 hover:translate-y-[-2px]"
-              >
-                <img
-                  className="flex-shrink-0"
-                  src={item.icon}
-                  alt={item.name}
-                />
-                <h3 className="flex-grow text-center text-sm font-medium text-neutral-700 dark:text-neutral-300 sm:text-sm">
-                  {item.name}
-                </h3>
-              </a>
-            ))}
+            <button
+              className="nc-will-change-transform flex w-full rounded-lg bg-primary-50 dark:bg-neutral-800 px-4 py-3 transform transition-transform sm:px-6 hover:translate-y-[-2px]"
+              onClick={() => loginWithGoogle()}
+            >
+              <img
+                className="flex-shrink-0"
+                src={googleSvg}
+                alt={"Continue with Google"}
+              />
+              <h3 className="flex-grow text-center text-sm font-medium text-neutral-700 dark:text-neutral-300 sm:text-sm">
+                Continue with Google
+              </h3>
+            </button>
           </div>
           {/* OR */}
           <div className="relative text-center">

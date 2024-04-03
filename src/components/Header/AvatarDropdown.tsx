@@ -138,7 +138,15 @@ export default function AvatarDropdown() {
                         <p className="text-sm font-medium ">
                           {dataAdmin?.name}
                         </p>
-                        <p className="text-sm font-light">{dataAdmin?.email}</p>
+                        {/* <p className="text-sm font-light">{dataAdmin?.email}</p> */}
+                        <p className="text-sm font-light">
+                          {dataAdmin?.email && dataAdmin.email.length > 15
+                            ? `${dataAdmin.email.slice(
+                                0,
+                                6
+                              )}...${dataAdmin.email.slice(-10)}`
+                            : dataAdmin?.email}
+                        </p>
                       </div>
                     </Link>
                   </div>

@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useContext, useState } from "react";
 import facebookSvg from "images/Facebook.svg";
 import twitterSvg from "images/Twitter.svg";
 import googleSvg from "images/Google.svg";
@@ -12,33 +12,78 @@ import { API_URL } from "../../api/config";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+// import { GoogleLogin } from "@react-oauth/google";
+// import { jwtDecode } from "jwt-decode";
+import { useGoogleLogin } from "@react-oauth/google";
+import { AuthContext } from "context/userContext";
 
 export interface PageSignUpProps {
   className?: string;
 }
 
-const loginSocials = [
-  {
-    name: "Continue with Facebook",
-    href: "#",
-    icon: facebookSvg,
-  },
-  {
-    name: "Continue with Twitter",
-    href: "#",
-    icon: twitterSvg,
-  },
-  {
-    name: "Continue with Google",
-    href: "#",
-    icon: googleSvg,
-  },
-];
+// const loginSocials = [
+//   {
+//     name: "Continue with Google",
+//     href: "#",
+//     icon: googleSvg,
+//   },
+// ];
+
 
 const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
   const navigate = useNavigate();
   const [isLoading, setisLoading] = useState(false);
+  const authContext = useContext(AuthContext);
 
+  const loginWithGoogle = useGoogleLogin({
+    onSuccess: async (response) => {
+      try{
+        const res = await axios.get(
+          "https://www.googleapis.com/oauth2/v3/userinfo",
+          {
+            headers: {
+              Authorization: `Bearer ${response.access_token}`,
+            },
+          }
+        );
+              try {
+                const response = await axios.post(
+                  `${API_URL}/users/signupwithgoogle`,
+                  {
+                    name: res.data.name,
+                    email: res.data.email,
+                    image: res.data.picture,
+                  }
+                );
+                const text = response.data.message;
+
+                if (response.data.error === false) {
+                  localStorage.setItem("token", response.data.token);
+
+                  toast.success(text);
+                  setTimeout(async () => {
+                    navigate("/");
+                    await authContext.getFavouriteProps();
+                    authContext.getAdminData();
+                  }, 500);
+                }
+                if (response.data.error === true && !!response.data.result) {
+                  toast.error(response.data.result.msg);
+                }
+
+                if (response.data.error === true) {
+                  toast.error(text);
+                }
+              } catch (error) {
+                toast.error("Error during login");
+                console.error("Error during login:", error);
+              }
+
+      }catch(err){
+        console.log(err);
+      }
+    },
+  });
   const handleSignup = async (values: any) => {
     setisLoading(true);
     try {
@@ -47,7 +92,6 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
       const text = response.data.message;
 
       if (response.data.error === false) {
-
         toast.success(text);
         setTimeout(() => {
           navigate("/login");
@@ -115,24 +159,35 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
         <h2 className="my-8 flex items-center text-3xl leading-[115%] md:text-4xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center">
           Signup
         </h2>
+        {/* <GoogleLogin
+          onSuccess={(credentialResponse: any) => {
+            const credentialDecoded = jwtDecode(credentialResponse.credential);
+            console.log(credentialDecoded, "haaaaaaaahaaaaaaaaaaaa");
+            // console.log(
+            //   credentialResponse.credential,
+            //   "haaaaaaaahaaaaaaaaaaaa"
+            // );
+          }}
+          onError={() => {
+            console.log("Login Failed");
+          }}
+        /> */}
+        {/* onClick={() => login()}  loginWithGoogle*/}
         <div className="max-w-md mx-auto space-y-6 ">
           <div className="grid gap-3">
-            {loginSocials.map((item, index) => (
-              <a
-                key={index}
-                href={item.href}
-                className="nc-will-change-transform flex w-full rounded-lg bg-primary-50 dark:bg-neutral-800 px-4 py-3 transform transition-transform sm:px-6 hover:translate-y-[-2px]"
-              >
-                <img
-                  className="flex-shrink-0"
-                  src={item.icon}
-                  alt={item.name}
-                />
-                <h3 className="flex-grow text-center text-sm font-medium text-neutral-700 dark:text-neutral-300 sm:text-sm">
-                  {item.name}
-                </h3>
-              </a>
-            ))}
+            <button
+              className="nc-will-change-transform flex w-full rounded-lg bg-primary-50 dark:bg-neutral-800 px-4 py-3 transform transition-transform sm:px-6 hover:translate-y-[-2px]"
+              onClick={() => loginWithGoogle()}
+            >
+              <img
+                className="flex-shrink-0"
+                src={googleSvg}
+                alt={"Continue with Google"}
+              />
+              <h3 className="flex-grow text-center text-sm font-medium text-neutral-700 dark:text-neutral-300 sm:text-sm">
+                Continue with Google
+              </h3>
+            </button>
           </div>
           {/* OR */}
           <div className="relative text-center">
