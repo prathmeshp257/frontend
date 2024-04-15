@@ -231,6 +231,7 @@ const {
   const {
     _id,
     type,
+    subtype,
     title,
     country,
     street,
@@ -478,8 +479,9 @@ const {
       <div className="listingSection__wrap !space-y-6">
         {/* 1 */}
         <div className="flex justify-between items-center">
-          <Badge name={type} />
+          <Badge name={`${type} - ${subtype? subtype: ""}`} />
           <LikeSaveBtns propID={propIdParam} />
+          {/* {subtype} */}
         </div>
 
         {/* 2 */}

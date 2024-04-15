@@ -62,7 +62,7 @@ const HeroSearchFormDetailPage = () => {
         <div className="ml-3 flex-1 text-left overflow-hidden">
           <span className="block font-medium text-sm">Where to?</span>
           <div className="block mt-0.5 text-xs font-light text-neutral-500 dark:text-neutral-400 ">
-            <span className="line-clamp-1">Anywhere • Add guests</span>
+            <span className="line-clamp-1">Anywhere</span>
           </div>
         </div>
         <MagnifyingGlassIcon className="flex-shrink-0 w-5 h-5" />

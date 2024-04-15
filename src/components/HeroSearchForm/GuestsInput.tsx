@@ -74,11 +74,11 @@ return (
       return (
         <>
           <div
-            className={`flex-1 z-10 flex items-center focus:outline-none ${
+            className={`flex-1 z-10 flex items-center focus:outline-none justify-end ${
               open ? "nc-hero-field-focused" : ""
             }`}
           >
-            <Popover.Button
+            {/* <Popover.Button
               type="button"
               className={`relative z-10 flex-1 flex text-left items-center ${fieldClassName} space-x-3 focus:outline-none`}
               onClickCapture={() => {
@@ -108,10 +108,10 @@ return (
                   }}
                 />
               )}
-            </Popover.Button>
+            </Popover.Button> */}
 
             {hasButtonSubmit && (
-              <div className="pr-2 xl:pr-4">
+              <div className="pr-2 xl:pr-4 flex flex-end">
                 <button
                   type="button"
                   className="h-10 md:h-12 w-full md:w-12 rounded-full bg-primary-6000 hover:bg-primary-700 flex items-center justify-center text-neutral-50 focus:outline-none"

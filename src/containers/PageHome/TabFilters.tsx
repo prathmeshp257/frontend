@@ -9,42 +9,37 @@ import Slider from "rc-slider";
 import convertNumbThousand from "utils/convertNumbThousand";
 import { AuthContext } from "context/userContext";
 
+// case "Homestays":
+//         return "Homestays: A luxurious residence, often with expansive grounds, offering comfort, privacy, and upscale amenities.";
+//       case "Villas":
+//         return "Villa: A luxurious residence, often with expansive grounds, offering comfort, privacy, and upscale amenities.";
+//       case "Hotels":
+//         return "Hotel: Professional hospitality businesses that usually have a unique style or theme defining their brand and decor";
+//       case "PGs":
+//         return "Cottage: A cozy dwelling, typically in a rural or semi-rural location, often used for vacations or retreats.";
+//       default:
+//         return "A catchy name usually includes: House name + Room name + Featured property + Tourist destination";
 const typeOfPaces = [
   {
     defaultChecked: false,
-    name: "Hotel",
+    name: "Homestays",
     description: "Find your perfect hotel room",
   },
   {
     defaultChecked: false,
-    name: "Cottage",
-    description: "Discover cozy cottages for rent",
+    name: "Hotels",
+    description: "Find your perfect hotel room",
   },
   {
     defaultChecked: false,
-    name: "Villa",
+    name: "Villas",
     description: "Rent luxurious villas for your stay",
   },
   {
     defaultChecked: false,
-    name: "Cabin",
+    name: "PGs",
     description: "Experience rustic cabins in scenic locations",
-  },
-  {
-    defaultChecked: false,
-    name: "Farm stay",
-    description: "Enjoy a peaceful stay on a farm",
-  },
-  {
-    defaultChecked: false,
-    name: "Houseboat",
-    description: "Stay aboard a charming houseboat",
-  },
-  {
-    defaultChecked: false,
-    name: "Lighthouse",
-    description: "Experience unique stays in historic lighthouses",
-  },
+  }
 ];
 
 const moreFilter1 = [
@@ -61,11 +56,11 @@ const moreFilter1 = [
 ];
 
 const moreFilter2 = [
-  { name: " Free parking on premise", defaultChecked: false },
+  { name: "Free parking on premise", defaultChecked: false },
   { name: "Hot tub", defaultChecked: false },
   { name: "Gym", defaultChecked: false },
-  { name: " Pool", defaultChecked: false },
-  { name: " EV charger", defaultChecked: false },
+  { name: "Pool", defaultChecked: false },
+  { name: "EV charger", defaultChecked: false },
 ];
 
 const moreFilter3 = [

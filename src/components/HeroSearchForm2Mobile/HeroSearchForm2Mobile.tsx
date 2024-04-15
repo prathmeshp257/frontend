@@ -54,7 +54,7 @@ const setGuestInfantsInputValue = authContext.setGuestInfantsInputValue;
         <div className="ml-3 flex-1 text-left overflow-hidden">
           <span className="block font-medium text-sm">Where to?</span>
           <div className="block mt-0.5 text-xs font-light text-neutral-500 dark:text-neutral-400 ">
-            <span className="line-clamp-1">Anywhere • Add guests</span>
+            <span className="line-clamp-1">Anywhere</span>
           </div>
         </div>
 
