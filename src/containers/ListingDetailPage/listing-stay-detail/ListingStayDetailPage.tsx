@@ -627,7 +627,7 @@ const {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-40" />
+              <Dialog.Panel className="fixed inset-0 bg-black bg-opacity-40" />
             </Transition.Child>
 
             <span

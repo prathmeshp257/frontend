@@ -5,7 +5,6 @@ import "./styles/index.scss";
 import "./index.css";
 import "./fonts/line-awesome-1.3.0/css/line-awesome.css";
 import App from "./App";
-import reportWebVitals from "./reportWebVitals";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import axios from "axios";
 import { API_URL } from "api/config";
@@ -36,4 +35,3 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(<Root />);
-reportWebVitals();
